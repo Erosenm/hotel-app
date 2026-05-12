@@ -1,0 +1,57 @@
+<?php
+return [
+    ['method' => 'GET',  'path' => '/',                    'target' => 'HomeController@index'],
+    ['method' => 'GET',  'path' => '/login',               'target' => 'AuthController@login'],
+    ['method' => 'POST', 'path' => '/login',               'target' => 'AuthController@authenticate'],
+    ['method' => 'GET',  'path' => '/logout',              'target' => 'AuthController@logout'],
+    ['method' => 'GET',  'path' => '/register',            'target' => 'RegisterController@register'],
+    ['method' => 'POST', 'path' => '/register',            'target' => 'RegisterController@store'],
+ 
+    // ── ADMIN ──────────────────────────────────────────────
+    ['method' => 'GET',  'path' => '/adminpanel',          'target' => 'AdminPanelController@index'],
+ 
+    // Usuarios
+    ['method' => 'GET',  'path' => '/admin/usuarios',       'target' => 'UsuarioController@index'],
+    ['method' => 'GET',  'path' => '/admin/usuarios/crear', 'target' => 'UsuarioController@create'],
+    ['method' => 'POST', 'path' => '/admin/usuarios/crear', 'target' => 'UsuarioController@store'],
+    ['method' => 'GET',  'path' => '/admin/usuarios/editar','target' => 'UsuarioController@edit'],
+    ['method' => 'POST', 'path' => '/admin/usuarios/editar','target' => 'UsuarioController@update'],
+    ['method' => 'GET',  'path' => '/admin/usuarios/estado','target' => 'UsuarioController@cambiarEstado'],
+ 
+    // Habitaciones
+    ['method' => 'GET',  'path' => '/admin/habitaciones',                 'target' => 'HabitacionController@index'],
+    ['method' => 'GET',  'path' => '/admin/habitaciones/crear',           'target' => 'HabitacionController@create'],
+    ['method' => 'POST', 'path' => '/admin/habitaciones/crear',           'target' => 'HabitacionController@store'],
+    ['method' => 'GET',  'path' => '/admin/habitaciones/editar',          'target' => 'HabitacionController@edit'],
+    ['method' => 'POST', 'path' => '/admin/habitaciones/editar',          'target' => 'HabitacionController@update'],
+    ['method' => 'GET',  'path' => '/admin/habitaciones/imagen/eliminar', 'target' => 'HabitacionController@eliminarImagen'],
+ 
+    // Reservas
+    ['method' => 'GET',  'path' => '/admin/reservas',       'target' => 'ReservaController@index'],
+    ['method' => 'GET',  'path' => '/admin/reservas/estado','target' => 'ReservaController@cambiarEstado'],
+ 
+    // Pagos (admin)
+    ['method' => 'GET',  'path' => '/admin/pagos',          'target' => 'PagoController@index'],
+    ['method' => 'GET',  'path' => '/admin/pagos/crear',    'target' => 'PagoController@create'],
+    ['method' => 'POST', 'path' => '/admin/pagos/crear',    'target' => 'PagoController@store'],
+    ['method' => 'GET',  'path' => '/admin/pagos/estado',   'target' => 'PagoController@cambiarEstado'],
+ 
+    // Bitácora
+    ['method' => 'GET',  'path' => '/admin/bitacora',       'target' => 'BitacoraController@index'],
+ 
+    // ── CLIENTE ────────────────────────────────────────────
+    ['method' => 'GET',  'path' => '/habitaciones',               'target' => 'ClienteController@habitaciones'],
+    ['method' => 'GET',  'path' => '/habitaciones/detalle',       'target' => 'ClienteController@detalleHabitacion'],
+    ['method' => 'GET',  'path' => '/reservar',                   'target' => 'ClienteController@reservar'],
+    ['method' => 'POST', 'path' => '/reservar',                   'target' => 'ClienteController@guardarReserva'],
+    ['method' => 'GET',  'path' => '/cliente/dashboard',          'target' => 'ClienteController@dashboard'],
+    ['method' => 'GET',  'path' => '/cliente/reservas',           'target' => 'ClienteController@misReservas'],
+    ['method' => 'GET',  'path' => '/cliente/reservas/cancelar',  'target' => 'ClienteController@cancelarReserva'],
+    ['method' => 'GET',  'path' => '/cliente/perfil',             'target' => 'ClienteController@perfil'],
+    ['method' => 'POST', 'path' => '/cliente/perfil',             'target' => 'ClienteController@actualizarPerfil'],
+ 
+    // Pagos (cliente)
+    ['method' => 'GET',  'path' => '/cliente/pagar',              'target' => 'ClienteController@pagar'],
+    ['method' => 'POST', 'path' => '/cliente/pagar',              'target' => 'ClienteController@procesarPago'],
+    ['method' => 'GET',  'path' => '/cliente/pago/confirmacion',  'target' => 'ClienteController@confirmacionPago'],
+];

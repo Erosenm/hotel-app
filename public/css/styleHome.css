@@ -1,0 +1,295 @@
+:root {
+    --primary-bg: #FFFFFF;
+    --alt-bg: #F9F8F6;
+    --text-main: #1A1A1A;
+    --text-sub: #666666;
+    --accent: #2C2C2C;
+    --accent-hover: #4A4A4A;
+    --border: #E5E5E5;
+    --overlay: rgba(0, 0, 0, 0.4);
+    
+    --serif: 'Playfair Display', serif;
+    --sans-header: 'Montserrat', sans-serif;
+    --sans-body: 'Open Sans', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+    font-family: var(--sans-body); 
+    color: var(--text-main); 
+    line-height: 1.8; 
+    background: var(--primary-bg);
+    overflow-x: hidden;
+}
+h1, h2, h3 { font-family: var(--serif); font-weight: 400; letter-spacing: -0.02em; }
+a { text-decoration: none; color: inherit; transition: 0.3s; }
+ul { list-style: none; }
+img { max-width: 100%; display: block; transition: transform 0.5s ease; }
+
+.btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--sans-header);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.btn:hover { background: var(--accent-hover); }
+
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+}
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+.img-hover-container { overflow: hidden; }
+.img-hover-container:hover img { transform: scale(1.05); }
+
+/* 1. Header */
+header {
+    position: fixed;
+    top: 0; width: 100%; z-index: 1000;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 30px 50px;
+    transition: 0.4s;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.05) 60%, transparent 100%);
+}
+
+header::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.3) 50%, transparent 100%);
+    pointer-events: none;
+    z-index: 999;
+}
+
+header.scrolled {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px 50px;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(8px);
+}
+
+header.scrolled::before {
+    display: none;
+}
+
+header.scrolled .logo { color: var(--text-main); }
+
+header.scrolled nav ul li a { 
+    color: var(--text-main);
+}
+
+header.scrolled nav ul li a:hover {
+    color: var(--accent);
+}
+
+header.scrolled .btn-user {
+    background: rgba(0, 0, 0, 0.06);
+    border-color: rgba(0, 0, 0, 0.12);
+    color: var(--text-main);
+}
+
+header.scrolled .btn-user:hover {
+    background: rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+header.scrolled .user-role { color: rgba(0, 0, 0, 0.6); }
+
+.logo { 
+    font-family: var(--serif); 
+    font-size: 1.5rem; 
+    letter-spacing: 3px; 
+    color: #FFFFFF;
+    font-weight: 400;
+}
+
+nav ul { 
+    display: flex; 
+    gap: 30px; 
+}
+
+nav ul li a { 
+    font-family: var(--serif);
+    font-size: 1.1rem; 
+    font-weight: 300;
+    letter-spacing: 1px; 
+    color: #FFFFFF;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #F9F8F6;
+}
+
+/* 2. Hero — fondo via PHP en home.php */
+.hero {
+    height: 100vh;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), transparent) no-repeat center/cover;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    color: #fff; text-align: center;
+    padding: 0 20px;
+    position: relative;
+}
+
+.hero h1 { 
+    font-size: clamp(2.5rem, 6vw, 5rem); 
+    max-width: 900px; 
+    margin-bottom: 40px; 
+    color: #FFFFFF;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+}
+
+.booking-bar {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    padding: 30px 40px;
+    display: flex; 
+    gap: 20px;
+    align-items: center;
+    color: var(--text-main);
+    width: 90%; 
+    max-width: 1000px;
+    border-radius: 50px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+
+.booking-bar div { 
+    display: flex; 
+    flex-direction: column; 
+    text-align: left; 
+    flex: 1; 
+}
+
+.booking-bar label { 
+    font-size: 0.6rem; 
+    font-family: var(--sans-header); 
+    color: var(--text-sub); 
+    margin-bottom: 8px;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+}
+
+.booking-bar input, .booking-bar select { 
+    border: none; 
+    font-size: 0.9rem; 
+    outline: none;
+    background: transparent;
+    color: var(--text-main);
+    font-family: var(--sans-body);
+}
+
+.booking-bar button.btn {
+    border-radius: 50px;
+    padding: 12px 35px;
+    white-space: nowrap;
+    margin-left: auto;
+    transition: all 0.3s ease;
+}
+
+.booking-bar button.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+section { padding: 120px 10%; }
+
+/* 3. Sobre Nosotros */
+.about { display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: center; }
+.about-text h2 { font-size: 3rem; margin-bottom: 30px; }
+.about-text p { margin-bottom: 20px; color: var(--text-sub); }
+.about-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.about-grid img:nth-child(2) { margin-top: 50px; }
+
+/* 4. Relajación — fondo via PHP en home.php */
+.relaxation {
+    padding: 0;
+    height: 60vh;
+    position: relative;
+    background: no-repeat center/cover fixed;
+    display: flex; align-items: center; justify-content: center;
+}
+.relaxation h2 { color: #fff; font-size: 3rem; text-align: center; max-width: 700px; z-index: 2; }
+.relaxation::after { content:''; position: absolute; top:0; left:0; width:100%; height:100%; background: var(--overlay); }
+
+/* 5. Habitaciones */
+.rooms { text-align: center; background: var(--primary-bg); }
+.rooms-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin: 60px 0; }
+.room-card { text-align: left; }
+.room-card h3 { margin: 20px 0 10px; font-size: 1.5rem; }
+.room-card span { color: var(--text-sub); font-size: 0.9rem; }
+
+/* 6. Instalaciones */
+.facilities { background: var(--alt-bg); text-align: center; }
+.facilities-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-top: 60px; }
+.fac-item svg { width: 40px; margin-bottom: 20px; stroke-width: 1px; }
+.fac-item h4 { font-family: var(--sans-header); font-size: 0.8rem; letter-spacing: 0.1em; margin-bottom: 10px; }
+.fac-item p { font-size: 0.85rem; color: var(--text-sub); }
+
+/* 7. Servicios Z-Pattern */
+.services-z { display: flex; flex-direction: column; gap: 100px; }
+.z-row { display: flex; align-items: center; gap: 80px; }
+.z-row:nth-child(even) { flex-direction: row-reverse; }
+.z-content { flex: 1; }
+.z-content h2 { font-size: 2.5rem; margin-bottom: 20px; }
+.z-img { flex: 1.2; }
+
+/* 8. Testimonios — fondo via PHP en home.php */
+.testimonials {
+    background: linear-gradient(var(--overlay), var(--overlay)) no-repeat center/cover;
+    color: #fff; text-align: center; padding: 150px 10%;
+}
+.testimonials blockquote { font-family: var(--serif); font-size: 2.2rem; max-width: 800px; margin: 0 auto; }
+.testimonials cite { display: block; margin-top: 30px; font-style: normal; font-family: var(--sans-header); font-size: 0.7rem; letter-spacing: 2px; }
+
+/* 9. Noticias */
+.news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 50px; }
+.news-card { position: relative; }
+.date-tag { 
+    position: absolute; top: 20px; left: 20px; background: #fff; 
+    padding: 5px 15px; font-size: 0.6rem; font-family: var(--sans-header); 
+}
+.news-card h3 { margin: 20px 0; }
+.read-more { font-family: var(--sans-header); font-size: 0.7rem; letter-spacing: 1px; border-bottom: 1px solid var(--accent); padding-bottom: 5px; }
+
+/* 10. Calendario */
+.availability-section { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; background: var(--alt-bg); }
+.cal-mockup { background: #fff; padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border: 1px solid var(--border); }
+.month h5 { font-family: var(--sans-header); font-size: 0.8rem; margin-bottom: 15px; border-bottom: 1px solid var(--border); }
+.days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; font-size: 0.7rem; color: var(--text-sub); }
+
+/* 11. Footer */
+footer { background: var(--accent); color: #fff; padding: 80px 10% 40px; }
+.footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 50px; margin-bottom: 60px; }
+.footer-col h4 { font-family: var(--sans-header); font-size: 0.7rem; letter-spacing: 2px; margin-bottom: 25px; color: #aaa; }
+.footer-col p, .footer-col li { font-size: 0.9rem; margin-bottom: 10px; color: #ccc; }
+.newsletter input { 
+    background: transparent; border: none; border-bottom: 1px solid #444; 
+    padding: 10px 0; color: #fff; width: 100%; margin-bottom: 20px; outline: none;
+}
+.footer-bottom { border-top: 1px solid #333; padding-top: 30px; font-size: 0.7rem; color: #666; display: flex; justify-content: space-between; }
+
+@media (max-width: 968px) {
+    .about, .rooms-grid, .facilities-grid, .z-row, .news-grid, .footer-grid, .availability-section { 
+        grid-template-columns: 1fr; 
+        flex-direction: column; 
+    }
+    .booking-bar { flex-direction: column; width: 95%; }
+    header { padding: 20px; }
+    nav { display: none; }
+}
