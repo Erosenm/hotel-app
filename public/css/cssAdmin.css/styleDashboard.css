@@ -1,0 +1,397 @@
+/* ============================================================
+   styleDashboard.css
+   Ruta: public/css/cssAdmin.css/styleDashboard.css
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap');
+
+/* ── Variables ── */
+:root {
+  --ds-font:  'Plus Jakarta Sans', sans-serif;
+  --ds-mono:  'JetBrains Mono', monospace;
+  --ds-bg:    #f0f2f7;
+  --ds-card:  #ffffff;
+  --ds-text:  #111827;
+  --ds-sub:   #6b7280;
+  --ds-muted: #9ca3af;
+  --ds-blue:   #3b82f6;
+  --ds-green:  #10b981;
+  --ds-amber:  #f59e0b;
+  --ds-cyan:   #06b6d4;
+  --ds-violet: #8b5cf6;
+  --ds-rose:   #f43f5e;
+  --ds-teal:   #14b8a6;
+  --ds-r:  14px;
+  --ds-sh: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --ds-sh2:0 4px 18px rgba(0,0,0,.08), 0 1px 4px rgba(0,0,0,.04);
+}
+
+/* ── Fuente global dentro del panel ── */
+.dash-stat-card,
+.dash-panel,
+.dash-table {
+  font-family: var(--ds-font);
+}
+
+/* ════════════════════════════════════════
+   STAT CARDS
+   ════════════════════════════════════════ */
+.dash-stat-card {
+  background: var(--ds-card);
+  border-radius: var(--ds-r);
+  padding: 1.25rem 1.35rem 1rem;
+  box-shadow: var(--ds-sh);
+  border: 1px solid rgba(0,0,0,.045);
+  position: relative;
+  overflow: hidden;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.dash-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--ds-sh2);
+}
+/* Barra de color superior */
+.dash-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: var(--ds-r) var(--ds-r) 0 0;
+  background: var(--_accent);
+}
+
+/* Acentos */
+.dash-stat-card.accent-blue   { --_accent: var(--ds-blue);   --_ibg: #eff6ff; --_ic: var(--ds-blue); }
+.dash-stat-card.accent-green  { --_accent: var(--ds-green);  --_ibg: #ecfdf5; --_ic: var(--ds-green); }
+.dash-stat-card.accent-amber  { --_accent: var(--ds-amber);  --_ibg: #fffbeb; --_ic: var(--ds-amber); }
+.dash-stat-card.accent-cyan   { --_accent: var(--ds-cyan);   --_ibg: #ecfeff; --_ic: var(--ds-cyan); }
+.dash-stat-card.accent-violet { --_accent: var(--ds-violet); --_ibg: #f5f3ff; --_ic: var(--ds-violet); }
+.dash-stat-card.accent-rose   { --_accent: var(--ds-rose);   --_ibg: #fff1f2; --_ic: var(--ds-rose); }
+.dash-stat-card.accent-teal   { --_accent: var(--ds-teal);   --_ibg: #f0fdfa; --_ic: var(--ds-teal); }
+
+/* Icono */
+.dash-stat-icon {
+  width: 46px; height: 46px;
+  border-radius: 12px;
+  background: var(--_ibg, #eff6ff);
+  color: var(--_ic, var(--ds-blue));
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 1.15rem;
+  margin-bottom: .75rem;
+}
+
+/* Valor */
+.dash-stat-value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -1px;
+  color: var(--ds-text);
+  font-variant-numeric: tabular-nums;
+}
+.dash-stat-value.money {
+  font-size: 1.25rem;
+  font-family: var(--ds-mono);
+  color: var(--_ic, var(--ds-blue));
+  letter-spacing: -.5px;
+}
+
+/* Label */
+.dash-stat-label {
+  font-size: .75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .45px;
+  color: var(--ds-muted);
+  margin-top: .3rem;
+}
+
+/* Sparkline */
+.dash-stat-spark {
+  margin-top: .85rem;
+  height: 44px;
+  position: relative;
+}
+.dash-stat-spark canvas {
+  width: 100% !important;
+  height: 44px !important;
+}
+
+/* ════════════════════════════════════════
+   PANEL CARD (gráficos y tablas)
+   ════════════════════════════════════════ */
+.dash-panel {
+  background: var(--ds-card);
+  border-radius: var(--ds-r);
+  box-shadow: var(--ds-sh);
+  border: 1px solid rgba(0,0,0,.045);
+  overflow: hidden;
+  transition: box-shadow .18s ease;
+}
+.dash-panel:hover { box-shadow: var(--ds-sh2); }
+
+.dash-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 1.4rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+.dash-panel-title {
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--ds-text);
+  display: flex; align-items: center; gap: .5rem;
+}
+.dash-panel-title i { font-size: .9rem; }
+
+/* Botones "Ver todos" */
+.dash-panel-btn {
+  font-size: .78rem;
+  font-weight: 600;
+  padding: .38rem .85rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background .15s;
+}
+.dash-panel-btn.green  { color: var(--ds-green);  background: #ecfdf5; border: 1px solid #a7f3d0; }
+.dash-panel-btn.green:hover { background: #d1fae5; }
+.dash-panel-btn.blue   { color: var(--ds-blue);   background: #eff6ff; border: 1px solid #bfdbfe; }
+.dash-panel-btn.blue:hover  { background: #dbeafe; }
+
+.dash-panel-body { padding: 1.25rem; }
+.dash-panel-body.p-0 { padding: 0; }
+
+/* Gráfico */
+.dash-chart-wrap {
+  position: relative;
+  height: 255px;
+}
+.dash-chart-wrap canvas { width: 100% !important; }
+
+/* ════════════════════════════════════════
+   TABLA
+   ════════════════════════════════════════ */
+.dash-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .855rem;
+}
+.dash-table thead tr { border-bottom: 1px solid #f3f4f6; }
+.dash-table thead th {
+  padding: .8rem 1.2rem;
+  text-align: left;
+  font-size: .68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .55px;
+  color: var(--ds-muted);
+  background: #fafafa;
+  white-space: nowrap;
+}
+.dash-table tbody tr {
+  border-bottom: 1px solid #f9fafb;
+  transition: background .12s;
+}
+.dash-table tbody tr:last-child { border-bottom: none; }
+.dash-table tbody tr:hover { background: #f5f8ff; }
+.dash-table tbody td {
+  padding: .9rem 1.2rem;
+  color: var(--ds-text);
+  vertical-align: middle;
+}
+
+/* Avatar badge */
+.dav-badge {
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  width: 32px; height: 32px;
+  border-radius: 9px;
+  font-size: .7rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  letter-spacing: .3px;
+}
+.dav-badge.dav-blue   { background: #eff6ff; color: #2563eb; }
+.dav-badge.dav-green  { background: #ecfdf5; color: #059669; }
+.dav-badge.dav-violet { background: #f5f3ff; color: #7c3aed; }
+.dav-badge.dav-amber  { background: #fffbeb; color: #d97706; }
+.dav-badge.dav-cyan   { background: #ecfeff; color: #0891b2; }
+.dav-badge.dav-rose   { background: #fff1f2; color: #e11d48; }
+
+/* Monto */
+.dash-amount {
+  font-family: var(--ds-mono);
+  font-weight: 600;
+  font-size: .855rem;
+  color: var(--ds-text);
+}
+
+/* Método */
+.dash-method {
+  display: inline-flex; align-items: center; gap: .35rem;
+  font-size: .8rem; font-weight: 500;
+  color: var(--ds-sub);
+}
+.dash-method i { font-size: .75rem; }
+
+/* Recibo */
+.dash-recibo {
+  font-family: var(--ds-mono);
+  font-size: .72rem;
+  background: #f3f4f6;
+  color: var(--ds-sub);
+  padding: .22rem .5rem;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+}
+
+/* Badge estado */
+.dash-badge-status {
+  display: inline-flex; align-items: center; gap: .28rem;
+  padding: .28rem .65rem;
+  border-radius: 20px;
+  font-size: .71rem; font-weight: 600;
+  letter-spacing: .15px;
+  white-space: nowrap;
+}
+.dash-badge-status::before {
+  content: '';
+  display: inline-block;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.dash-badge-status.success   { background: #ecfdf5; color: #059669; }
+.dash-badge-status.warning   { background: #fffbeb; color: #d97706; }
+.dash-badge-status.danger    { background: #fff1f2; color: #e11d48; }
+.dash-badge-status.info      { background: #ecfeff; color: #0891b2; }
+.dash-badge-status.secondary { background: #f3f4f6; color: #6b7280; }
+.dash-badge-status.primary   { background: #eff6ff; color: #2563eb; }
+
+/* Botón editar */
+.dash-btn-edit {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  border: 1px solid #dbeafe;
+  background: #eff6ff;
+  color: var(--ds-blue);
+  text-decoration: none;
+  font-size: .75rem;
+  transition: all .15s;
+  flex-shrink: 0;
+}
+.dash-btn-edit:hover {
+  background: var(--ds-blue);
+  border-color: var(--ds-blue);
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(59,130,246,.3);
+}
+
+/* Botón suspender / activar */
+.dash-btn-suspend {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  border: 1px solid #fee2e2;
+  background: #fff5f5;
+  color: var(--ds-rose);
+  text-decoration: none;
+  font-size: .75rem;
+  transition: all .15s;
+  flex-shrink: 0;
+}
+.dash-btn-suspend:hover {
+  background: var(--ds-rose);
+  border-color: var(--ds-rose);
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(244,63,94,.28);
+}
+/* Cuando el usuario ya está suspendido el botón muestra "activar" en verde */
+.dash-btn-suspend.is-suspended {
+  border-color: #a7f3d0;
+  background: #ecfdf5;
+  color: var(--ds-green);
+}
+.dash-btn-suspend.is-suspended:hover {
+  background: var(--ds-green);
+  border-color: var(--ds-green);
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(16,185,129,.28);
+}
+
+/* Celda de acciones centrada */
+.dash-actions-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+}
+
+/* Nombre en tabla usuarios */
+.dash-user-name {
+  font-size: .88rem;
+  font-weight: 700;
+  color: var(--ds-text);
+  line-height: 1.2;
+}
+
+/* Email como celda propia */
+.dash-user-email-cell {
+  font-size: .8rem;
+  color: var(--ds-muted);
+  display: block;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* CI chip */
+.dash-user-ci {
+  font-family: var(--ds-mono);
+  font-size: .78rem;
+  color: var(--ds-sub);
+  background: #f3f4f6;
+  padding: .2rem .5rem;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+/* Fecha y hora en tabla de pagos */
+.dash-datetime {
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+}
+.dash-datetime-date,
+.dash-datetime-time {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  font-size: .75rem;
+  white-space: nowrap;
+}
+.dash-datetime-date {
+  font-weight: 600;
+  color: var(--ds-text);
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: .18rem .5rem;
+}
+.dash-datetime-time {
+  font-family: var(--ds-mono);
+  font-weight: 600;
+  color: var(--ds-blue);
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  padding: .18rem .5rem;
+}
+.dash-datetime-date i,
+.dash-datetime-time i {
+  font-size: .65rem;
+  opacity: .7;
+}
