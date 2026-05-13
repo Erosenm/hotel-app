@@ -20,7 +20,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 define('MAIL_HOST',     'smtp.gmail.com');
 define('MAIL_PORT',     587);
 define('MAIL_USER',     'hotelrealplaza7@gmail.com');      // ← TU EMAIL GMAIL
-define('MAIL_PASS',     'szpfnyvqycqldkll');    // ← CONTRASEÑA DE APP (16 chars)
+define('MAIL_PASS',     'hwek seoz bpwo hslm');    // ← CONTRASEÑA DE APP (16 chars)
 define('MAIL_FROM',     'hotelrealplaza7@gmail.com');      // ← mismo que MAIL_USER
 define('MAIL_FROMNAME', 'Hotel Real Plaza');
 // ──────────────────────────────────────────────────────────────────────────────
@@ -66,8 +66,8 @@ class Mailer
             return true;
  
         } catch (Exception $e) {
-            echo '<pre>ERROR: ' . $mail->ErrorInfo . '</pre>';
-            exit();
+            error_log('Mailer Error: ' . $mail->ErrorInfo);
+            return false;
         }
     }
  
@@ -106,6 +106,44 @@ class Mailer
             <p style='font-size:12px; color:#aaa;'>
                 O copia y pega este enlace en tu navegador:<br>
                 <a href='{$link}' style='color:#c8a96e;'>{$link}</a>
+            </p>
+        ");
+ 
+        return self::send($email, $nombre, $subject, $body);
+    }
+ 
+    /**
+     * Email de bienvenida al registrarse
+     */
+    public static function enviarBienvenida(string $email, string $nombre): bool
+    {
+        $subject = '🏨 ¡Bienvenido a Hotel Real Plaza!';
+ 
+        $body = self::template('Bienvenida', "
+            <p>Hola <strong>{$nombre}</strong>, ¡bienvenido a Hotel Real Plaza!</p>
+            <p>Tu cuenta ha sido creada exitosamente. Ya puedes iniciar sesión y disfrutar de todos nuestros servicios.</p>
+            <div style='background:#f9f4ec; border-left:4px solid #c8a96e; padding:16px; border-radius:4px; margin:20px 0;'>
+                <p style='margin:0; color:#555;'><strong>¿Qué puedes hacer ahora?</strong></p>
+                <ul style='color:#555; margin:10px 0 0; padding-left:20px;'>
+                    <li>Ver y reservar habitaciones disponibles</li>
+                    <li>Gestionar tus reservas</li>
+                    <li>Solicitar servicios adicionales</li>
+                </ul>
+            </div>
+            <div style='text-align:center; margin:30px 0;'>
+                <a href='http://localhost/hotel-app/public/login' style='
+                    background-color:#c8a96e;
+                    color:#fff;
+                    padding:14px 32px;
+                    border-radius:6px;
+                    text-decoration:none;
+                    font-size:16px;
+                    font-weight:bold;
+                    display:inline-block;
+                '>Iniciar Sesión</a>
+            </div>
+            <p style='color:#888; font-size:13px;'>
+                Si no creaste esta cuenta, ignora este mensaje.
             </p>
         ");
  
@@ -158,4 +196,3 @@ class Mailer
         </html>";
     }
 }
- 

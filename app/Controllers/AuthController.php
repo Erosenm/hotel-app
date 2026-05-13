@@ -90,18 +90,51 @@ class AuthController
     }
 
     public function logout()
-    {
-        if (session_status() === PHP_SESSION_NONE) session_start();
-
-        // Bitácora antes de destruir sesión
-        if (isset($_SESSION['usuario'])) {
-            require __DIR__ . '/../../config/database.php';
-            $conn->prepare("INSERT INTO bitacora (accion, idUsuario_FK) VALUES (?, ?)")
-                 ->execute(["Cerró sesión", $_SESSION['usuario']['id']]);
-        }
-
-        session_destroy();
-        header("Location: " . url('login'));
-        exit();
+{
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
     }
+
+    // Guardar bitácora antes de cerrar sesión
+    if (isset($_SESSION['usuario'])) {
+
+        require __DIR__ . '/../../config/database.php';
+
+        $stmt = $conn->prepare("
+            INSERT INTO bitacora (accion, idUsuario_FK)
+            VALUES (?, ?)
+        ");
+
+        $stmt->execute([
+            "Cerró sesión",
+            $_SESSION['usuario']['id']
+        ]);
+    }
+
+    // Vaciar variables de sesión
+    $_SESSION = [];
+
+    // Eliminar cookie de sesión
+    if (ini_get("session.use_cookies")) {
+
+        $params = session_get_cookie_params();
+
+        setcookie(
+            session_name(),
+            '',
+            time() - 42000,
+            $params["path"],
+            $params["domain"],
+            $params["secure"],
+            $params["httponly"]
+        );
+    }
+
+    // Destruir sesión
+    session_destroy();
+
+    // Redireccionar
+    header("Location: " . url('login'));
+    exit();
+}
 }
