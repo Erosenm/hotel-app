@@ -2,7 +2,17 @@
 
 <link rel="stylesheet" href="<?= asset('css/styleNavbar.css') ?>">
 
-<header id="main-header">
+<?php
+$current = $_SERVER['REQUEST_URI'];
+
+$isClientPage =
+    str_contains($current, 'cliente/dashboard') ||
+    str_contains($current, 'cliente/reservas') ||
+    str_contains($current, 'cliente/perfil') ||
+    str_contains($current, 'habitaciones');
+?>
+
+<header id="main-header" class="<?= $isClientPage ? 'scrolled' : '' ?>">
     <div class="logo">REAL PLAZA HOTEL</div>
 
     <nav>
@@ -20,24 +30,31 @@
                 <span class="user-role">(<?= htmlspecialchars($u['rol']) ?>)</span>
                 <span id="dropArrow">▾</span>
             </button>
+
             <div class="nav-dropdown" id="navDrop">
+
                 <?php if (in_array($u['rol'], ['Administrador', 'Recepcionista'])): ?>
                     <a href="<?= url('adminpanel') ?>" class="nav-drop-item admin">
                         🛠 Panel Admin
                     </a>
                 <?php endif; ?>
+
                 <a href="<?= url('cliente/dashboard') ?>" class="nav-drop-item">
                     🏠 Mi Panel
                 </a>
+
                 <a href="<?= url('cliente/reservas') ?>" class="nav-drop-item">
                     📅 Mis Reservas
                 </a>
+
                 <a href="<?= url('cliente/perfil') ?>" class="nav-drop-item">
                     👤 Mi Perfil
                 </a>
+
                 <a href="<?= url('logout') ?>" class="nav-drop-item logout">
                     🚪 Cerrar sesión
                 </a>
+
             </div>
         </div>
     <?php else: ?>
@@ -47,20 +64,31 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const btnUser  = document.getElementById('btnUser');
-    const navDrop  = document.getElementById('navDrop');
-    const dropArrow= document.getElementById('dropArrow');
+
+    const btnUser   = document.getElementById('btnUser');
+    const navDrop   = document.getElementById('navDrop');
+    const dropArrow = document.getElementById('dropArrow');
+
     if (!btnUser || !navDrop) return;
+
     btnUser.addEventListener('click', function (e) {
         e.stopPropagation();
+
         const isOpen = navDrop.classList.contains('nav-drop-open');
+
         navDrop.classList.toggle('nav-drop-open', !isOpen);
+
         dropArrow.textContent = isOpen ? '▾' : '▴';
     });
+
     document.addEventListener('click', function () {
         navDrop.classList.remove('nav-drop-open');
         dropArrow.textContent = '▾';
     });
-    navDrop.addEventListener('click', function (e) { e.stopPropagation(); });
+
+    navDrop.addEventListener('click', function (e) {
+        e.stopPropagation();
+    });
+
 });
 </script>
