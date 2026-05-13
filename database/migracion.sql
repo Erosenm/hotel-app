@@ -15,6 +15,7 @@ CREATE TABLE usuario (
     email VARCHAR(100) NOT NULL UNIQUE,
     telefono VARCHAR(20),
     password VARCHAR(255) NOT NULL,
+    google_id VARCHAR(100) UNIQUE DEFAULT NULL,
     estado ENUM('Activo','Inactivo','Suspendido') DEFAULT 'Activo',
     fechaRegistro DATETIME DEFAULT CURRENT_TIMESTAMP
 );
@@ -215,6 +216,21 @@ CREATE TABLE bitacora (
 );
 
 -- =========================
+-- RECUPERACIÓN DE CONTRASEÑA
+-- =========================
+
+CREATE TABLE password_reset (
+    idReset INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(100) NOT NULL,
+    token VARCHAR(64) NOT NULL UNIQUE,
+    expira DATETIME NOT NULL,
+    usado TINYINT(1) DEFAULT 0,
+    fechaCreacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_token (token),
+    INDEX idx_email (email)
+);
+
+-- =========================
 -- IA
 -- =========================
 
@@ -259,11 +275,6 @@ INSERT IGNORE INTO rol (nombre) VALUES
 ('Recepcionista'),
 ('Cliente');
 
-INSERT IGNORE INTO metodo_pago (nombre) VALUES
-('Efectivo'),
-('Tarjeta'),
-('QR');
-
 INSERT IGNORE INTO estado_pago (nombre) VALUES
 ('Pendiente'),
 ('Pagado'),
@@ -302,119 +313,43 @@ INSERT IGNORE INTO categoria_producto (nombre, descripcion) VALUES
 
 INSERT IGNORE INTO producto (nombre, descripcion, precio, stock, stockMinimo, unidad, idCategoria_FK) VALUES
 -- Bebidas
-('Agua mineral 500ml',    'Agua mineral natural',                  8.00,  100, 20, 'botella',  1),
-('Jugo natural',          'Jugo de fruta fresca del día',         15.00,   50, 10, 'vaso',     1),
-('Refresco lata',         'Coca-Cola, Sprite o Fanta',            12.00,   80, 15, 'lata',     1),
-('Cerveza nacional',      'Cerveza fría 350ml',                   20.00,   60, 10, 'botella',  1),
-('Vino tinto copa',       'Copa de vino tinto de la casa',        35.00,   30,  5, 'copa',     1),
+('Agua mineral 500ml',    'Agua mineral natural',                   8.00, 100, 20, 'botella', 1),
+('Jugo natural',          'Jugo de fruta fresca del día',          15.00,  50, 10, 'vaso',    1),
+('Refresco lata',         'Coca-Cola, Sprite o Fanta',             12.00,  80, 15, 'lata',    1),
+('Cerveza nacional',      'Cerveza fría 350ml',                    20.00,  60, 10, 'botella', 1),
+('Vino tinto copa',       'Copa de vino tinto de la casa',         35.00,  30,  5, 'copa',    1),
 -- Alimentación
-('Desayuno continental',  'Café, jugo, tostadas y fruta',         45.00,    0,  0, 'porción',  2),
-('Sandwich club',         'Sandwich de pollo con papas fritas',   55.00,    0,  0, 'porción',  2),
-('Tabla de quesos',       'Selección de quesos y embutidos',      70.00,    0,  0, 'porción',  2),
-('Snack mix',             'Mix de maní, galletas y frutos secos', 25.00,   40, 10, 'bolsa',    2),
+('Desayuno continental',  'Café, jugo, tostadas y fruta',          45.00,   0,  0, 'porción', 2),
+('Sandwich club',         'Sandwich de pollo con papas fritas',    55.00,   0,  0, 'porción', 2),
+('Tabla de quesos',       'Selección de quesos y embutidos',       70.00,   0,  0, 'porción', 2),
+('Snack mix',             'Mix de maní, galletas y frutos secos',  25.00,  40, 10, 'bolsa',   2),
 -- Spa & Relax
-('Masaje relajante 60min','Masaje corporal completo',            200.00,    0,  0, 'sesión',   3),
-('Masaje de pies 30min',  'Reflexología y masaje podal',          80.00,    0,  0, 'sesión',   3),
-('Aromaterapia',          'Sesión de aromaterapia 45 min',       150.00,    0,  0, 'sesión',   3),
+('Masaje relajante 60min','Masaje corporal completo',             200.00,   0,  0, 'sesión',  3),
+('Masaje de pies 30min',  'Reflexología y masaje podal',           80.00,   0,  0, 'sesión',  3),
+('Aromaterapia',          'Sesión de aromaterapia 45 min',        150.00,   0,  0, 'sesión',  3),
 -- Lavandería
-('Lavado ropa casual',    'Lavado y secado por prenda',           15.00,    0,  0, 'prenda',   4),
-('Planchado',             'Planchado por prenda',                 10.00,    0,  0, 'prenda',   4),
-('Lavado traje/vestido',  'Lavado en seco traje formal',          50.00,    0,  0, 'prenda',   4),
+('Lavado ropa casual',    'Lavado y secado por prenda',            15.00,   0,  0, 'prenda',  4),
+('Planchado',             'Planchado por prenda',                  10.00,   0,  0, 'prenda',  4),
+('Lavado traje/vestido',  'Lavado en seco traje formal',           50.00,   0,  0, 'prenda',  4),
 -- Transporte
-('Traslado aeropuerto',   'Traslado ida o vuelta al aeropuerto', 120.00,    0,  0, 'viaje',    5);
-
-
-
+('Traslado aeropuerto',   'Traslado ida o vuelta al aeropuerto',  120.00,   0,  0, 'viaje',   5);
 
 -- =========================
--- INDEX
+-- INDICES
 -- =========================
- CREATE INDEX idx_fecha_inicio ON reserva(fechaInicio);
-
-
-
-
 
 -- =========================
 -- PARTICIONES
 -- =========================
-CREATE TABLE reserva_particionada (
-    idReserva INT,
-    fechaInicio DATE,
-    fechaFin DATE,
-    cantidadPersonas INT,
-    precioTotal DECIMAL(10,2),
-    idEstadoReserva_FK INT,
-    idUsuario_FK INT,
-    idHabitacion_FK INT,
-    idEmpleado_FK INT
-)
-PARTITION BY RANGE (YEAR(fechaInicio)) (
-    PARTITION p2024 VALUES LESS THAN (2025),
-    PARTITION p2025 VALUES LESS THAN (2026),
-    PARTITION p2026 VALUES LESS THAN (2027)
-);
+
 -- =========================
 -- FUNCIONES
 -- =========================
-DELIMITER $
 
-CREATE FUNCTION total_pagado(reserva_id INT)
-RETURNS DECIMAL(10,2)
-DETERMINISTIC
-BEGIN
-    DECLARE total DECIMAL(10,2);
-
-    SELECT SUM(monto)
-    INTO total
-    FROM pago
-    WHERE idReserva_FK = reserva_id;
-
-    RETURN IFNULL(total, 0);
-END$
-
-DELIMITER ;
 -- =========================
--- PROCEDIMINENTOS 
+-- PROCEDIMIENTOS
 -- =========================
-DELIMITER $
 
-CREATE PROCEDURE crear_reserva(
-    IN p_usuario INT,
-    IN p_habitacion INT,
-    IN p_empleado INT
-)
-BEGIN
-    INSERT INTO reserva (
-        fechaInicio, fechaFin, cantidadPersonas,
-        precioTotal, idEstadoReserva_FK,
-        idUsuario_FK, idHabitacion_FK, idEmpleado_FK
-    )
-    VALUES (
-        CURDATE(),
-        DATE_ADD(CURDATE(), INTERVAL 1 DAY),
-        2,
-        150,
-        1,
-        p_usuario,
-        p_habitacion,
-        p_empleado
-    );
-END$
-
-DELIMITER ;
 -- =========================
 -- TRIGGERS
 -- =========================
-DELIMITER $
-
-CREATE TRIGGER trg_pago_reserva
-AFTER INSERT ON pago
-FOR EACH ROW
-BEGIN
-    UPDATE reserva
-    SET idEstadoReserva_FK = 2
-    WHERE idReserva = NEW.idReserva_FK;
-END$
-
-DELIMITER ;

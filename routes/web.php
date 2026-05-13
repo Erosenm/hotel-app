@@ -4,6 +4,16 @@ return [
     ['method' => 'GET',  'path' => '/login',               'target' => 'AuthController@login'],
     ['method' => 'POST', 'path' => '/login',               'target' => 'AuthController@authenticate'],
     ['method' => 'GET',  'path' => '/logout',              'target' => 'AuthController@logout'],
+
+    // Google OAuth
+    ['method' => 'GET',  'path' => '/auth/google',          'target' => 'GoogleAuthController@redirect'],
+    ['method' => 'GET',  'path' => '/auth/google/callback', 'target' => 'GoogleAuthController@callback'],
+
+    // Recuperación de contraseña
+    ['method' => 'GET',  'path' => '/password/forgot',    'target' => 'PasswordController@forgot'],
+    ['method' => 'POST', 'path' => '/password/send-link', 'target' => 'PasswordController@sendLink'],
+    ['method' => 'GET',  'path' => '/password/reset',     'target' => 'PasswordController@reset'],
+    ['method' => 'POST', 'path' => '/password/update',    'target' => 'PasswordController@update'],
     ['method' => 'GET',  'path' => '/register',            'target' => 'RegisterController@register'],
     ['method' => 'POST', 'path' => '/register',            'target' => 'RegisterController@store'],
  
