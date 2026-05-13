@@ -31,12 +31,6 @@ IF ERRORLEVEL 1 (
 
 echo Estructura creada correctamente
 
-REM Insertar estados de habitacion
-%MYSQL% -h 127.0.0.1 -u %USER% %DB% -e "INSERT IGNORE INTO estado_habitacion (nombre) VALUES ('Disponible'),('Ocupada'),('Mantenimiento');"
-
-REM Insertar estados de reserva
-%MYSQL% -h 127.0.0.1 -u %USER% %DB% -e "INSERT IGNORE INTO estado_reserva (nombre) VALUES ('Pendiente'),('Confirmada'),('Cancelada');"
-
 REM Insertar metodos de pago
 %MYSQL% -h 127.0.0.1 -u %USER% %DB% -e "INSERT IGNORE INTO metodo_pago (nombre) VALUES ('Efectivo'),('Tarjeta'),('QR');"
 
