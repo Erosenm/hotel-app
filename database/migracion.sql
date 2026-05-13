@@ -338,6 +338,30 @@ INSERT IGNORE INTO producto (nombre, descripcion, precio, stock, stockMinimo, un
 -- INDICES
 -- =========================
 
+-- RESERVAS
+CREATE INDEX idx_reserva_fecha ON reserva(fechaInicio, fechaFin);
+CREATE INDEX idx_reserva_usuario ON reserva(idUsuario_FK);
+CREATE INDEX idx_reserva_habitacion ON reserva(idHabitacion_FK);
+
+-- PAGOS
+CREATE INDEX idx_pago_fecha ON pago(fechaPago);
+CREATE INDEX idx_pago_reserva ON pago(idReserva_FK);
+
+-- PRODUCTOS
+CREATE INDEX idx_producto_categoria ON producto(idCategoria_FK);
+CREATE INDEX idx_producto_estado ON producto(estado);
+
+-- BITACORA
+CREATE INDEX idx_bitacora_fecha ON bitacora(fechaHora);
+CREATE INDEX idx_bitacora_usuario ON bitacora(idUsuario_FK);
+
+-- IA
+CREATE INDEX idx_ia_log_fecha ON ia_log(fecha);
+CREATE INDEX idx_ia_mensaje_usuario ON ia_mensaje(idUsuario_FK);
+
+-- PASSWORD RESET
+CREATE INDEX idx_reset_expira ON password_reset(expira);
+
 -- =========================
 -- PARTICIONES
 -- =========================
@@ -353,3 +377,117 @@ INSERT IGNORE INTO producto (nombre, descripcion, precio, stock, stockMinimo, un
 -- =========================
 -- TRIGGERS
 -- =========================
+
+--Descontar stock automaticamente
+DELIMITER $$
+
+CREATE TRIGGER trg_descontar_stock
+AFTER INSERT ON reserva_producto
+FOR EACH ROW
+BEGIN
+    UPDATE producto
+    SET stock = stock - NEW.cantidad
+    WHERE idProducto = NEW.idProducto;
+END$$
+
+DELIMITER ;
+
+--Evitar stock negativo
+DELIMITER $$
+
+CREATE TRIGGER trg_validar_stock
+BEFORE INSERT ON reserva_producto
+FOR EACH ROW
+BEGIN
+    DECLARE stock_actual INT;
+
+    SELECT stock
+    INTO stock_actual
+    FROM producto
+    WHERE idProducto = NEW.idProducto;
+
+    IF stock_actual < NEW.cantidad THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Stock insuficiente';
+    END IF;
+END$$
+
+DELIMITER ;
+
+--Cambio de estado de habitaciones al crear una reserva
+DELIMITER $$
+
+CREATE TRIGGER trg_ocupar_habitacion
+AFTER INSERT ON reserva
+FOR EACH ROW
+BEGIN
+    UPDATE habitacion
+    SET idEstadoHabitacion_FK = 2
+    WHERE idHabitacion = NEW.idHabitacion_FK;
+END$$
+
+DELIMITER ;
+
+--Liberar habitacion cuando termine la reserva
+DELIMITER $$
+
+CREATE TRIGGER trg_liberar_habitacion
+AFTER UPDATE ON reserva
+FOR EACH ROW
+BEGIN
+    IF NEW.idEstadoReserva_FK = 4 THEN
+        UPDATE habitacion
+        SET idEstadoHabitacion_FK = 1
+        WHERE idHabitacion = NEW.idHabitacion_FK;
+    END IF;
+END$$
+
+DELIMITER ;
+
+--Registrar pago automaticamente en bitacora
+DELIMITER $$
+
+CREATE TRIGGER trg_bitacora_pago
+AFTER INSERT ON pago
+FOR EACH ROW
+BEGIN
+    INSERT INTO bitacora(
+        accion,
+        idUsuario_FK
+    )
+    VALUES(
+        CONCAT('Nuevo pago registrado ID: ', NEW.idPago),
+        NULL
+    );
+END$$
+
+DELIMITER ;
+
+-- Validacion de reserva
+DELIMITER $$
+
+CREATE TRIGGER trg_validar_reserva
+BEFORE INSERT ON reserva
+FOR EACH ROW
+BEGIN
+    DECLARE existe INT;
+
+    SELECT COUNT(*)
+    INTO existe
+    FROM reserva
+    WHERE idHabitacion_FK = NEW.idHabitacion_FK
+    AND (
+        NEW.fechaInicio BETWEEN fechaInicio AND fechaFin
+        OR
+        NEW.fechaFin BETWEEN fechaInicio AND fechaFin
+        OR
+        fechaInicio BETWEEN NEW.fechaInicio AND NEW.fechaFin
+    );
+
+    IF existe > 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'La habitación ya está reservada';
+    END IF;
+END$$
+
+DELIMITER ; 
