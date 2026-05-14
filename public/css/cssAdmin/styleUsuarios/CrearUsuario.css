@@ -1,0 +1,385 @@
+/* ============================================================
+   CrearUsuario.css
+   Ruta: public/css/cssAdmin/styleUsuarios/CrearUsuario.css
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --cu-font:    'Plus Jakarta Sans', sans-serif;
+  --cu-accent:  #3c50e0;
+  --cu-text:    #1e293b;
+  --cu-sub:     #64748b;
+  --cu-muted:   #94a3b8;
+  --cu-border:  #e2e8f0;
+  --cu-bg:      #f8fafc;
+  --cu-card:    #ffffff;
+  --cu-r:       14px;
+  --cu-r-sm:    9px;
+  --cu-sh:      0 1px 4px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+}
+
+/* ── Header ── */
+.cu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+}
+.cu-title {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  font-family: var(--cu-font);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--cu-text);
+  letter-spacing: -.4px;
+}
+.cu-title i { color: var(--cu-accent); font-size: 1.2rem; }
+
+.cu-btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .5rem 1.1rem;
+  border-radius: var(--cu-r-sm);
+  border: 1px solid var(--cu-border);
+  background: var(--cu-card);
+  color: var(--cu-sub);
+  font-family: var(--cu-font);
+  font-size: .855rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all .15s;
+}
+.cu-btn-back:hover {
+  border-color: var(--cu-accent);
+  color: var(--cu-accent);
+  background: #eef2ff;
+}
+.cu-btn-back i { font-size: .8rem; }
+
+/* ══ Layout dos columnas ══ */
+.cu-layout {
+  display: grid;
+  grid-template-columns: 230px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+@media (max-width: 860px) {
+  .cu-layout { grid-template-columns: 1fr; }
+}
+
+/* ── Panel lateral ayuda ── */
+.cu-sidebar-help {
+  background: var(--cu-card);
+  border: 1px solid var(--cu-border);
+  border-radius: var(--cu-r);
+  box-shadow: var(--cu-sh);
+  padding: 1.75rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: .55rem;
+  position: sticky;
+  top: 80px;
+}
+
+.cu-help-icon {
+  width: 62px; height: 62px;
+  border-radius: 16px;
+  background: #eef2ff;
+  color: var(--cu-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: .3rem;
+  box-shadow: 0 4px 14px rgba(60,80,224,.15);
+}
+.cu-help-title {
+  font-family: var(--cu-font);
+  font-size: .95rem;
+  font-weight: 800;
+  color: var(--cu-text);
+}
+.cu-help-desc {
+  font-size: .75rem;
+  color: var(--cu-muted);
+  line-height: 1.5;
+}
+.cu-help-divider {
+  width: 100%;
+  border-top: 1px solid var(--cu-border);
+  margin: .4rem 0;
+}
+.cu-help-subtitle {
+  font-size: .7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: var(--cu-muted);
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  align-self: flex-start;
+}
+.cu-help-subtitle i { font-size: .65rem; color: var(--cu-accent); }
+
+/* Pasos */
+.cu-help-steps {
+  display: flex;
+  flex-direction: column;
+  gap: .65rem;
+  width: 100%;
+  text-align: left;
+}
+.cu-step {
+  display: flex;
+  align-items: flex-start;
+  gap: .65rem;
+}
+.cu-step-num {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--cu-accent);
+  color: #fff;
+  font-size: .7rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: .1rem;
+}
+.cu-step-text {
+  font-size: .78rem;
+  color: var(--cu-sub);
+  line-height: 1.45;
+  font-family: var(--cu-font);
+}
+.cu-step-text strong {
+  display: block;
+  color: var(--cu-text);
+  font-weight: 700;
+  margin-bottom: .1rem;
+}
+
+/* Pills de roles */
+.cu-role-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .3rem .75rem;
+  border-radius: 20px;
+  font-size: .72rem;
+  font-weight: 600;
+  font-family: var(--cu-font);
+  align-self: flex-start;
+}
+.cu-role-pill i { font-size: .65rem; }
+.cu-role-pill.admin  { background: #eef2ff; color: var(--cu-accent); border: 1px solid #c7d2fe; }
+.cu-role-pill.recep  { background: #ecfdf5; color: #059669;          border: 1px solid #a7f3d0; }
+.cu-role-pill.client { background: #f8fafc; color: #64748b;          border: 1px solid #e2e8f0; }
+
+/* Nota final */
+.cu-help-note {
+  display: flex;
+  align-items: flex-start;
+  gap: .4rem;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  padding: .6rem .75rem;
+  font-size: .71rem;
+  color: #92400e;
+  font-family: var(--cu-font);
+  text-align: left;
+  line-height: 1.4;
+  margin-top: .15rem;
+}
+.cu-help-note i { flex-shrink: 0; margin-top: .1rem; color: #d97706; }
+
+/* ── Card formulario ── */
+.cu-card {
+  background: var(--cu-card);
+  border: 1px solid var(--cu-border);
+  border-radius: var(--cu-r);
+  box-shadow: var(--cu-sh);
+  padding: 2rem 2.25rem;
+}
+@media (max-width: 560px) { .cu-card { padding: 1.25rem; } }
+
+/* ── Alerta ── */
+.cu-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: .65rem;
+  padding: .9rem 1.1rem;
+  border-radius: var(--cu-r-sm);
+  font-family: var(--cu-font);
+  font-size: .875rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+.cu-alert.error { background: #fff1f2; color: #be123c; border: 1px solid #fecdd3; }
+.cu-alert i { margin-top: .1rem; flex-shrink: 0; }
+
+/* ── Section label ── */
+.cu-section-label {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-family: var(--cu-font);
+  font-size: .7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .7px;
+  color: var(--cu-muted);
+  margin-bottom: 1rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--cu-border);
+}
+.cu-section-label i { color: var(--cu-accent); font-size: .75rem; }
+
+/* ── Layout filas ── */
+.cu-form   { display: flex; flex-direction: column; gap: 1.1rem; }
+.cu-row-1  { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+.cu-row-2  { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.cu-row-3  { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+@media (max-width: 640px) {
+  .cu-row-2, .cu-row-3 { grid-template-columns: 1fr; }
+}
+
+/* ── Campo ── */
+.cu-field { display: flex; flex-direction: column; gap: .4rem; }
+.cu-label {
+  font-family: var(--cu-font);
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--cu-text);
+}
+.cu-req { color: #e11d48; }
+
+/* ── Input ── */
+.cu-input {
+  width: 100%;
+  padding: .62rem .9rem;
+  border: 1px solid var(--cu-border);
+  border-radius: var(--cu-r-sm);
+  font-family: var(--cu-font);
+  font-size: .875rem;
+  color: var(--cu-text);
+  background: var(--cu-bg);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s, background .15s;
+  appearance: none;
+}
+.cu-input::placeholder { color: var(--cu-muted); }
+.cu-input:focus {
+  border-color: var(--cu-accent);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(60,80,224,.1);
+}
+.cu-select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2394a3b8'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right .85rem center;
+  padding-right: 2.2rem;
+}
+.cu-input-icon { position: relative; }
+.cu-input-icon > i {
+  position: absolute;
+  left: .85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--cu-muted);
+  font-size: .78rem;
+  pointer-events: none;
+}
+.cu-input.has-icon { padding-left: 2.25rem; }
+
+/* ── Fuerza contraseña ── */
+.cu-strength-wrap { margin-top: .5rem; }
+.cu-strength-track {
+  height: 5px;
+  border-radius: 10px;
+  background: #e2e8f0;
+  overflow: hidden;
+}
+.cu-strength-bar {
+  height: 100%;
+  width: 0%;
+  border-radius: 10px;
+  transition: width .35s ease, background .35s ease;
+}
+.cu-strength-text {
+  display: block;
+  font-family: var(--cu-font);
+  font-size: .72rem;
+  font-weight: 700;
+  margin-top: .3rem;
+  min-height: 1rem;
+}
+
+/* ── Divider interno ── */
+.cu-divider {
+  border: none;
+  border-top: 1px solid var(--cu-border);
+  margin: .25rem 0 1rem;
+}
+
+/* ── Submit ── */
+.cu-submit-row {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--cu-border);
+  margin-top: .25rem;
+}
+.cu-btn-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  padding: .65rem 1.6rem;
+  background: var(--cu-accent);
+  color: #fff;
+  font-family: var(--cu-font);
+  font-size: .9rem;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--cu-r-sm);
+  cursor: pointer;
+  transition: background .15s, transform .12s, box-shadow .15s;
+  box-shadow: 0 4px 14px rgba(60,80,224,.28);
+}
+.cu-btn-submit:hover {
+  background: #2d3fc7;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(60,80,224,.35);
+}
+.cu-btn-submit i { font-size: .85rem; }
+
+.cu-btn-cancel {
+  display: inline-flex;
+  align-items: center;
+  padding: .65rem 1.2rem;
+  border-radius: var(--cu-r-sm);
+  border: 1px solid var(--cu-border);
+  background: var(--cu-card);
+  color: var(--cu-sub);
+  font-family: var(--cu-font);
+  font-size: .875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all .15s;
+}
+.cu-btn-cancel:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: var(--cu-text);
+}

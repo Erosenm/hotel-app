@@ -1,102 +1,115 @@
-<!-- views/admin/habitaciones/index.php -->
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h4 class="fw-bold mb-0"><i class="fas fa-bed me-2 text-primary"></i>Gestión de Habitaciones</h4>
+<link rel="stylesheet" href="<?= asset('css/cssAdmin/stylehabitaciones/index.css') ?>">
 
+<!-- ══ Header ══ -->
+<div class="hi-header">
+    <div class="hi-title">
+        <i class="fas fa-bed"></i>
+        <span>Gestión de Habitaciones</span>
+    </div>
     <?php if ($_SESSION['usuario']['rol'] === 'Administrador'): ?>
-    <a href="<?= url('admin/habitaciones/crear') ?>" class="btn btn-primary">
-        <i class="fas fa-plus me-2"></i>Nueva Habitación
+    <a href="<?= url('admin/habitaciones/crear') ?>" class="hi-btn-primary">
+        <i class="fas fa-plus"></i> Nueva Habitación
     </a>
-    <?php endif; ?>    
-
+    <?php endif; ?>
 </div>
 
-<div class="row g-3 mb-4">
-    <?php
-    $estados = ['Disponible' => 'success', 'Ocupada' => 'danger', 'Reservada' => 'warning', 'Mantenimiento' => 'secondary', 'Limpieza' => 'info'];
-    foreach ($estados as $est => $color):
-        $count = count(array_filter($habitaciones, fn($h) => $h['estado'] === $est));
-    ?>
-    <div class="col">
-        <div class="card border-0 shadow-sm text-center py-3">
-            <div class="fs-4 fw-bold text-<?= $color ?>"><?= $count ?></div>
-            <div class="text-muted small"><?= $est ?></div>
-        </div>
+<!-- ══ Cards de estado ══ -->
+<div class="hi-stats-row">
+<?php
+$estadosCfg = [
+    'Disponible'    => ['color' => 'green',  'icon' => 'fa-check-circle',    'emoji' => ''],
+    'Ocupada'       => ['color' => 'rose',   'icon' => 'fa-door-closed',     'emoji' => ''],
+    'Reservada'     => ['color' => 'amber',  'icon' => 'fa-calendar-check',  'emoji' => ''],
+    'Mantenimiento' => ['color' => 'violet', 'icon' => 'fa-wrench',          'emoji' => ''],
+    'Limpieza'      => ['color' => 'cyan',   'icon' => 'fa-broom',           'emoji' => ''],
+];
+foreach ($estadosCfg as $est => $cfg):
+    $count = count(array_filter($habitaciones, fn($h) => $h['estado'] === $est));
+    $total = count($habitaciones);
+    $pct   = $total > 0 ? round(($count / $total) * 100) : 0;
+?>
+<div class="hi-stat-card <?= $cfg['color'] ?>">
+    <div class="hi-stat-top">
+        <div class="hi-stat-icon"><i class="fas <?= $cfg['icon'] ?>"></i></div>
+        <span class="hi-stat-emoji"><?= $cfg['emoji'] ?></span>
     </div>
-    <?php endforeach; ?>
+    <div class="hi-stat-value"><?= $count ?></div>
+    <div class="hi-stat-label"><?= $est ?></div>
+    <div class="hi-stat-bar-track">
+        <div class="hi-stat-bar-fill" style="width:<?= $pct ?>%"></div>
+    </div>
+    <div class="hi-stat-pct"><?= $pct ?>% del total</div>
+</div>
+<?php endforeach; ?>
 </div>
 
-<div class="card border-0 shadow-sm">
-    <div class="card-body p-0">
-        <table class="table table-hover mb-0">
-            <thead class="table-light">
-                <tr>
-                    <th>Imagen</th>
-                    <th>N° Hab.</th>
-                    <th>Piso</th>
-                    <th>Tipo</th>
-                    <th>Precio/noche</th>
-                    <th>Estado</th>
-                    <th class="text-end">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-            <?php if (empty($habitaciones)): ?>
-                <tr>
-                    <td colspan="7" class="text-center text-muted py-4">
-                        <i class="fas fa-bed fa-2x mb-2 d-block"></i>
-                        No hay habitaciones registradas
-                    </td>
-                </tr>
-            <?php else: ?>
-                <?php foreach ($habitaciones as $h): ?>
-                <?php
-                    $colores = [
-                        'Disponible'   => 'success',
-                        'Ocupada'      => 'danger',
-                        'Reservada'    => 'warning',
-                        'Mantenimiento'=> 'secondary',
-                        'Limpieza'     => 'info'
-                    ];
-                    $color = $colores[$h['estado']] ?? 'secondary';
-                ?>
-                <tr>
-                    <td>
-                        <?php if (!empty($h['imagen_principal'])): ?>
-                            <img src="<?= asset($h['imagen_principal']) ?>"
-                                 alt="Habitación <?= htmlspecialchars($h['numero']) ?>"
-                                 style="width:60px;height:48px;object-fit:cover;border-radius:6px;border:1px solid #dee2e6;">
-                        <?php else: ?>
-                            <div style="width:60px;height:48px;border-radius:6px;background:#f1f3f5;display:flex;align-items:center;justify-content:center;border:1px dashed #dee2e6;">
-                                <i class="fas fa-image text-muted" style="font-size:18px;"></i>
-                            </div>
-                        <?php endif; ?>
-                    </td>
-                    <td><strong><?= htmlspecialchars($h['numero']) ?></strong></td>
-                    <td>Piso <?= htmlspecialchars($h['piso']) ?></td>
-                    <td>
-                        <span class="badge bg-primary bg-opacity-10 text-primary">
-                            <?= htmlspecialchars($h['tipo'] ?? 'Sin tipo') ?>
-                        </span>
-                    </td>
-                    <td>Bs. <?= number_format($h['precio'] ?? 0, 2) ?></td>
-                    <td>
-                        <span class="badge bg-<?= $color ?>">
-                            <?= $h['estado'] ?>
-                        </span>
-                    </td>
-                    <td class="text-end">
+<!-- ══ Tabla ══ -->
+<div class="hi-table-card">
+    <table class="hi-table">
+        <thead>
+            <tr>
+                <th>Imagen</th>
+                <th>N° Hab.</th>
+                <th>Piso</th>
+                <th>Tipo</th>
+                <th>Precio/noche</th>
+                <th>Estado</th>
+                <th style="text-align:center">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php if (empty($habitaciones)): ?>
+            <tr>
+                <td colspan="7">
+                    <div class="hi-empty">
+                        <i class="fas fa-bed"></i>
+                        <p>No hay habitaciones registradas</p>
+                    </div>
+                </td>
+            </tr>
+        <?php else: ?>
+            <?php foreach ($habitaciones as $h):
+                $colores = [
+                    'Disponible'    => 'success',
+                    'Ocupada'       => 'danger',
+                    'Reservada'     => 'warning',
+                    'Mantenimiento' => 'secondary',
+                    'Limpieza'      => 'info',
+                ];
+                $color = $colores[$h['estado']] ?? 'secondary';
+            ?>
+            <tr>
+                <td>
+                    <?php if (!empty($h['imagen_principal'])): ?>
+                        <img src="<?= asset($h['imagen_principal']) ?>"
+                             alt="Hab. <?= htmlspecialchars($h['numero']) ?>"
+                             class="hi-room-img">
+                    <?php else: ?>
+                        <div class="hi-room-img-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                    <?php endif; ?>
+                </td>
+                <td><span class="hi-room-num"><?= htmlspecialchars($h['numero']) ?></span></td>
+                <td><span class="hi-piso">Piso <?= htmlspecialchars($h['piso']) ?></span></td>
+                <td><span class="hi-tipo-badge"><?= htmlspecialchars($h['tipo'] ?? 'Sin tipo') ?></span></td>
+                <td><span class="hi-precio">Bs. <?= number_format($h['precio'] ?? 0, 2) ?></span></td>
+                <td><span class="hi-estado-badge <?= $color ?>"><?= $h['estado'] ?></span></td>
+                <td>
+                    <div class="hi-actions">
                         <a href="<?= url('admin/habitaciones/editar?id=' . $h['idHabitacion']) ?>"
-                           class="btn btn-sm btn-outline-primary" title="Editar">
-                            <i class="fas fa-edit"></i>
+                           class="hi-action-btn edit" title="Editar habitación">
+                            <i class="fas fa-pen"></i>
                         </a>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            <?php endif; ?>
-            </tbody>
-        </table>
-    </div>
-    <div class="card-footer bg-white border-0">
-        <small class="text-muted">Total: <?= count($habitaciones) ?> habitaciones</small>
+                    </div>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        <?php endif; ?>
+        </tbody>
+    </table>
+    <div class="hi-table-footer">
+        <i class="fas fa-layer-group"></i>
+        Total: <strong><?= count($habitaciones) ?></strong> habitaciones registradas
     </div>
 </div>

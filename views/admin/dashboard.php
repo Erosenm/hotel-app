@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="<?= url('public/css/cssAdmin.css/styleDashboard.css') ?>">
+<link rel="stylesheet" href="<?= url('public/css/cssAdmin/styleDashboard.css') ?>">
 
 <!-- ══ FILA 1: Stats principales ══ -->
 <div class="row g-3 mb-3">
