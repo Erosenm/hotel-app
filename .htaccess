@@ -4,6 +4,12 @@ RewriteEngine On
 # Base correcta
 RewriteBase /hotel-app/
 
+# Servir archivos estáticos de public/ directamente
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond public/%{REQUEST_URI} -f
+RewriteRule ^(.*)$ public/$1 [L]
+
 # Si existe archivo o carpeta, no redirigir
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d

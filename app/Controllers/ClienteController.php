@@ -239,7 +239,26 @@ class ClienteController
  
             $conn->prepare("INSERT INTO bitacora (accion, idUsuario_FK) VALUES (?, ?)")
                  ->execute(["Cliente realizó reserva ID $idReserva", $idUsuario]);
- 
+
+            // Email de confirmación al cliente
+            $datosCliente = $conn->prepare("SELECT nombre, paterno, email FROM usuario WHERE idUsuario = ? LIMIT 1");
+            $datosCliente->execute([$idUsuario]);
+            $cli = $datosCliente->fetch(PDO::FETCH_ASSOC);
+            $datosHab = $conn->prepare("SELECT h.numero, t.nombre AS tipo FROM habitacion h JOIN tipo_habitacion t ON h.idTipoHabitacion_FK = t.idTipoHabitacion WHERE h.idHabitacion = ? LIMIT 1");
+            $datosHab->execute([$idHabitacion]);
+            $hab = $datosHab->fetch(PDO::FETCH_ASSOC);
+            require_once __DIR__ . '/../Mail/mailer.php';
+            Mailer::enviarConfirmacionReserva(
+                $cli['email'],
+                $cli['nombre'] . ' ' . $cli['paterno'],
+                $hab['numero'],
+                $hab['tipo'],
+                $fechaInicio,
+                $fechaFin,
+                $dias,
+                $precioTotal
+            );
+
             $_SESSION['success'] = "¡Reserva realizada! Estamos confirmando tu solicitud.";
             header("Location: " . url('cliente/reservas'));
             exit();

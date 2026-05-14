@@ -221,6 +221,25 @@ class ReservaController
 
             $conn->commit();
 
+            // Email de confirmación al cliente
+            $datosCliente = $conn->prepare("SELECT nombre, paterno, email FROM usuario WHERE idUsuario = ? LIMIT 1");
+            $datosCliente->execute([$idCliente]);
+            $cli = $datosCliente->fetch(PDO::FETCH_ASSOC);
+            $datosHab = $conn->prepare("SELECT h.numero, t.nombre AS tipo FROM habitacion h JOIN tipo_habitacion t ON h.idTipoHabitacion_FK = t.idTipoHabitacion WHERE h.idHabitacion = ? LIMIT 1");
+            $datosHab->execute([$idHabitacion]);
+            $hab = $datosHab->fetch(PDO::FETCH_ASSOC);
+            require_once __DIR__ . '/../../app/Mail/mailer.php';
+            Mailer::enviarConfirmacionReserva(
+                $cli['email'],
+                $cli['nombre'] . ' ' . $cli['paterno'],
+                $hab['numero'],
+                $hab['tipo'],
+                $fechaInicio,
+                $fechaFin,
+                $noches,
+                $total
+            );
+
             $_SESSION['success'] = "✅ Reserva #$idReserva creada correctamente para el cliente.";
             header('Location: ' . url('admin/reservas'));
 

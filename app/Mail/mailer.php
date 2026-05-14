@@ -150,6 +150,91 @@ class Mailer
         return self::send($email, $nombre, $subject, $body);
     }
  
+    /**
+     * Email de confirmación de reserva
+     */
+    public static function enviarConfirmacionReserva(
+        string $email,
+        string $nombre,
+        string $habitacion,
+        string $tipo,
+        string $fechaInicio,
+        string $fechaFin,
+        int    $noches,
+        float  $total
+    ): bool {
+        $subject = '📋 Confirmación de reserva — Hotel Real Plaza';
+
+        $fi    = date('d/m/Y', strtotime($fechaInicio));
+        $ff    = date('d/m/Y', strtotime($fechaFin));
+        $total = number_format($total, 2);
+
+        $body = self::template('Confirmación de Reserva', "
+            <p>Hola <strong>{$nombre}</strong>,</p>
+            <p>Tu reserva ha sido registrada exitosamente. A continuación el resumen:</p>
+
+            <table width='100%' cellpadding='0' cellspacing='0' style='margin:20px 0;'>
+                <tr style='background:#f9f4ec;'>
+                    <td style='padding:12px 16px;border-radius:8px 8px 0 0;'>
+                        <table width='100%'>
+                            <tr>
+                                <td style='color:#888;font-size:13px;'>Habitación</td>
+                                <td style='text-align:right;font-weight:bold;'>N° {$habitacion} — {$tipo}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr style='background:#fff3e0;'>
+                    <td style='padding:12px 16px;'>
+                        <table width='100%'>
+                            <tr>
+                                <td style='color:#888;font-size:13px;'>Check-in</td>
+                                <td style='text-align:right;font-weight:bold;'>{$fi}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr style='background:#f9f4ec;'>
+                    <td style='padding:12px 16px;'>
+                        <table width='100%'>
+                            <tr>
+                                <td style='color:#888;font-size:13px;'>Check-out</td>
+                                <td style='text-align:right;font-weight:bold;'>{$ff}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr style='background:#fff3e0;'>
+                    <td style='padding:12px 16px;'>
+                        <table width='100%'>
+                            <tr>
+                                <td style='color:#888;font-size:13px;'>Noches</td>
+                                <td style='text-align:right;font-weight:bold;'>{$noches}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr style='background:#1a1a2e;'>
+                    <td style='padding:14px 16px;border-radius:0 0 8px 8px;'>
+                        <table width='100%'>
+                            <tr>
+                                <td style='color:#c8a96e;font-weight:bold;'>Total a pagar</td>
+                                <td style='text-align:right;color:#fff;font-weight:bold;font-size:18px;'>Bs. {$total}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+            <p style='color:#888;font-size:13px;'>
+                Puedes ver el estado de tu reserva desde tu panel de cliente.<br>
+                Para cualquier consulta, contáctanos directamente en recepción.
+            </p>
+        ");
+
+        return self::send($email, $nombre, $subject, $body);
+    }
+
     // ─────────────────────────────────────────────────────────────────────────
     // LAYOUT BASE (todos los emails usan este diseño)
     // ─────────────────────────────────────────────────────────────────────────

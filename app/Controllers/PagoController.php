@@ -200,9 +200,23 @@ class PagoController
             $conn->prepare("UPDATE pago SET idEstadoPago_FK = ? WHERE idPago = ?")
                  ->execute([$idEstado, $id]);
  
+            // Si se aprueba, generar recibo automático si no tiene
+            if ($estado === 'Pagado') {
+                $tieneRecibo = $conn->prepare("SELECT COUNT(*) FROM recibo WHERE idPago_FK = ?");
+                $tieneRecibo->execute([$id]);
+                if ($tieneRecibo->fetchColumn() == 0) {
+                    $montoStmt = $conn->prepare("SELECT monto FROM pago WHERE idPago = ? LIMIT 1");
+                    $montoStmt->execute([$id]);
+                    $montoVal  = $montoStmt->fetchColumn();
+                    $numRecibo = 'REC-' . strtoupper(substr(uniqid(), -6));
+                    $conn->prepare("INSERT INTO recibo (numero, total, idPago_FK) VALUES (?, ?, ?)")
+                         ->execute([$numRecibo, $montoVal, $id]);
+                }
+            }
+
             $conn->prepare("INSERT INTO bitacora (accion, idUsuario_FK) VALUES (?, ?)")
                  ->execute(["Cambió estado de pago ID $id a $estado", $_SESSION['usuario']['id']]);
- 
+
             $_SESSION['success'] = "Estado del pago actualizado a: $estado";
  
         } catch (PDOException $e) {
