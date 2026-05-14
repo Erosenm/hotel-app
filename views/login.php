@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="<?= asset('css/stylelogin.css') ?>">
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 <div class="login-wrapper" 
      style="background-image: 
@@ -12,7 +13,7 @@
             Bienvenido al Hotel
         </h2>
 
-        <form action="<?= url('/login') ?>" method="POST">
+        <form id="loginForm" action="<?= url('/login') ?>" method="POST">
 
             <!-- Email -->
             <div class="form-floating">
@@ -38,6 +39,13 @@
                     required
                 >
                 <label>Contraseña</label>
+            </div>
+
+            <!-- CAPTCHA casilla -->
+            <div class="g-recaptcha" 
+                 data-sitekey="6LdPmuosAAAAACFUXKj9fwkI2Fn6v2RykzFkAuzq"
+                 data-theme="dark"
+                 style="margin: 16px 0;">
             </div>
 
             <!-- Botón -->
@@ -93,10 +101,5 @@
     <div class="alert alert-danger">
         <?= htmlspecialchars($_SESSION['error']) ?>
     </div>
-
-    <script>
-        console.error("<?= addslashes($_SESSION['error']) ?>");
-    </script>
-
     <?php unset($_SESSION['error']); ?>
 <?php endif; ?>
