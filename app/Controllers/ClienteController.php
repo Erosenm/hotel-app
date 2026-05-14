@@ -437,16 +437,44 @@ class ClienteController
             exit();
         }
  
+        // Detectar si es QR
+        $nombreMetodo = $conn->query("SELECT nombre FROM metodo_pago WHERE idMetodoPago = $idMetodo LIMIT 1")->fetchColumn();
+        $esQR = ($nombreMetodo === 'QR');
+ 
+        // Procesar comprobante si es QR
+        $rutaComprobante = null;
+        if ($esQR) {
+            if (empty($_FILES['comprobante']['name'])) {
+                $_SESSION['error'] = "Debes subir el comprobante de pago QR.";
+                header("Location: " . url('cliente/pagar?id=' . $idReserva));
+                exit();
+            }
+            $file    = $_FILES['comprobante'];
+            $ext     = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+            $allowed = ['jpg', 'jpeg', 'png', 'pdf'];
+            if (!in_array($ext, $allowed) || $file['size'] > 5 * 1024 * 1024) {
+                $_SESSION['error'] = "Archivo inválido. Solo JPG, PNG o PDF hasta 5MB.";
+                header("Location: " . url('cliente/pagar?id=' . $idReserva));
+                exit();
+            }
+            $uploadDir = __DIR__ . '/../../public/uploads/comprobantes/';
+            if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+            $nombreArchivo   = 'comp_' . time() . '_' . $idReserva . '.' . $ext;
+            $rutaComprobante = 'uploads/comprobantes/' . $nombreArchivo;
+            move_uploaded_file($file['tmp_name'], $uploadDir . $nombreArchivo);
+        }
+ 
         try {
-            $idEstPagado = $conn->query("SELECT idEstado FROM estado_pago WHERE nombre = 'Pagado' LIMIT 1")->fetchColumn();
+            $estadoNombre = $esQR ? 'Pendiente' : 'Pagado';
+            $idEstPagado  = $conn->query("SELECT idEstado FROM estado_pago WHERE nombre = '$estadoNombre' LIMIT 1")->fetchColumn();
  
             $conn->beginTransaction();
  
             // Registrar pago
             $conn->prepare("
-                INSERT INTO pago (monto, idEstadoPago_FK, idReserva_FK, idMetodoPago_FK)
-                VALUES (?, ?, ?, ?)
-            ")->execute([$monto, $idEstPagado, $idReserva, $idMetodo]);
+                INSERT INTO pago (monto, idEstadoPago_FK, idReserva_FK, idMetodoPago_FK, comprobante)
+                VALUES (?, ?, ?, ?, ?)
+            ")->execute([$monto, $idEstPagado, $idReserva, $idMetodo, $rutaComprobante]);
  
             $idPago = $conn->lastInsertId();
  
