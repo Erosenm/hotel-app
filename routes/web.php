@@ -37,8 +37,12 @@ return [
     ['method' => 'GET',  'path' => '/admin/habitaciones/imagen/eliminar', 'target' => 'HabitacionController@eliminarImagen'],
  
     // Reservas
-    ['method' => 'GET',  'path' => '/admin/reservas',       'target' => 'ReservaController@index'],
-    ['method' => 'GET',  'path' => '/admin/reservas/estado','target' => 'ReservaController@cambiarEstado'],
+    ['method' => 'GET',  'path' => '/admin/reservas',                  'target' => 'ReservaController@index'],
+    ['method' => 'GET',  'path' => '/admin/reservas/crear',            'target' => 'ReservaController@create'],
+    ['method' => 'POST', 'path' => '/admin/reservas/crear',            'target' => 'ReservaController@store'],
+    ['method' => 'GET',  'path' => '/admin/reservas/buscar-cliente',   'target' => 'ReservaController@buscarCliente'],
+    ['method' => 'GET',  'path' => '/admin/reservas/disponibilidad',   'target' => 'ReservaController@verificarDisponibilidad'],
+    ['method' => 'GET',  'path' => '/admin/reservas/estado',           'target' => 'ReservaController@cambiarEstado'],
  
     // Pagos (admin)
     ['method' => 'GET',  'path' => '/admin/pagos',          'target' => 'PagoController@index'],

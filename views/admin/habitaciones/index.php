@@ -1,9 +1,13 @@
 <!-- views/admin/habitaciones/index.php -->
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="fw-bold mb-0"><i class="fas fa-bed me-2 text-primary"></i>Gestión de Habitaciones</h4>
+
+    <?php if ($_SESSION['usuario']['rol'] === 'Administrador'): ?>
     <a href="<?= url('admin/habitaciones/crear') ?>" class="btn btn-primary">
         <i class="fas fa-plus me-2"></i>Nueva Habitación
     </a>
+    <?php endif; ?>    
+
 </div>
 
 <div class="row g-3 mb-4">

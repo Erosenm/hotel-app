@@ -2,6 +2,9 @@
     <h4 class="fw-bold mb-0">
         <i class="fas fa-calendar-check me-2 text-primary"></i>Gestión de Reservas
     </h4>
+    <a href="<?= url('admin/reservas/crear') ?>" class="btn btn-primary">
+        <i class="fas fa-plus me-1"></i>Nueva Reserva
+    </a>
 </div>
 
 <!-- STATS -->

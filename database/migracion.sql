@@ -1,10 +1,10 @@
 CREATE DATABASE IF NOT EXISTS hotel_db;
 USE hotel_db;
-
+ 
 -- =========================
 -- USUARIOS
 -- =========================
-
+ 
 CREATE TABLE usuario (
     idUsuario INT AUTO_INCREMENT PRIMARY KEY,
     codigo VARCHAR(36) NOT NULL UNIQUE DEFAULT (UUID()),
@@ -19,7 +19,7 @@ CREATE TABLE usuario (
     estado ENUM('Activo','Inactivo','Suspendido') DEFAULT 'Activo',
     fechaRegistro DATETIME DEFAULT CURRENT_TIMESTAMP
 );
-
+ 
 CREATE TABLE empleado (
     idEmpleado INT AUTO_INCREMENT PRIMARY KEY,
     codigo VARCHAR(36) NOT NULL UNIQUE DEFAULT (UUID()),
@@ -29,16 +29,16 @@ CREATE TABLE empleado (
     idUsuario_FK INT UNIQUE,
     FOREIGN KEY (idUsuario_FK) REFERENCES usuario(idUsuario)
 );
-
+ 
 -- =========================
 -- ROLES Y PERMISOS
 -- =========================
-
+ 
 CREATE TABLE rol (
     idRol INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) UNIQUE
 );
-
+ 
 CREATE TABLE usuario_rol (
     idUsuario INT,
     idRol INT,
@@ -46,23 +46,23 @@ CREATE TABLE usuario_rol (
     FOREIGN KEY (idUsuario) REFERENCES usuario(idUsuario),
     FOREIGN KEY (idRol) REFERENCES rol(idRol)
 );
-
+ 
 -- =========================
 -- HABITACIONES
 -- =========================
-
+ 
 CREATE TABLE tipo_habitacion (
     idTipoHabitacion INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50),
     descripcion TEXT,
     precioBase DECIMAL(10,2)
 );
-
+ 
 CREATE TABLE estado_habitacion (
     idEstado INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50)
 );
-
+ 
 CREATE TABLE habitacion (
     idHabitacion INT AUTO_INCREMENT PRIMARY KEY,
     codigo VARCHAR(36) UNIQUE DEFAULT (UUID()),
@@ -73,23 +73,23 @@ CREATE TABLE habitacion (
     FOREIGN KEY (idTipoHabitacion_FK) REFERENCES tipo_habitacion(idTipoHabitacion),
     FOREIGN KEY (idEstadoHabitacion_FK) REFERENCES estado_habitacion(idEstado)
 );
-
+ 
 CREATE TABLE habitacion_imagen (
     idImagen INT AUTO_INCREMENT PRIMARY KEY,
     rutaImagen VARCHAR(255),
     idHabitacion_FK INT,
     FOREIGN KEY (idHabitacion_FK) REFERENCES habitacion(idHabitacion)
 );
-
+ 
 -- =========================
 -- RESERVAS
 -- =========================
-
+ 
 CREATE TABLE estado_reserva (
     idEstado INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50)
 );
-
+ 
 CREATE TABLE reserva (
     idReserva INT AUTO_INCREMENT PRIMARY KEY,
     codigo VARCHAR(36) UNIQUE DEFAULT (UUID()),
@@ -106,18 +106,18 @@ CREATE TABLE reserva (
     FOREIGN KEY (idHabitacion_FK) REFERENCES habitacion(idHabitacion),
     FOREIGN KEY (idEmpleado_FK) REFERENCES empleado(idEmpleado)
 );
-
+ 
 -- =========================
 -- SERVICIOS
 -- =========================
-
+ 
 CREATE TABLE servicio (
     idServicio INT AUTO_INCREMENT PRIMARY KEY,
     codigo VARCHAR(36) UNIQUE DEFAULT (UUID()),
     nombre VARCHAR(100),
     precio DECIMAL(10,2)
 );
-
+ 
 CREATE TABLE reserva_servicio (
     idReserva INT,
     idServicio INT,
@@ -127,17 +127,17 @@ CREATE TABLE reserva_servicio (
     FOREIGN KEY (idReserva) REFERENCES reserva(idReserva),
     FOREIGN KEY (idServicio) REFERENCES servicio(idServicio)
 );
-
+ 
 -- =========================
 -- PRODUCTOS
 -- =========================
-
+ 
 CREATE TABLE categoria_producto (
     idCategoria INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
     descripcion TEXT
 );
-
+ 
 CREATE TABLE producto (
     idProducto INT AUTO_INCREMENT PRIMARY KEY,
     codigo VARCHAR(36) UNIQUE DEFAULT (UUID()),
@@ -152,7 +152,7 @@ CREATE TABLE producto (
     fechaRegistro DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (idCategoria_FK) REFERENCES categoria_producto(idCategoria)
 );
-
+ 
 CREATE TABLE reserva_producto (
     idReservaProducto INT AUTO_INCREMENT PRIMARY KEY,
     idReserva INT NOT NULL,
@@ -163,26 +163,27 @@ CREATE TABLE reserva_producto (
     FOREIGN KEY (idReserva) REFERENCES reserva(idReserva),
     FOREIGN KEY (idProducto) REFERENCES producto(idProducto)
 );
-
+ 
 -- =========================
 -- PAGOS
 -- =========================
-
+ 
 CREATE TABLE metodo_pago (
     idMetodoPago INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50)
 );
-
+ 
 CREATE TABLE estado_pago (
     idEstado INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50)
 );
-
+ 
 CREATE TABLE pago (
     idPago INT AUTO_INCREMENT PRIMARY KEY,
     codigo VARCHAR(36) UNIQUE DEFAULT (UUID()),
     monto DECIMAL(10,2),
     fechaPago DATETIME DEFAULT CURRENT_TIMESTAMP,
+    comprobante VARCHAR(255) DEFAULT NULL,
     idEstadoPago_FK INT,
     idReserva_FK INT,
     idMetodoPago_FK INT,
@@ -192,7 +193,7 @@ CREATE TABLE pago (
     FOREIGN KEY (idMetodoPago_FK) REFERENCES metodo_pago(idMetodoPago),
     FOREIGN KEY (idEmpleado_FK) REFERENCES empleado(idEmpleado)
 );
-
+ 
 CREATE TABLE recibo (
     idRecibo INT AUTO_INCREMENT PRIMARY KEY,
     codigo VARCHAR(36) UNIQUE DEFAULT (UUID()),
@@ -202,11 +203,11 @@ CREATE TABLE recibo (
     idPago_FK INT,
     FOREIGN KEY (idPago_FK) REFERENCES pago(idPago)
 );
-
+ 
 -- =========================
 -- BITÁCORA
 -- =========================
-
+ 
 CREATE TABLE bitacora (
     idBitacora INT AUTO_INCREMENT PRIMARY KEY,
     accion TEXT,
@@ -214,11 +215,11 @@ CREATE TABLE bitacora (
     idUsuario_FK INT,
     FOREIGN KEY (idUsuario_FK) REFERENCES usuario(idUsuario)
 );
-
+ 
 -- =========================
 -- RECUPERACIÓN DE CONTRASEÑA
 -- =========================
-
+ 
 CREATE TABLE password_reset (
     idReset INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(100) NOT NULL,
@@ -229,11 +230,11 @@ CREATE TABLE password_reset (
     INDEX idx_token (token),
     INDEX idx_email (email)
 );
-
+ 
 -- =========================
 -- IA
 -- =========================
-
+ 
 CREATE TABLE ia_log (
     idLog INT AUTO_INCREMENT PRIMARY KEY,
     idUsuario_FK INT,
@@ -247,7 +248,7 @@ CREATE TABLE ia_log (
     FOREIGN KEY (idUsuario_FK) REFERENCES usuario(idUsuario),
     FOREIGN KEY (idReserva_FK) REFERENCES reserva(idReserva)
 );
-
+ 
 CREATE TABLE ia_reserva (
     idIaReserva INT AUTO_INCREMENT PRIMARY KEY,
     idReserva_FK INT,
@@ -255,7 +256,7 @@ CREATE TABLE ia_reserva (
     confianza DECIMAL(5,2),
     FOREIGN KEY (idReserva_FK) REFERENCES reserva(idReserva)
 );
-
+ 
 CREATE TABLE ia_mensaje (
     idMensaje INT AUTO_INCREMENT PRIMARY KEY,
     idUsuario_FK INT,
@@ -265,44 +266,44 @@ CREATE TABLE ia_mensaje (
     fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (idUsuario_FK) REFERENCES usuario(idUsuario)
 );
-
+ 
 -- =========================
 -- INSERTS
 -- =========================
-
+ 
 INSERT IGNORE INTO rol (nombre) VALUES
 ('Administrador'),
 ('Recepcionista'),
 ('Cliente');
-
+ 
 INSERT IGNORE INTO estado_pago (nombre) VALUES
 ('Pendiente'),
 ('Pagado'),
 ('Cancelado'),
 ('Reembolsado'),
 ('Parcial');
-
+ 
 INSERT IGNORE INTO estado_habitacion (nombre) VALUES
 ('Disponible'),
 ('Ocupada'),
 ('Reservada'),
 ('Mantenimiento'),
 ('Limpieza');
-
+ 
 INSERT IGNORE INTO estado_reserva (nombre) VALUES
 ('Pendiente'),
 ('Confirmada'),
 ('Cancelada'),
 ('Completada'),
 ('No show');
-
+ 
 INSERT IGNORE INTO tipo_habitacion (nombre, descripcion, precioBase) VALUES
 ('Simple',      'Habitación individual con cama simple, baño privado y TV.',        150.00),
 ('Doble',       'Habitación con cama doble o dos camas, baño privado y TV.',        250.00),
 ('Suite',       'Suite de lujo con sala de estar, jacuzzi y vista panorámica.',     500.00),
 ('Triple',      'Habitación amplia con tres camas, ideal para familias.',           350.00),
 ('Matrimonial', 'Habitación romántica con cama king size y decoración especial.',   300.00);
-
+ 
 INSERT IGNORE INTO categoria_producto (nombre, descripcion) VALUES
 ('Bebidas',         'Agua, jugos, refrescos y bebidas alcohólicas'),
 ('Alimentacion',    'Snacks, desayunos y comidas al cuarto'),
@@ -310,7 +311,7 @@ INSERT IGNORE INTO categoria_producto (nombre, descripcion) VALUES
 ('Lavanderia',      'Lavado, planchado y limpieza de ropa'),
 ('Transporte',      'Traslados, taxi y alquiler de vehículos'),
 ('Entretenimiento', 'Películas, tours y actividades recreativas');
-
+ 
 INSERT IGNORE INTO producto (nombre, descripcion, precio, stock, stockMinimo, unidad, idCategoria_FK) VALUES
 -- Bebidas
 ('Agua mineral 500ml',    'Agua mineral natural',                   8.00, 100, 20, 'botella', 1),
@@ -333,161 +334,47 @@ INSERT IGNORE INTO producto (nombre, descripcion, precio, stock, stockMinimo, un
 ('Lavado traje/vestido',  'Lavado en seco traje formal',           50.00,   0,  0, 'prenda',  4),
 -- Transporte
 ('Traslado aeropuerto',   'Traslado ida o vuelta al aeropuerto',  120.00,   0,  0, 'viaje',   5);
-
+ 
 -- =========================
 -- INDICES
 -- =========================
-
+ 
 -- RESERVAS
-CREATE INDEX idx_reserva_fecha ON reserva(fechaInicio, fechaFin);
-CREATE INDEX idx_reserva_usuario ON reserva(idUsuario_FK);
-CREATE INDEX idx_reserva_habitacion ON reserva(idHabitacion_FK);
-
+-- CREATE INDEX idx_reserva_fecha ON reserva(fechaInicio, fechaFin);
+-- CREATE INDEX idx_reserva_usuario ON reserva(idUsuario_FK);
+-- CREATE INDEX idx_reserva_habitacion ON reserva(idHabitacion_FK);
+ 
 -- PAGOS
-CREATE INDEX idx_pago_fecha ON pago(fechaPago);
-CREATE INDEX idx_pago_reserva ON pago(idReserva_FK);
-
+-- CREATE INDEX idx_pago_fecha ON pago(fechaPago);
+-- CREATE INDEX idx_pago_reserva ON pago(idReserva_FK);
+ 
 -- PRODUCTOS
-CREATE INDEX idx_producto_categoria ON producto(idCategoria_FK);
-CREATE INDEX idx_producto_estado ON producto(estado);
-
+-- CREATE INDEX idx_producto_categoria ON producto(idCategoria_FK);
+-- CREATE INDEX idx_producto_estado ON producto(estado);
+ 
 -- BITACORA
-CREATE INDEX idx_bitacora_fecha ON bitacora(fechaHora);
-CREATE INDEX idx_bitacora_usuario ON bitacora(idUsuario_FK);
-
+-- CREATE INDEX idx_bitacora_fecha ON bitacora(fechaHora);
+-- CREATE INDEX idx_bitacora_usuario ON bitacora(idUsuario_FK);
+ 
 -- IA
-CREATE INDEX idx_ia_log_fecha ON ia_log(fecha);
-CREATE INDEX idx_ia_mensaje_usuario ON ia_mensaje(idUsuario_FK);
-
+-- CREATE INDEX idx_ia_log_fecha ON ia_log(fecha);
+-- CREATE INDEX idx_ia_mensaje_usuario ON ia_mensaje(idUsuario_FK);
+ 
 -- PASSWORD RESET
-CREATE INDEX idx_reset_expira ON password_reset(expira);
-
+-- CREATE INDEX idx_reset_expira ON password_reset(expira);
+ 
 -- =========================
 -- PARTICIONES
 -- =========================
-
+ 
 -- =========================
 -- FUNCIONES
 -- =========================
-
+ 
 -- =========================
 -- PROCEDIMIENTOS
 -- =========================
-
+ 
 -- =========================
 -- TRIGGERS
 -- =========================
-
---Descontar stock automaticamente
-DELIMITER $$
-
-CREATE TRIGGER trg_descontar_stock
-AFTER INSERT ON reserva_producto
-FOR EACH ROW
-BEGIN
-    UPDATE producto
-    SET stock = stock - NEW.cantidad
-    WHERE idProducto = NEW.idProducto;
-END$$
-
-DELIMITER ;
-
---Evitar stock negativo
-DELIMITER $$
-
-CREATE TRIGGER trg_validar_stock
-BEFORE INSERT ON reserva_producto
-FOR EACH ROW
-BEGIN
-    DECLARE stock_actual INT;
-
-    SELECT stock
-    INTO stock_actual
-    FROM producto
-    WHERE idProducto = NEW.idProducto;
-
-    IF stock_actual < NEW.cantidad THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Stock insuficiente';
-    END IF;
-END$$
-
-DELIMITER ;
-
---Cambio de estado de habitaciones al crear una reserva
-DELIMITER $$
-
-CREATE TRIGGER trg_ocupar_habitacion
-AFTER INSERT ON reserva
-FOR EACH ROW
-BEGIN
-    UPDATE habitacion
-    SET idEstadoHabitacion_FK = 2
-    WHERE idHabitacion = NEW.idHabitacion_FK;
-END$$
-
-DELIMITER ;
-
---Liberar habitacion cuando termine la reserva
-DELIMITER $$
-
-CREATE TRIGGER trg_liberar_habitacion
-AFTER UPDATE ON reserva
-FOR EACH ROW
-BEGIN
-    IF NEW.idEstadoReserva_FK = 4 THEN
-        UPDATE habitacion
-        SET idEstadoHabitacion_FK = 1
-        WHERE idHabitacion = NEW.idHabitacion_FK;
-    END IF;
-END$$
-
-DELIMITER ;
-
---Registrar pago automaticamente en bitacora
-DELIMITER $$
-
-CREATE TRIGGER trg_bitacora_pago
-AFTER INSERT ON pago
-FOR EACH ROW
-BEGIN
-    INSERT INTO bitacora(
-        accion,
-        idUsuario_FK
-    )
-    VALUES(
-        CONCAT('Nuevo pago registrado ID: ', NEW.idPago),
-        NULL
-    );
-END$$
-
-DELIMITER ;
-
--- Validacion de reserva
-DELIMITER $$
-
-CREATE TRIGGER trg_validar_reserva
-BEFORE INSERT ON reserva
-FOR EACH ROW
-BEGIN
-    DECLARE existe INT;
-
-    SELECT COUNT(*)
-    INTO existe
-    FROM reserva
-    WHERE idHabitacion_FK = NEW.idHabitacion_FK
-    AND (
-        NEW.fechaInicio BETWEEN fechaInicio AND fechaFin
-        OR
-        NEW.fechaFin BETWEEN fechaInicio AND fechaFin
-        OR
-        fechaInicio BETWEEN NEW.fechaInicio AND NEW.fechaFin
-    );
-
-    IF existe > 0 THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'La habitación ya está reservada';
-    END IF;
-END$$
-
-DELIMITER ; 
