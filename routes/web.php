@@ -44,6 +44,23 @@ return [
     ['method' => 'GET',  'path' => '/admin/reservas/disponibilidad',   'target' => 'ReservaController@verificarDisponibilidad'],
     ['method' => 'GET',  'path' => '/admin/reservas/estado',           'target' => 'ReservaController@cambiarEstado'],
  
+    // Productos
+    ['method' => 'GET',  'path' => '/admin/productos',              'target' => 'ProductoController@index'],
+    ['method' => 'GET',  'path' => '/admin/productos/crear',        'target' => 'ProductoController@create'],
+    ['method' => 'POST', 'path' => '/admin/productos/crear',        'target' => 'ProductoController@store'],
+    ['method' => 'GET',  'path' => '/admin/productos/editar',       'target' => 'ProductoController@edit'],
+    ['method' => 'POST', 'path' => '/admin/productos/actualizar',   'target' => 'ProductoController@update'],
+    ['method' => 'POST', 'path' => '/admin/productos/stock',        'target' => 'ProductoController@ajustarStock'],
+    ['method' => 'GET',  'path' => '/admin/productos/eliminar',     'target' => 'ProductoController@delete'],
+
+    // Servicios
+    ['method' => 'GET',  'path' => '/admin/servicios',              'target' => 'ServicioController@index'],
+    ['method' => 'GET',  'path' => '/admin/servicios/crear',        'target' => 'ServicioController@create'],
+    ['method' => 'POST', 'path' => '/admin/servicios/crear',        'target' => 'ServicioController@store'],
+    ['method' => 'GET',  'path' => '/admin/servicios/editar',       'target' => 'ServicioController@edit'],
+    ['method' => 'POST', 'path' => '/admin/servicios/actualizar',   'target' => 'ServicioController@update'],
+    ['method' => 'GET',  'path' => '/admin/servicios/eliminar',     'target' => 'ServicioController@delete'],
+
     // Pagos (admin)
     ['method' => 'GET',  'path' => '/admin/pagos',          'target' => 'PagoController@index'],
     ['method' => 'GET',  'path' => '/admin/pagos/crear',    'target' => 'PagoController@create'],

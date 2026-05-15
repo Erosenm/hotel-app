@@ -49,6 +49,16 @@
            class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/reservas') ? 'active' : '' ?>">
             <i class="fas fa-calendar-check"></i> Reservas
         </a>
+
+        <a href="<?= url('admin/productos') ?>"
+           class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/productos') ? 'active' : '' ?>">
+            <i class="fas fa-box-open"></i> Productos
+        </a>
+
+        <a href="<?= url('admin/servicios') ?>"
+           class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/servicios') ? 'active' : '' ?>">
+            <i class="fas fa-concierge-bell"></i> Servicios
+        </a>
  
         <a href="<?= url('admin/pagos') ?>"
            class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/pagos') ? 'active' : '' ?>">
@@ -111,7 +121,7 @@
     <?php endif; ?>
  
     <div class="page-body">
-        <?= $content ?>
+        <?= $content ?? '' ?>
     </div>
 </div>
  
