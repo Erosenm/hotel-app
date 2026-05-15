@@ -74,6 +74,12 @@ return [
     ['method' => 'GET',  'path' => '/admin/reservas/checkout',     'target' => 'ReservaController@checkout'],
     ['method' => 'POST', 'path' => '/admin/reservas/servicio',     'target' => 'ReservaController@agregarServicio'],
 
+    // Categorías de productos
+    ['method' => 'GET',  'path' => '/admin/categorias',              'target' => 'CategoriaController@index'],
+    ['method' => 'POST', 'path' => '/admin/categorias/crear',        'target' => 'CategoriaController@store'],
+    ['method' => 'POST', 'path' => '/admin/categorias/actualizar',   'target' => 'CategoriaController@update'],
+    ['method' => 'GET',  'path' => '/admin/categorias/eliminar',     'target' => 'CategoriaController@delete'],
+
     // Servicios
     ['method' => 'GET',  'path' => '/admin/servicios',              'target' => 'ServicioController@index'],
     ['method' => 'GET',  'path' => '/admin/servicios/crear',        'target' => 'ServicioController@create'],

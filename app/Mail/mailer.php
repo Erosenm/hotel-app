@@ -235,6 +235,59 @@ class Mailer
         return self::send($email, $nombre, $subject, $body);
     }
 
+    /**
+     * Email notificación pago aprobado
+     */
+    public static function enviarPagoAprobado(string $email, string $nombre, string $recibo, float $monto): bool
+    {
+        $subject = '✅ Pago aprobado — Hotel Real Plaza';
+        $monto   = number_format($monto, 2);
+
+        $body = self::template('Pago Aprobado', "
+            <p>Hola <strong>{$nombre}</strong>,</p>
+            <p>Tu comprobante de pago ha sido <strong style='color:#10b981;'>verificado y aprobado</strong> por nuestro equipo.</p>
+            <div style='background:#ecfdf5;border-left:4px solid #10b981;padding:16px;border-radius:8px;margin:20px 0;'>
+                <div style='display:flex;justify-content:space-between;margin-bottom:8px;'>
+                    <span style='color:#6b7280;'>N° de Recibo</span>
+                    <strong style='font-family:monospace;'>{$recibo}</strong>
+                </div>
+                <div style='display:flex;justify-content:space-between;'>
+                    <span style='color:#6b7280;'>Monto pagado</span>
+                    <strong style='color:#10b981;font-size:18px;'>Bs. {$monto}</strong>
+                </div>
+            </div>
+            <p style='color:#888;font-size:13px;'>
+                Puedes ver el estado de tu reserva desde tu panel de cliente.<br>
+                ¡Gracias por tu preferencia!
+            </p>
+        ");
+
+        return self::send($email, $nombre, $subject, $body);
+    }
+
+    /**
+     * Email notificación pago rechazado
+     */
+    public static function enviarPagoRechazado(string $email, string $nombre): bool
+    {
+        $subject = '❌ Comprobante rechazado — Hotel Real Plaza';
+
+        $body = self::template('Comprobante Rechazado', "
+            <p>Hola <strong>{$nombre}</strong>,</p>
+            <p>Lamentablemente tu comprobante de pago ha sido <strong style='color:#ef4444;'>rechazado</strong> por nuestro equipo.</p>
+            <p>Esto puede deberse a:</p>
+            <ul style='color:#555;'>
+                <li>El monto transferido no corresponde al total de la reserva</li>
+                <li>El comprobante no es legible o está incompleto</li>
+                <li>La transferencia no fue realizada a nuestra cuenta</li>
+            </ul>
+            <p>Por favor contáctanos en recepción o vuelve a intentar el pago con un nuevo comprobante.</p>
+            <p style='color:#888;font-size:13px;'>Si crees que esto es un error, comunícate con nosotros directamente.</p>
+        ");
+
+        return self::send($email, $nombre, $subject, $body);
+    }
+
     // ─────────────────────────────────────────────────────────────────────────
     // LAYOUT BASE (todos los emails usan este diseño)
     // ─────────────────────────────────────────────────────────────────────────

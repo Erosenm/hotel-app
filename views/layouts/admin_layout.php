@@ -17,16 +17,16 @@
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
     <a class="sidebar-brand" href="<?= url('adminpanel') ?>">
-        <span>Hotel Admin</span>
+        <span>🏨 Hotel Admin</span>
         <button class="sidebar-close" id="sidebarClose" title="Cerrar menú">✕</button>
     </a>
  
     <div class="sidebar-user">
         <strong><?= htmlspecialchars($_SESSION['usuario']['nombre'] ?? '') ?></strong>
-        <span><?= htmlspecialchars($_SESSION['usuario']['rol'] ?? '') ?></span>
+        <?= htmlspecialchars($_SESSION['usuario']['rol'] ?? '') ?>
     </div>
  
-        <nav class="sidebar-nav">
+    <nav class="sidebar-nav">
         <div class="sidebar-label">Principal</div>
         <a href="<?= url('adminpanel') ?>"
            class="<?= !str_contains($_SERVER['REQUEST_URI'], 'admin/') && str_contains($_SERVER['REQUEST_URI'], 'adminpanel') ? 'active' : '' ?>">
@@ -59,6 +59,10 @@
         <a href="<?= url('admin/productos') ?>"
            class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/productos') ? 'active' : '' ?>">
             <i class="fas fa-box"></i> Productos
+        </a>
+        <a href="<?= url('admin/categorias') ?>"
+           class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/categorias') ? 'active' : '' ?>">
+            <i class="fas fa-tags"></i> Categorías
         </a>
         <a href="<?= url('admin/servicios') ?>"
            class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/servicios') ? 'active' : '' ?>">

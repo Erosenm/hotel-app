@@ -286,17 +286,21 @@ class ClienteController
                 t.nombre AS tipo_habitacion, t.precioBase,
                 er.nombre AS estado_reserva,
                 (SELECT rutaImagen FROM habitacion_imagen WHERE idHabitacion_FK = h.idHabitacion LIMIT 1) AS imagen,
-                COALESCE(SUM(p.monto), 0) AS monto_pagado,
-                rc.numero AS recibo_numero
+                COALESCE(SUM(CASE WHEN ep2.nombre = 'Pagado' THEN p.monto ELSE 0 END), 0) AS monto_pagado,
+                rc.numero AS recibo_numero,
+                ep2.nombre AS pago_estado,
+                mp.nombre  AS pago_metodo,
+                (SELECT COUNT(*) FROM reserva_servicio rs WHERE rs.idReserva = r.idReserva) AS servicios_count
             FROM reserva r
             JOIN habitacion h       ON r.idHabitacion_FK     = h.idHabitacion
             JOIN tipo_habitacion t  ON h.idTipoHabitacion_FK = t.idTipoHabitacion
             JOIN estado_reserva er  ON r.idEstadoReserva_FK  = er.idEstado
             LEFT JOIN pago p        ON p.idReserva_FK = r.idReserva
-                AND p.idEstadoPago_FK = (SELECT idEstado FROM estado_pago WHERE nombre = 'Pagado' LIMIT 1)
+            LEFT JOIN estado_pago ep2 ON p.idEstadoPago_FK = ep2.idEstado
+            LEFT JOIN metodo_pago mp  ON p.idMetodoPago_FK  = mp.idMetodoPago
             LEFT JOIN recibo rc     ON rc.idPago_FK = p.idPago
             WHERE r.idUsuario_FK = ?
-            GROUP BY r.idReserva, rc.numero
+            GROUP BY r.idReserva, rc.numero, ep2.nombre, mp.nombre
             ORDER BY r.fechaInicio DESC
         ");
         $stmt->execute([$idUsuario]);

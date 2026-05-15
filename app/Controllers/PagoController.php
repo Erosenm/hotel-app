@@ -200,10 +200,11 @@ class PagoController
             $conn->prepare("UPDATE pago SET idEstadoPago_FK = ? WHERE idPago = ?")
                  ->execute([$idEstado, $id]);
  
-            // Si se aprueba, generar recibo automático si no tiene
+            // Si se aprueba, generar recibo automático y notificar al cliente
             if ($estado === 'Pagado') {
                 $tieneRecibo = $conn->prepare("SELECT COUNT(*) FROM recibo WHERE idPago_FK = ?");
                 $tieneRecibo->execute([$id]);
+                $numRecibo = null;
                 if ($tieneRecibo->fetchColumn() == 0) {
                     $montoStmt = $conn->prepare("SELECT monto FROM pago WHERE idPago = ? LIMIT 1");
                     $montoStmt->execute([$id]);
@@ -211,6 +212,41 @@ class PagoController
                     $numRecibo = 'REC-' . strtoupper(substr(uniqid(), -6));
                     $conn->prepare("INSERT INTO recibo (numero, total, idPago_FK) VALUES (?, ?, ?)")
                          ->execute([$numRecibo, $montoVal, $id]);
+                } else {
+                    $montoStmt = $conn->prepare("SELECT p.monto, r.numero FROM pago p LEFT JOIN recibo r ON r.idPago_FK = p.idPago WHERE p.idPago = ? LIMIT 1");
+                    $montoStmt->execute([$id]);
+                    $row = $montoStmt->fetch(PDO::FETCH_ASSOC);
+                    $montoVal  = $row['monto'];
+                    $numRecibo = $row['numero'];
+                }
+                // Email al cliente
+                $clienteStmt = $conn->prepare("
+                    SELECT u.email, u.nombre, u.paterno FROM pago p
+                    JOIN reserva r ON p.idReserva_FK = r.idReserva
+                    JOIN usuario u ON r.idUsuario_FK = u.idUsuario
+                    WHERE p.idPago = ? LIMIT 1
+                ");
+                $clienteStmt->execute([$id]);
+                $cli = $clienteStmt->fetch(PDO::FETCH_ASSOC);
+                if ($cli) {
+                    require_once __DIR__ . '/../../app/Mail/mailer.php';
+                    Mailer::enviarPagoAprobado($cli['email'], $cli['nombre'] . ' ' . $cli['paterno'], $numRecibo ?? 'N/A', $montoVal);
+                }
+            }
+
+            // Si se rechaza, notificar al cliente
+            if ($estado === 'Cancelado') {
+                $clienteStmt = $conn->prepare("
+                    SELECT u.email, u.nombre, u.paterno FROM pago p
+                    JOIN reserva r ON p.idReserva_FK = r.idReserva
+                    JOIN usuario u ON r.idUsuario_FK = u.idUsuario
+                    WHERE p.idPago = ? LIMIT 1
+                ");
+                $clienteStmt->execute([$id]);
+                $cli = $clienteStmt->fetch(PDO::FETCH_ASSOC);
+                if ($cli) {
+                    require_once __DIR__ . '/../../app/Mail/mailer.php';
+                    Mailer::enviarPagoRechazado($cli['email'], $cli['nombre'] . ' ' . $cli['paterno']);
                 }
             }
 

@@ -24,14 +24,14 @@ class LimpiezaController
                 tl.fechaAsignacion DESC
         ")->fetchAll(PDO::FETCH_ASSOC);
 
-        // Habitaciones en estado Limpieza para asignar
+        // Habitaciones que necesitan limpieza (Limpieza u Ocupada)
         $habitacionesSucias = $conn->query("
-            SELECT h.*, t.nombre AS tipo
+            SELECT h.*, t.nombre AS tipo, eh.nombre AS estado_hab
             FROM habitacion h
             JOIN tipo_habitacion t    ON h.idTipoHabitacion_FK = t.idTipoHabitacion
             JOIN estado_habitacion eh ON h.idEstadoHabitacion_FK = eh.idEstado
-            WHERE eh.nombre = 'Limpieza'
-            ORDER BY h.numero ASC
+            WHERE eh.nombre IN ('Limpieza', 'Ocupada', 'Disponible', 'Reservada')
+            ORDER BY FIELD(eh.nombre,'Limpieza','Ocupada','Reservada','Disponible'), h.numero ASC
         ")->fetchAll(PDO::FETCH_ASSOC);
 
         // Personal de limpieza

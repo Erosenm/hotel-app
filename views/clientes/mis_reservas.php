@@ -166,6 +166,22 @@
                                         <i class="fas fa-times me-1"></i>Cancelar
                                     </a>
                                 <?php endif; ?>
+                                <?php if (!empty($r['pago_estado']) && !empty($r['pago_metodo']) && $r['pago_metodo'] === 'QR'): ?>
+                                    <?php if ($r['pago_estado'] === 'Pendiente'): ?>
+                                        <span class="badge bg-warning text-dark">
+                                            <i class="fas fa-clock me-1"></i>Comprobante en revisión
+                                        </span>
+                                    <?php elseif ($r['pago_estado'] === 'Cancelado'): ?>
+                                        <span class="badge bg-danger">
+                                            <i class="fas fa-times-circle me-1"></i>Comprobante rechazado
+                                        </span>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                                <?php if (!empty($r['servicios_count']) && $r['servicios_count'] > 0): ?>
+                                    <span class="badge bg-info">
+                                        <i class="fas fa-concierge-bell me-1"></i><?= $r['servicios_count'] ?> servicio(s)
+                                    </span>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>

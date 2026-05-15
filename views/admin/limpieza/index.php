@@ -1,4 +1,3 @@
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="fw-bold mb-0">
         <i class="fas fa-broom me-2 text-primary"></i>Control de Limpieza
@@ -141,13 +140,12 @@
                             <option value="">— Seleccionar habitación —</option>
                             <?php foreach ($habitacionesSucias as $h): ?>
                                 <option value="<?= $h['idHabitacion'] ?>">
-                                    N° <?= htmlspecialchars($h['numero']) ?> — Piso <?= $h['piso'] ?> (<?= htmlspecialchars($h['tipo']) ?>)
+                                    N° <?= htmlspecialchars($h['numero']) ?> — Piso <?= $h['piso'] ?>
+                                    (<?= htmlspecialchars($h['tipo']) ?>) [<?= htmlspecialchars($h['estado_hab']) ?>]
                                 </option>
                             <?php endforeach; ?>
                         </select>
-                        <?php if (empty($habitacionesSucias)): ?>
-                            <small class="text-muted">No hay habitaciones pendientes de limpieza.</small>
-                        <?php endif; ?>
+                        <small class="text-muted">Se muestran todas las habitaciones. Las marcadas [Limpieza] son prioritarias.</small>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Asignar a (opcional)</label>
