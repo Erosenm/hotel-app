@@ -26,7 +26,7 @@
         <span><?= htmlspecialchars($_SESSION['usuario']['rol'] ?? '') ?></span>
     </div>
  
-    <nav class="sidebar-nav">
+        <nav class="sidebar-nav">
         <div class="sidebar-label">Principal</div>
         <a href="<?= url('adminpanel') ?>"
            class="<?= !str_contains($_SERVER['REQUEST_URI'], 'admin/') && str_contains($_SERVER['REQUEST_URI'], 'adminpanel') ? 'active' : '' ?>">
@@ -49,16 +49,6 @@
            class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/reservas') ? 'active' : '' ?>">
             <i class="fas fa-calendar-check"></i> Reservas
         </a>
-
-        <a href="<?= url('admin/productos') ?>"
-           class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/productos') ? 'active' : '' ?>">
-            <i class="fas fa-box-open"></i> Productos
-        </a>
-
-        <a href="<?= url('admin/servicios') ?>"
-           class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/servicios') ? 'active' : '' ?>">
-            <i class="fas fa-concierge-bell"></i> Servicios
-        </a>
  
         <a href="<?= url('admin/pagos') ?>"
            class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/pagos') ? 'active' : '' ?>">
@@ -66,6 +56,30 @@
         </a>
  
         <?php if ($_SESSION['usuario']['rol'] === 'Administrador'): ?>
+        <a href="<?= url('admin/productos') ?>"
+           class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/productos') ? 'active' : '' ?>">
+            <i class="fas fa-box"></i> Productos
+        </a>
+        <a href="<?= url('admin/servicios') ?>"
+           class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/servicios') ? 'active' : '' ?>">
+            <i class="fas fa-concierge-bell"></i> Servicios
+        </a>
+        <a href="<?= url('admin/reportes') ?>"
+           class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/reportes') ? 'active' : '' ?>">
+            <i class="fas fa-chart-line"></i> Reportes
+        </a>
+        <a href="<?= url('admin/calendario') ?>"
+           class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/calendario') ? 'active' : '' ?>">
+            <i class="fas fa-calendar-alt"></i> Calendario
+        </a>
+        <a href="<?= url('admin/limpieza') ?>"
+           class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/limpieza') ? 'active' : '' ?>">
+            <i class="fas fa-broom"></i> Limpieza
+        </a>
+        <a href="<?= url('admin/perfil') ?>"
+           class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/perfil') ? 'active' : '' ?>">
+            <i class="fas fa-user-circle"></i> Mi Perfil
+        </a>
         <div class="sidebar-label">Sistema</div>
         <a href="<?= url('admin/bitacora') ?>"
            class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/bitacora') ? 'active' : '' ?>">

@@ -215,6 +215,22 @@ CREATE TABLE bitacora (
     idUsuario_FK INT,
     FOREIGN KEY (idUsuario_FK) REFERENCES usuario(idUsuario)
 );
+
+-- =========================
+-- LIMPIEZA
+-- =========================
+ 
+CREATE TABLE tarea_limpieza (
+    idTarea INT AUTO_INCREMENT PRIMARY KEY,
+    idHabitacion_FK INT NOT NULL,
+    idUsuario_FK INT DEFAULT NULL,
+    estado ENUM('Pendiente','En proceso','Completada') DEFAULT 'Pendiente',
+    observaciones TEXT,
+    fechaAsignacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    fechaCompletada DATETIME DEFAULT NULL,
+    FOREIGN KEY (idHabitacion_FK) REFERENCES habitacion(idHabitacion),
+    FOREIGN KEY (idUsuario_FK) REFERENCES usuario(idUsuario)
+);
  
 -- =========================
 -- RECUPERACIÓN DE CONTRASEÑA
@@ -274,7 +290,11 @@ CREATE TABLE ia_mensaje (
 INSERT IGNORE INTO rol (nombre) VALUES
 ('Administrador'),
 ('Recepcionista'),
-('Cliente');
+('Cliente'),
+('Limpieza'), 
+('Gerente'), 
+('Contador'), 
+('Mantenimiento');
  
 INSERT IGNORE INTO estado_pago (nombre) VALUES
 ('Pendiente'),

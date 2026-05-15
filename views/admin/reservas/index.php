@@ -103,9 +103,10 @@
                         </td>
                         <td class="text-end">
                             <?php if ($r['estado_reserva'] === 'Pendiente'): ?>
-                                <a href="<?= url('admin/reservas/estado?id=' . $r['idReserva'] . '&estado=Confirmada') ?>"
-                                   class="btn btn-sm btn-success mb-1" title="Confirmar">
-                                    <i class="fas fa-check"></i>
+                                <a href="<?= url('admin/reservas/checkin?id=' . $r['idReserva']) ?>"
+                                   class="btn btn-sm btn-success mb-1" title="Check-in"
+                                   onclick="return confirm('¿Realizar check-in?')">
+                                    <i class="fas fa-sign-in-alt"></i> Check-in
                                 </a>
                                 <a href="<?= url('admin/reservas/estado?id=' . $r['idReserva'] . '&estado=Cancelada') ?>"
                                    class="btn btn-sm btn-danger mb-1" title="Cancelar"
@@ -113,9 +114,18 @@
                                     <i class="fas fa-times"></i>
                                 </a>
                             <?php elseif ($r['estado_reserva'] === 'Confirmada'): ?>
+                                <a href="<?= url('admin/reservas/checkout?id=' . $r['idReserva']) ?>"
+                                   class="btn btn-sm btn-primary mb-1" title="Check-out"
+                                   onclick="return confirm('¿Realizar check-out?')">
+                                    <i class="fas fa-sign-out-alt"></i> Check-out
+                                </a>
+                                <button class="btn btn-sm btn-outline-info mb-1"
+                                        onclick="abrirServicios(<?= $r['idReserva'] ?>)" title="Agregar servicio">
+                                    <i class="fas fa-concierge-bell"></i>
+                                </button>
                                 <a href="<?= url('admin/reservas/estado?id=' . $r['idReserva'] . '&estado=Cancelada') ?>"
-                                   class="btn btn-sm btn-outline-danger mb-1" title="Cancelar"
-                                   onclick="return confirm('¿Cancelar esta reserva confirmada?')">
+                                   class="btn btn-sm btn-outline-danger mb-1"
+                                   onclick="return confirm('¿Cancelar?')">
                                     <i class="fas fa-ban"></i>
                                 </a>
                             <?php else: ?>
@@ -133,3 +143,47 @@
         <small class="text-muted">Total: <?= count($reservas) ?> reservas</small>
     </div>
 </div>
+<!-- Modal agregar servicio -->
+<div class="modal fade" id="modalServicio" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title fw-semibold"><i class="fas fa-concierge-bell me-2"></i>Agregar Servicio</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="<?= url('admin/reservas/servicio') ?>">
+                <div class="modal-body">
+                    <input type="hidden" name="idReserva" id="servicioIdReserva">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Servicio</label>
+                        <select name="idServicio" class="form-select" required>
+                            <option value="">— Seleccionar servicio —</option>
+                            <?php
+                            $serviciosDisp = $conn->query("SELECT * FROM servicio ORDER BY nombre")->fetchAll(PDO::FETCH_ASSOC);
+                            foreach ($serviciosDisp as $sv): ?>
+                                <option value="<?= $sv['idServicio'] ?>">
+                                    <?= htmlspecialchars($sv['nombre']) ?> — Bs. <?= number_format($sv['precio'], 2) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Cantidad</label>
+                        <input type="number" name="cantidad" class="form-control" min="1" value="1" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Agregar servicio</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function abrirServicios(idReserva) {
+    document.getElementById('servicioIdReserva').value = idReserva;
+    new bootstrap.Modal(document.getElementById('modalServicio')).show();
+}
+</script>

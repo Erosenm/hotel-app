@@ -306,4 +306,110 @@ class ReservaController
         header("Location: " . url('admin/reservas'));
         exit();
     }
+
+    // ─── Check-in ─────────────────────────────────────────────────────────────
+    public function checkin()
+    {
+        require_recepcionista();
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        require __DIR__ . '/../../config/database.php';
+
+        $id = $_GET['id'] ?? null;
+        if (!$id) { header('Location: ' . url('admin/reservas')); exit(); }
+
+        // Estado Confirmada → Ocupada (habitación)
+        $idEstOcupada = $conn->query("SELECT idEstado FROM estado_habitacion WHERE nombre = 'Ocupada' LIMIT 1")->fetchColumn();
+        $conn->prepare("UPDATE habitacion h JOIN reserva r ON r.idHabitacion_FK = h.idHabitacion SET h.idEstadoHabitacion_FK = ? WHERE r.idReserva = ?")
+             ->execute([$idEstOcupada, $id]);
+
+        // Reserva → Confirmada
+        $idEstConf = $conn->query("SELECT idEstado FROM estado_reserva WHERE nombre = 'Confirmada' LIMIT 1")->fetchColumn();
+        $conn->prepare("UPDATE reserva SET idEstadoReserva_FK = ? WHERE idReserva = ?")->execute([$idEstConf, $id]);
+
+        $conn->prepare("INSERT INTO bitacora (accion, idUsuario_FK) VALUES (?, ?)")
+             ->execute(["Check-in realizado en reserva ID $id", $_SESSION['usuario']['id']]);
+
+        $_SESSION['success'] = "✅ Check-in realizado. Habitación marcada como Ocupada.";
+        header('Location: ' . url('admin/reservas')); exit();
+    }
+
+    // ─── Check-out ────────────────────────────────────────────────────────────
+    public function checkout()
+    {
+        require_recepcionista();
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        require __DIR__ . '/../../config/database.php';
+
+        $id = $_GET['id'] ?? null;
+        if (!$id) { header('Location: ' . url('admin/reservas')); exit(); }
+
+        // Habitación → Limpieza
+        $idEstLimpieza = $conn->query("SELECT idEstado FROM estado_habitacion WHERE nombre = 'Limpieza' LIMIT 1")->fetchColumn();
+        $conn->prepare("UPDATE habitacion h JOIN reserva r ON r.idHabitacion_FK = h.idHabitacion SET h.idEstadoHabitacion_FK = ? WHERE r.idReserva = ?")
+             ->execute([$idEstLimpieza, $id]);
+
+        // Reserva → Completada
+        $idEstComp = $conn->query("SELECT idEstado FROM estado_reserva WHERE nombre = 'Completada' LIMIT 1")->fetchColumn();
+        $conn->prepare("UPDATE reserva SET idEstadoReserva_FK = ? WHERE idReserva = ?")->execute([$idEstComp, $id]);
+
+        $conn->prepare("INSERT INTO bitacora (accion, idUsuario_FK) VALUES (?, ?)")
+             ->execute(["Check-out realizado en reserva ID $id", $_SESSION['usuario']['id']]);
+
+        $_SESSION['success'] = "✅ Check-out realizado. Habitación enviada a Limpieza.";
+        header('Location: ' . url('admin/reservas')); exit();
+    }
+
+    // ─── Agregar servicio a reserva ───────────────────────────────────────────
+    public function agregarServicio()
+    {
+        require_recepcionista();
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        require __DIR__ . '/../../config/database.php';
+
+        $idReserva  = $_POST['idReserva']  ?? null;
+        $idServicio = $_POST['idServicio'] ?? null;
+        $cantidad   = (int)($_POST['cantidad'] ?? 1);
+
+        if (!$idReserva || !$idServicio || $cantidad < 1) {
+            $_SESSION['error'] = 'Datos incompletos.';
+            header('Location: ' . url('admin/reservas')); exit();
+        }
+
+        $precioStmt = $conn->prepare("SELECT precio FROM servicio WHERE idServicio = ? LIMIT 1");
+        $precioStmt->execute([$idServicio]);
+        $precio = $precioStmt->fetchColumn();
+
+        // Insertar o actualizar cantidad
+        $existe = $conn->prepare("SELECT cantidad FROM reserva_servicio WHERE idReserva = ? AND idServicio = ?");
+        $existe->execute([$idReserva, $idServicio]);
+        $existente = $existe->fetch(PDO::FETCH_ASSOC);
+
+        if ($existente) {
+            $conn->prepare("UPDATE reserva_servicio SET cantidad = cantidad + ? WHERE idReserva = ? AND idServicio = ?")
+                 ->execute([$cantidad, $idReserva, $idServicio]);
+        } else {
+            $conn->prepare("INSERT INTO reserva_servicio (idReserva, idServicio, cantidad, precioUnitario) VALUES (?, ?, ?, ?)")
+                 ->execute([$idReserva, $idServicio, $cantidad, $precio]);
+        }
+
+        // Actualizar precio total de reserva
+        $conn->prepare("
+            UPDATE reserva SET precioTotal = (
+                SELECT precioBase * DATEDIFF(r2.fechaFin, r2.fechaInicio)
+                FROM reserva r2 JOIN habitacion h ON r2.idHabitacion_FK = h.idHabitacion
+                JOIN tipo_habitacion t ON h.idTipoHabitacion_FK = t.idTipoHabitacion
+                WHERE r2.idReserva = ?
+            ) + (
+                SELECT COALESCE(SUM(rs.cantidad * rs.precioUnitario), 0)
+                FROM reserva_servicio rs WHERE rs.idReserva = ?
+            ) WHERE idReserva = ?
+        ")->execute([$idReserva, $idReserva, $idReserva]);
+
+        $conn->prepare("INSERT INTO bitacora (accion, idUsuario_FK) VALUES (?, ?)")
+             ->execute(["Agregó servicio ID $idServicio a reserva ID $idReserva", $_SESSION['usuario']['id']]);
+
+        $_SESSION['success'] = "Servicio agregado a la reserva correctamente.";
+        header('Location: ' . url('admin/reservas')); exit();
+    }
+
 }

@@ -53,6 +53,27 @@ return [
     ['method' => 'POST', 'path' => '/admin/productos/stock',        'target' => 'ProductoController@ajustarStock'],
     ['method' => 'GET',  'path' => '/admin/productos/eliminar',     'target' => 'ProductoController@delete'],
 
+    // Calendario
+    ['method' => 'GET',  'path' => '/admin/calendario',            'target' => 'CalendarioController@index'],
+
+    // Limpieza
+    ['method' => 'GET',  'path' => '/admin/limpieza',              'target' => 'LimpiezaController@index'],
+    ['method' => 'POST', 'path' => '/admin/limpieza/crear',        'target' => 'LimpiezaController@crear'],
+    ['method' => 'GET',  'path' => '/admin/limpieza/estado',       'target' => 'LimpiezaController@estado'],
+
+    // Perfil admin
+    ['method' => 'GET',  'path' => '/admin/perfil',                'target' => 'PerfilController@index'],
+    ['method' => 'POST', 'path' => '/admin/perfil/actualizar',     'target' => 'PerfilController@actualizar'],
+    ['method' => 'POST', 'path' => '/admin/perfil/password',       'target' => 'PerfilController@cambiarPassword'],
+
+    // Reportes
+    ['method' => 'GET',  'path' => '/admin/reportes',              'target' => 'ReporteController@index'],
+
+    // Check-in / Check-out
+    ['method' => 'GET',  'path' => '/admin/reservas/checkin',      'target' => 'ReservaController@checkin'],
+    ['method' => 'GET',  'path' => '/admin/reservas/checkout',     'target' => 'ReservaController@checkout'],
+    ['method' => 'POST', 'path' => '/admin/reservas/servicio',     'target' => 'ReservaController@agregarServicio'],
+
     // Servicios
     ['method' => 'GET',  'path' => '/admin/servicios',              'target' => 'ServicioController@index'],
     ['method' => 'GET',  'path' => '/admin/servicios/crear',        'target' => 'ServicioController@create'],
