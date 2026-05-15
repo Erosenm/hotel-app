@@ -1,100 +1,145 @@
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h4 class="fw-bold mb-0"><i class="fas fa-edit me-2 text-primary"></i>Editar Habitación</h4>
-    <a href="<?= url('admin/habitaciones') ?>" class="btn btn-outline-secondary">
+<link rel="stylesheet" href="<?= asset('css/cssAdmin/stylehabitaciones/editar.css') ?>">
+
+<div class="">
+    <div class="d-flex align-items-center gap-2">
+        <h4 class="fw-bold mb-0 text-dark">
+            <i class="fas fa-edit text-primary me-2"></i>Editar Habitación
+        </h4>
+    </div>
+    <a href="<?= url('admin/habitaciones') ?>" class="btn btn-outline-secondary btn-volver">
         <i class="fas fa-arrow-left me-2"></i>Volver
     </a>
 </div>
 
-<div class="card border-0 shadow-sm" style="max-width:650px">
-    <div class="card-body p-4">
+<div class="edit-container">
+    
+    <div class="room-summary-card">
+        <div class="summary-icon">
+            <i class="fas fa-door-closed"></i>
+        </div>
+        <h5 class="room-title">Habitación <?= htmlspecialchars($habitacion['numero']) ?></h5>
+        <p class="room-subtitle">Piso <?= htmlspecialchars($habitacion['piso']) ?></p>
+        
+        <hr class="my-4 text-muted">
+        
+        <div class="summary-details">
+            <div class="detail-row">
+                <span class="detail-label"><i class="fas fa-bed me-2"></i>Tipo</span>
+                <span class="detail-value">—</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label"><i class="fas fa-money-bill-wave me-2"></i>Precio base</span>
+                <span class="detail-value text-success fw-bold">Bs. 0.00</span>
+            </div>
+        </div>
+        
+        <div class="summary-alert mt-4">
+            <i class="fas fa-info-circle text-primary mb-2 fs-5"></i>
+            <p class="mb-0">Puedes actualizar el tipo, estado e imágenes. El número y piso son únicos.</p>
+        </div>
+    </div>
+
+    <div class="form-main-card">
         <form action="<?= url('admin/habitaciones/editar') ?>" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?= $habitacion['idHabitacion'] ?>">
 
-            <div class="row g-3">
-
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">N° Habitación *</label>
-                    <input type="text" name="numero" class="form-control"
-                           value="<?= htmlspecialchars($habitacion['numero']) ?>" required>
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Piso *</label>
-                    <input type="number" name="piso" class="form-control"
-                           value="<?= htmlspecialchars($habitacion['piso']) ?>" min="1" required>
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Tipo *</label>
-                    <select name="tipo" class="form-select" required>
-                        <option value="">Seleccionar tipo</option>
-                        <?php foreach ($tipos as $t): ?>
-                            <option value="<?= $t['idTipoHabitacion'] ?>"
-                                <?= $habitacion['idTipoHabitacion_FK'] == $t['idTipoHabitacion'] ? 'selected' : '' ?>>
-                                <?= htmlspecialchars($t['nombre']) ?> — Bs. <?= number_format($t['precioBase'], 2) ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Estado *</label>
-                    <select name="estado" class="form-select" required>
-                        <option value="">Seleccionar estado</option>
-                        <?php foreach ($estados as $e): ?>
-                            <option value="<?= $e['idEstado'] ?>"
-                                <?= $habitacion['idEstadoHabitacion_FK'] == $e['idEstado'] ? 'selected' : '' ?>>
-                                <?= htmlspecialchars($e['nombre']) ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
-                <?php if (!empty($imagenes)): ?>
-                <div class="col-12">
-                    <label class="form-label fw-semibold">
-                        <i class="fas fa-images me-1 text-primary"></i>Imágenes actuales
-                    </label>
-                    <div class="d-flex flex-wrap gap-2">
-                        <?php foreach ($imagenes as $img): ?>
-                        <div style="position:relative;width:110px;">
-                            <img src="<?= asset($img['rutaImagen']) ?>"
-                                 alt="Imagen habitación"
-                                 style="width:110px;height:85px;object-fit:cover;border-radius:6px;border:1px solid #dee2e6;">
-                            <a href="<?= url('admin/habitaciones/imagen/eliminar?idImagen=' . $img['idImagen'] . '&idHabitacion=' . $habitacion['idHabitacion']) ?>"
-                               class="btn btn-danger btn-sm"
-                               style="position:absolute;top:3px;right:3px;padding:1px 5px;font-size:11px;line-height:1.4;"
-                               onclick="return confirm('¿Eliminar esta imagen?')"
-                               title="Eliminar imagen">
-                                <i class="fas fa-times"></i>
-                            </a>
+            <div class="form-section">
+                <h6 class="section-title"><i class="fas fa-info-circle"></i> DATOS BÁSICOS</h6>
+                
+                <div class="row g-4 mt-1">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">N° Habitación</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-door-open input-icon"></i>
+                            <input type="text" name="numero" class="form-control custom-input" value="<?= htmlspecialchars($habitacion['numero']) ?>" required>
                         </div>
-                        <?php endforeach; ?>
+                        <small class="text-muted lock-text mt-1 d-block"><i class="fas fa-lock me-1"></i> No modificable</small>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Piso</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-building input-icon"></i>
+                            <input type="number" name="piso" class="form-control custom-input" value="<?= htmlspecialchars($habitacion['piso']) ?>" min="1" required>
+                        </div>
+                        <small class="text-muted lock-text mt-1 d-block"><i class="fas fa-lock me-1"></i> No modificable</small>
+                    </div>
+
+                    <div class="col-md-6 mt-4">
+                        <label class="form-label fw-semibold">Tipo <span class="text-danger">*</span></label>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-bed input-icon"></i>
+                            <select name="tipo" class="form-select custom-select" required>
+                                <option value="">Seleccionar tipo</option>
+                                <?php foreach ($tipos as $t): ?>
+                                    <option value="<?= $t['idTipoHabitacion'] ?>" <?= $habitacion['idTipoHabitacion_FK'] == $t['idTipoHabitacion'] ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($t['nombre']) ?> — Bs. <?= number_format($t['precioBase'], 2) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mt-4">
+                        <label class="form-label fw-semibold">Estado <span class="text-danger">*</span></label>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-dot-circle input-icon"></i>
+                            <select name="estado" class="form-select custom-select" required>
+                                <option value="">Seleccionar estado</option>
+                                <?php foreach ($estados as $e): ?>
+                                    <option value="<?= $e['idEstado'] ?>" <?= $habitacion['idEstadoHabitacion_FK'] == $e['idEstado'] ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($e['nombre']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
                     </div>
                 </div>
-                <?php endif; ?>
-
-                <div class="col-12">
-                    <label class="form-label fw-semibold">
-                        <i class="fas fa-cloud-upload-alt me-1 text-primary"></i>Agregar nuevas imágenes
-                        <small class="text-muted fw-normal">(máx. 5 MB por imagen)</small>
-                    </label>
-                    <input type="file" name="imagenes[]" id="inputImagenes" class="form-control"
-                           accept="image/jpeg,image/png,image/webp,image/gif" multiple>
-                    <div class="form-text">Las imágenes nuevas se agregarán a las existentes.</div>
-                </div>
-
-                <div class="col-12">
-                    <div id="previewContainer" class="d-flex flex-wrap gap-2 mt-1"></div>
-                </div>
-
-                <div class="col-12 pt-2">
-                    <button type="submit" class="btn btn-primary px-4">
-                        <i class="fas fa-save me-2"></i>Guardar Cambios
-                    </button>
-                </div>
-
             </div>
+
+            <hr class="section-divider">
+
+            <?php if (!empty($imagenes)): ?>
+            <div class="form-section">
+                <h6 class="section-title"><i class="fas fa-images"></i> IMÁGENES ACTUALES</h6>
+                <div class="current-images-grid mt-3">
+                    <?php foreach ($imagenes as $img): ?>
+                    <div class="image-box">
+                        <img src="<?= asset($img['rutaImagen']) ?>" alt="Imagen habitación">
+                        <a href="<?= url('admin/habitaciones/imagen/eliminar?idImagen=' . $img['idImagen'] . '&idHabitacion=' . $habitacion['idHabitacion']) ?>"
+                           class="btn-delete-image"
+                           onclick="return confirm('¿Eliminar esta imagen?')"
+                           title="Eliminar imagen">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <hr class="section-divider">
+            <?php endif; ?>
+
+            <div class="form-section">
+                <h6 class="section-title"><i class="fas fa-cloud-upload-alt"></i> AGREGAR NUEVAS IMÁGENES</h6>
+                <p class="text-muted small mb-3">Seleccionar imágenes (máx. 5 MB c/u)</p>
+                
+                <div class="upload-drag-zone" onclick="document.getElementById('inputImagenes').click()">
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                    <p class="upload-title">Haz clic para seleccionar o arrastra archivos aquí</p>
+                    <p class="upload-subtitle">JPG • PNG • WEBP • GIF</p>
+                    <input type="file" name="imagenes[]" id="inputImagenes" accept="image/jpeg,image/png,image/webp,image/gif" multiple style="display: none;">
+                </div>
+                
+                <div id="previewContainer" class="preview-grid mt-3"></div>
+            </div>
+
+            <div class="form-actions mt-5">
+                <button type="submit" class="btn btn-primary btn-guardar">
+                    <i class="fas fa-save me-2"></i>Guardar Cambios
+                </button>
+                <a href="<?= url('admin/habitaciones') ?>" class="btn btn-light btn-cancelar">Cancelar</a>
+            </div>
+
         </form>
     </div>
 </div>
@@ -103,17 +148,20 @@
 document.getElementById('inputImagenes').addEventListener('change', function () {
     const container = document.getElementById('previewContainer');
     container.innerHTML = '';
+    
     Array.from(this.files).forEach(file => {
         const reader = new FileReader();
         reader.onload = e => {
             const wrap = document.createElement('div');
-            wrap.style.cssText = 'position:relative;width:110px;';
+            wrap.className = 'preview-box';
+            
             const img = document.createElement('img');
             img.src = e.target.result;
-            img.style.cssText = 'width:110px;height:85px;object-fit:cover;border-radius:6px;border:2px dashed #0d6efd;';
+            
             const badge = document.createElement('span');
             badge.textContent = 'Nueva';
-            badge.style.cssText = 'position:absolute;bottom:4px;left:4px;background:#0d6efd;color:#fff;font-size:10px;padding:1px 5px;border-radius:4px;';
+            badge.className = 'preview-badge';
+            
             wrap.appendChild(img);
             wrap.appendChild(badge);
             container.appendChild(wrap);

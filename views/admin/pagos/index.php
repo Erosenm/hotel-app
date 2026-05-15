@@ -1,83 +1,82 @@
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h4 class="fw-bold mb-0">
-        <i class="fas fa-credit-card me-2 text-primary"></i>Gestión de Pagos
-    </h4>
-    <a href="<?= url('admin/pagos/crear') ?>" class="btn btn-primary btn-sm">
-        <i class="fas fa-plus me-1"></i> Registrar Pago
+<link rel="stylesheet" href="<?= asset('css/cssAdmin/stylepagos/index.css') ?>">
+<div class="pagos-header">
+    <div class="pagos-title">
+        <i class="fas fa-credit-card"></i>
+        <span>Gestión de Pagos</span>
+    </div>
+    <a href="<?= url('admin/pagos/crear') ?>" class="pagos-btn-primary">
+        <i class="fas fa-plus"></i> Registrar Pago
     </a>
 </div>
 
 <?php if (!empty($_SESSION['success'])): ?>
-    <div class="alert alert-success alert-dismissible fade show">
-        <i class="fas fa-check-circle me-1"></i> <?= htmlspecialchars($_SESSION['success']) ?>
+    <div class="pagos-alert pagos-alert-success alert-dismissible fade show">
+        <i class="fas fa-check-circle me-2"></i> <?= htmlspecialchars($_SESSION['success']) ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
     <?php unset($_SESSION['success']); ?>
 <?php endif; ?>
 
 <?php if (!empty($_SESSION['error'])): ?>
-    <div class="alert alert-danger alert-dismissible fade show">
-        <i class="fas fa-exclamation-circle me-1"></i> <?= htmlspecialchars($_SESSION['error']) ?>
+    <div class="pagos-alert pagos-alert-danger alert-dismissible fade show">
+        <i class="fas fa-exclamation-circle me-2"></i> <?= htmlspecialchars($_SESSION['error']) ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
     <?php unset($_SESSION['error']); ?>
 <?php endif; ?>
 
 <?php
-// Comprobantes pendientes de revisión
 $pendientesQR = array_filter($pagos, fn($p) => $p['estado_pago'] === 'Pendiente' && !empty($p['comprobante']));
 ?>
 
 <?php if (!empty($pendientesQR)): ?>
-<div class="alert alert-warning border-warning mb-4">
-    <div class="d-flex align-items-center gap-2 mb-2">
-        <i class="fas fa-exclamation-triangle text-warning fs-5"></i>
+<div class="pagos-pendientes-card">
+    <div class="pagos-pendientes-header">
+        <i class="fas fa-exclamation-triangle"></i>
         <strong>Comprobantes QR pendientes de revisión (<?= count($pendientesQR) ?>)</strong>
     </div>
-    <div class="row g-3">
+    <div class="pagos-pendientes-grid">
         <?php foreach ($pendientesQR as $p): ?>
-        <div class="col-md-6 col-lg-4">
-            <div class="card border-warning shadow-sm">
-                <div class="card-body p-3">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <div>
-                            <div class="fw-semibold small"><?= htmlspecialchars($p['cliente_nombre'] . ' ' . $p['cliente_paterno']) ?></div>
-                            <div class="text-muted" style="font-size:.75rem;"><?= date('d/m/Y H:i', strtotime($p['fechaPago'])) ?></div>
-                        </div>
-                        <span class="fw-bold text-primary">Bs. <?= number_format($p['monto'], 2) ?></span>
+        <div class="pagos-pendiente-item">
+            <div class="pagos-pendiente-header">
+                <div>
+                    <div class="pagos-pendiente-cliente">
+                        <?= htmlspecialchars($p['cliente_nombre'] . ' ' . $p['cliente_paterno']) ?>
                     </div>
-
-                    <!-- Imagen del comprobante -->
-                    <?php
-                        $ext = strtolower(pathinfo($p['comprobante'], PATHINFO_EXTENSION));
-                        $rutaPublica = asset($p['comprobante']);
-                    ?>
-                    <?php if (in_array($ext, ['jpg','jpeg','png'])): ?>
-                        <img src="<?= htmlspecialchars($rutaPublica) ?>"
-                             alt="Comprobante"
-                             class="img-fluid rounded mb-2"
-                             style="max-height:140px; width:100%; object-fit:cover; cursor:pointer;"
-                             onclick="verComprobante('<?= htmlspecialchars($rutaPublica) ?>')">
-                    <?php elseif ($ext === 'pdf'): ?>
-                        <a href="<?= htmlspecialchars($rutaPublica) ?>" target="_blank"
-                           class="btn btn-outline-secondary btn-sm w-100 mb-2">
-                            <i class="fas fa-file-pdf me-1"></i>Ver PDF del comprobante
-                        </a>
-                    <?php endif; ?>
-
-                    <div class="d-flex gap-2">
-                        <a href="<?= url('admin/pagos/estado') ?>?id=<?= $p['idPago'] ?>&estado=Pagado"
-                           class="btn btn-success btn-sm flex-fill"
-                           onclick="return confirm('¿Aprobar este pago de Bs. <?= number_format($p['monto'], 2) ?>?')">
-                            <i class="fas fa-check me-1"></i>Aprobar
-                        </a>
-                        <a href="<?= url('admin/pagos/estado') ?>?id=<?= $p['idPago'] ?>&estado=Cancelado"
-                           class="btn btn-danger btn-sm flex-fill"
-                           onclick="return confirm('¿Rechazar este comprobante?')">
-                            <i class="fas fa-times me-1"></i>Rechazar
-                        </a>
+                    <div class="pagos-pendiente-fecha">
+                        <i class="far fa-clock me-1"></i><?= date('d/m/Y H:i', strtotime($p['fechaPago'])) ?>
                     </div>
                 </div>
+                <div class="pagos-pendiente-monto">Bs. <?= number_format($p['monto'], 2) ?></div>
+            </div>
+
+            <?php
+                $ext = strtolower(pathinfo($p['comprobante'], PATHINFO_EXTENSION));
+                $rutaPublica = asset($p['comprobante']);
+            ?>
+            <?php if (in_array($ext, ['jpg','jpeg','png'])): ?>
+                <img src="<?= htmlspecialchars($rutaPublica) ?>"
+                     alt="Comprobante"
+                     class="pagos-pendiente-img"
+                     onclick="verComprobante('<?= htmlspecialchars($rutaPublica) ?>')">
+            <?php elseif ($ext === 'pdf'): ?>
+                <a href="<?= htmlspecialchars($rutaPublica) ?>" target="_blank"
+                   class="pagos-btn-success w-100 justify-content-center" style="margin-bottom: 0.75rem;">
+                    <i class="fas fa-file-pdf"></i> Ver PDF
+                </a>
+            <?php endif; ?>
+
+            <div class="pagos-pendiente-actions">
+                <a href="<?= url('admin/pagos/estado') ?>?id=<?= $p['idPago'] ?>&estado=Pagado"
+                   class="pagos-btn-success flex-fill justify-content-center"
+                   onclick="return confirm('¿Aprobar este pago de Bs. <?= number_format($p['monto'], 2) ?>?')">
+                    <i class="fas fa-check"></i> Aprobar
+                </a>
+                <a href="<?= url('admin/pagos/estado') ?>?id=<?= $p['idPago'] ?>&estado=Cancelado"
+                   class="pagos-btn-danger flex-fill justify-content-center"
+                   onclick="return confirm('¿Rechazar este comprobante?')">
+                    <i class="fas fa-times"></i> Rechazar
+                </a>
             </div>
         </div>
         <?php endforeach; ?>
@@ -85,185 +84,205 @@ $pendientesQR = array_filter($pagos, fn($p) => $p['estado_pago'] === 'Pendiente'
 </div>
 <?php endif; ?>
 
-<!-- STATS -->
-<div class="row g-3 mb-4">
-    <div class="col-6 col-md-3">
-        <div class="card border-0 shadow-sm text-center py-3">
-            <div class="fs-4 fw-bold text-secondary"><?= $stats['total'] ?></div>
-            <div class="text-muted small">Total Pagos</div>
+<!-- STATS PREMIUM -->
+<div class="pagos-stats-row">
+    <?php
+    $statsConfig = [
+        'total' => ['label' => 'Total Pagos', 'icon' => 'fa-receipt', 'emoji' => '', 'color' => 'total', 'value' => $stats['total']],
+        'pagados' => ['label' => 'Pagados', 'icon' => 'fa-check-circle', 'emoji' => '', 'color' => 'pagados', 'value' => $stats['pagados']],
+        'pendientes' => ['label' => 'Pendientes', 'icon' => 'fa-clock', 'emoji' => '', 'color' => 'pendientes', 'value' => $stats['pendientes']],
+        'monto' => ['label' => 'Monto Cobrado', 'icon' => 'fa-dollar-sign', 'emoji' => '', 'color' => 'monto', 'value' => 'Bs. ' . number_format($stats['monto'], 2)]
+    ];
+    
+    foreach ($statsConfig as $key => $cfg):
+    ?>
+    <div class="pagos-stat-card <?= $cfg['color'] ?>">
+        <div class="pagos-stat-top">
+            <div class="pagos-stat-icon"><i class="fas <?= $cfg['icon'] ?>"></i></div>
+            <span class="pagos-stat-emoji"><?= $cfg['emoji'] ?></span>
         </div>
+        <div class="pagos-stat-value"><?= $cfg['value'] ?></div>
+        <div class="pagos-stat-label"><?= $cfg['label'] ?></div>
     </div>
-    <div class="col-6 col-md-3">
-        <div class="card border-0 shadow-sm text-center py-3">
-            <div class="fs-4 fw-bold text-success"><?= $stats['pagados'] ?></div>
-            <div class="text-muted small">Pagados</div>
-        </div>
-    </div>
-    <div class="col-6 col-md-3">
-        <div class="card border-0 shadow-sm text-center py-3">
-            <div class="fs-4 fw-bold text-warning"><?= $stats['pendientes'] ?></div>
-            <div class="text-muted small">Pendientes</div>
-        </div>
-    </div>
-    <div class="col-6 col-md-3">
-        <div class="card border-0 shadow-sm text-center py-3">
-            <div class="fs-4 fw-bold text-primary">Bs. <?= number_format($stats['monto'], 2) ?></div>
-            <div class="text-muted small">Monto Cobrado</div>
-        </div>
-    </div>
+    <?php endforeach; ?>
 </div>
 
-<!-- TABLA -->
-<div class="card border-0 shadow-sm">
-    <div class="card-body p-0">
-        <div class="table-responsive">
-            <table class="table table-hover mb-0">
-                <thead class="table-light">
-                    <tr>
-                        <th>Cliente</th>
-                        <th>Reserva</th>
-                        <th>Monto</th>
-                        <th>Método</th>
-                        <th>Comprobante</th>
-                        <th>Fecha</th>
-                        <th>Recibo</th>
-                        <th>Estado</th>
-                        <?php if (($_SESSION['usuario']['rol'] ?? '') === 'Administrador'): ?>
-                        <th class="text-end">Acciones</th>
-                        <?php endif; ?>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php if (empty($pagos)): ?>
-                    <tr>
-                        <td colspan="9" class="text-center text-muted py-4">
-                            <i class="fas fa-receipt fa-2x mb-2 d-block"></i>
-                            No hay pagos registrados
-                        </td>
-                    </tr>
-                <?php else: ?>
-                    <?php foreach ($pagos as $p):
-                        $colores = [
-                            'Pagado'      => 'success',
-                            'Pendiente'   => 'warning',
-                            'Cancelado'   => 'danger',
-                            'Reembolsado' => 'info',
-                            'Parcial'     => 'secondary',
-                        ];
-                        $color = $colores[$p['estado_pago']] ?? 'secondary';
-                    ?>
-                    <tr>
-                        <td>
-                            <span class="badge bg-primary me-1">
+<!-- TABLA PREMIUM -->
+<div class="pagos-table-card">
+    <div class="table-responsive">
+        <table class="pagos-table">
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Reserva</th>
+                    <th>Monto</th>
+                    <th>Método</th>
+                    <th>Comprobante</th>
+                    <th>Fecha</th>
+                    <th>Recibo</th>
+                    <th>Estado</th>
+                    <?php if (($_SESSION['usuario']['rol'] ?? '') === 'Administrador'): ?>
+                    <th class="text-end">Acciones</th>
+                    <?php endif; ?>
+                </tr>
+            </thead>
+            <tbody>
+            <?php if (empty($pagos)): ?>
+                <tr>
+                    <td colspan="9">
+                        <div class="pagos-empty">
+                            <i class="fas fa-receipt"></i>
+                            <p>No hay pagos registrados</p>
+                        </div>
+                    </td>
+                </tr>
+            <?php else: ?>
+                <?php foreach ($pagos as $p):
+                    $colorClass = match($p['estado_pago']) {
+                        'Pagado' => 'success',
+                        'Pendiente' => 'warning',
+                        'Cancelado' => 'danger',
+                        'Reembolsado' => 'info',
+                        'Parcial' => 'secondary',
+                        default => 'secondary'
+                    };
+                    
+                    $iconos = ['Efectivo' => 'fa-money-bill-wave', 'Tarjeta' => 'fa-credit-card', 'QR' => 'fa-qrcode'];
+                    $iconoMetodo = $iconos[$p['metodo_pago']] ?? 'fa-circle';
+                ?>
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <span class="pagos-client-initial">
                                 <?= strtoupper(substr($p['cliente_nombre'] ?? '?', 0, 1)) ?>
                             </span>
-                            <?= htmlspecialchars($p['cliente_nombre'] . ' ' . $p['cliente_paterno']) ?>
-                            <br>
-                            <small class="text-muted"><?= htmlspecialchars($p['cliente_email'] ?? '') ?></small>
-                        </td>
-                        <td>
-                            <small class="text-muted"><?= htmlspecialchars(substr($p['reserva_codigo'] ?? '', 0, 8)) ?>...</small>
-                            <br>
-                            <small><?= htmlspecialchars($p['fechaInicio'] ?? '') ?> → <?= htmlspecialchars($p['fechaFin'] ?? '') ?></small>
-                        </td>
-                        <td class="fw-bold">Bs. <?= number_format($p['monto'], 2) ?></td>
-                        <td>
-                            <?php
-                                $iconos = ['Efectivo' => 'fa-money-bill-wave', 'Tarjeta' => 'fa-credit-card', 'QR' => 'fa-qrcode'];
-                                $icono  = $iconos[$p['metodo_pago']] ?? 'fa-circle';
-                            ?>
-                            <i class="fas <?= $icono ?> me-1 text-muted"></i>
+                            <div>
+                                <div class="pagos-client-name">
+                                    <?= htmlspecialchars($p['cliente_nombre'] . ' ' . $p['cliente_paterno']) ?>
+                                </div>
+                                <div class="pagos-client-email">
+                                    <?= htmlspecialchars($p['cliente_email'] ?? '') ?>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="pagos-reserva-codigo">
+                            <?= htmlspecialchars(substr($p['reserva_codigo'] ?? '', 0, 8)) ?>...
+                        </span>
+                        <div class="pagos-reserva-fechas">
+                            <i class="fas fa-calendar-alt me-1"></i>
+                            <?= htmlspecialchars($p['fechaInicio'] ?? '') ?> → <?= htmlspecialchars($p['fechaFin'] ?? '') ?>
+                        </div>
+                    </td>
+                    <td class="pagos-monto">Bs. <?= number_format($p['monto'], 2) ?></td>
+                    <td>
+                        <span class="pagos-metodo">
+                            <i class="fas <?= $iconoMetodo ?>"></i>
                             <?= htmlspecialchars($p['metodo_pago'] ?? '-') ?>
-                        </td>
-                        <td>
-                            <?php if (!empty($p['comprobante'])): ?>
-                                <?php
-                                    $ext2 = strtolower(pathinfo($p['comprobante'], PATHINFO_EXTENSION));
-                                    $url2 = asset($p['comprobante']);
-                                ?>
-                                <?php if (in_array($ext2, ['jpg','jpeg','png'])): ?>
-                                    <img src="<?= htmlspecialchars($url2) ?>"
-                                         alt="Comprobante"
-                                         style="width:44px;height:44px;object-fit:cover;border-radius:6px;cursor:pointer;border:1px solid #ddd;"
-                                         onclick="verComprobante('<?= htmlspecialchars($url2) ?>')">
-                                <?php else: ?>
-                                    <a href="<?= htmlspecialchars($url2) ?>" target="_blank" class="btn btn-outline-secondary btn-sm">
-                                        <i class="fas fa-file-pdf"></i>
-                                    </a>
-                                <?php endif; ?>
+                        </span>
+                    </td>
+                    <td>
+                        <?php if (!empty($p['comprobante'])): ?>
+                            <?php
+                                $ext2 = strtolower(pathinfo($p['comprobante'], PATHINFO_EXTENSION));
+                                $url2 = asset($p['comprobante']);
+                            ?>
+                            <?php if (in_array($ext2, ['jpg','jpeg','png'])): ?>
+                                <img src="<?= htmlspecialchars($url2) ?>"
+                                     alt="Comprobante"
+                                     class="pagos-comprobante-img"
+                                     onclick="verComprobante('<?= htmlspecialchars($url2) ?>')">
                             <?php else: ?>
-                                <span class="text-muted small">—</span>
+                                <a href="<?= htmlspecialchars($url2) ?>" target="_blank" class="pagos-btn-success" style="padding: 0.4rem 0.75rem;">
+                                    <i class="fas fa-file-pdf"></i>
+                                </a>
                             <?php endif; ?>
-                        </td>
-                        <td>
-                            <small><?= date('d/m/Y H:i', strtotime($p['fechaPago'])) ?></small>
-                        </td>
-                        <td>
-                            <?php if ($p['recibo_numero']): ?>
-                                <span class="badge bg-light text-dark border">
-                                    <i class="fas fa-receipt me-1"></i><?= htmlspecialchars($p['recibo_numero']) ?>
-                                </span>
-                            <?php else: ?>
-                                <span class="text-muted small">—</span>
-                            <?php endif; ?>
-                        </td>
-                        <td>
-                            <span class="badge bg-<?= $color ?>">
-                                <?= htmlspecialchars($p['estado_pago'] ?? '-') ?>
+                        <?php else: ?>
+                            <span class="text-muted small">—</span>
+                        <?php endif; ?>
+                    </td>
+                    <td class="text-muted small">
+                        <i class="far fa-calendar-alt me-1"></i>
+                        <?= date('d/m/Y H:i', strtotime($p['fechaPago'])) ?>
+                    </td>
+                    <td>
+                        <?php if ($p['recibo_numero']): ?>
+                            <span class="pagos-recibo">
+                                <i class="fas fa-receipt"></i>
+                                <?= htmlspecialchars($p['recibo_numero']) ?>
                             </span>
-                        </td>
-                        <?php if (($_SESSION['usuario']['rol'] ?? '') === 'Administrador'): ?>
-                        <td class="text-end">
+                        <?php else: ?>
+                            <span class="text-muted small">—</span>
+                        <?php endif; ?>
+                    </td>
+                    <td>
+                        <span class="pagos-estado-badge <?= $colorClass ?>">
+                            <?= htmlspecialchars($p['estado_pago'] ?? '-') ?>
+                        </span>
+                    </td>
+                    <?php if (($_SESSION['usuario']['rol'] ?? '') === 'Administrador'): ?>
+                    <td class="text-end">
+                        <div class="pagos-actions">
                             <?php if ($p['estado_pago'] === 'Pendiente' && !empty($p['comprobante'])): ?>
                                 <a href="<?= url('admin/pagos/estado') ?>?id=<?= $p['idPago'] ?>&estado=Pagado"
-                                   class="btn btn-success btn-sm me-1"
-                                   onclick="return confirm('¿Aprobar este pago?')">
+                                   class="pagos-btn-icon success"
+                                   onclick="return confirm('¿Aprobar este pago?')"
+                                   title="Aprobar">
                                     <i class="fas fa-check"></i>
                                 </a>
                                 <a href="<?= url('admin/pagos/estado') ?>?id=<?= $p['idPago'] ?>&estado=Cancelado"
-                                   class="btn btn-danger btn-sm"
-                                   onclick="return confirm('¿Rechazar este comprobante?')">
+                                   class="pagos-btn-icon danger"
+                                   onclick="return confirm('¿Rechazar este comprobante?')"
+                                   title="Rechazar">
                                     <i class="fas fa-times"></i>
                                 </a>
                             <?php else: ?>
-                            <div class="dropdown">
-                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
-                                    Estado
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <?php foreach (['Pagado','Pendiente','Cancelado','Reembolsado','Parcial'] as $est): ?>
-                                    <?php if ($est !== $p['estado_pago']): ?>
-                                    <li>
-                                        <a class="dropdown-item" href="<?= url('admin/pagos/estado') ?>?id=<?= $p['idPago'] ?>&estado=<?= urlencode($est) ?>">
-                                            <?= $est ?>
-                                        </a>
-                                    </li>
-                                    <?php endif; ?>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </div>
+                                <div class="dropdown pagos-dropdown">
+                                    <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                        <i class="fas fa-exchange-alt me-1"></i>Estado
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <?php foreach (['Pagado','Pendiente','Cancelado','Reembolsado','Parcial'] as $est): ?>
+                                            <?php if ($est !== $p['estado_pago']): ?>
+                                            <li>
+                                                <a class="dropdown-item" href="<?= url('admin/pagos/estado') ?>?id=<?= $p['idPago'] ?>&estado=<?= urlencode($est) ?>">
+                                                    <?= $est ?>
+                                                </a>
+                                            </li>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
                             <?php endif; ?>
-                        </td>
-                        <?php endif; ?>
-                    </tr>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
+                        </div>
+                    </td>
+                    <?php endif; ?>
+                </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+    <div class="pagos-table-footer" style="padding: 1rem 1.3rem; border-top: 1px solid var(--pagos-border); background: #f8fafc; display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--pagos-muted);">
+        <i class="fas fa-chart-line"></i>
+        Total: <strong><?= count($pagos) ?></strong> pagos registrados
     </div>
 </div>
 
-<!-- Modal ver comprobante -->
-<div class="modal fade" id="modalComprobante" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
+<!-- MODAL COMPROBANTE -->
+<div class="modal fade pagos-modal" id="modalComprobante" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title fw-semibold"><i class="fas fa-image me-2"></i>Comprobante de pago</h6>
+                <h6 class="modal-title">
+                    <i class="fas fa-image me-2" style="color: var(--pagos-accent);"></i>
+                    Comprobante de pago
+                </h6>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body text-center p-2">
-                <img id="imgComprobante" src="" alt="Comprobante" class="img-fluid rounded">
+            <div class="modal-body text-center p-3">
+                <img id="imgComprobante" src="" alt="Comprobante" class="img-fluid rounded" style="max-height: 500px;">
             </div>
         </div>
     </div>

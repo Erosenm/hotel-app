@@ -1,87 +1,183 @@
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h4 class="fw-bold mb-0"><i class="fas fa-plus-circle me-2 text-primary"></i>Nueva Habitación</h4>
-    <a href="<?= url('admin/habitaciones') ?>" class="btn btn-outline-secondary">
-        <i class="fas fa-arrow-left me-2"></i>Volver
+<link rel="stylesheet" href="<?= asset('css/cssAdmin/stylehabitaciones/crear.css') ?>">
+
+<!-- ══ Header ══ -->
+<div class="chb-header">
+    <div class="chb-title">
+        <i class="fas fa-plus-circle"></i>
+        <span>Nueva Habitación</span>
+    </div>
+    <a href="<?= url('admin/habitaciones') ?>" class="chb-btn-back">
+        <i class="fas fa-arrow-left"></i> Volver
     </a>
 </div>
 
-<div class="card border-0 shadow-sm" style="max-width:650px">
-    <div class="card-body p-4">
+<!-- ══ Layout: panel ayuda + formulario ══ -->
+<div class="chb-layout">
+
+    <!-- ── Panel lateral izquierdo ── -->
+    <aside class="chb-sidebar-help">
+
+        <div class="chb-help-icon">
+            <i class="fas fa-door-open"></i>
+        </div>
+        <div class="chb-help-title">Registrar habitación</div>
+        <div class="chb-help-desc">Completa los datos básicos de la habitación para agregarla al sistema.</div>
+
+        <div class="chb-help-divider"></div>
+
+        <!-- Información de tipos -->
+        <div class="chb-help-subtitle"><i class="fas fa-list"></i> Tipos disponibles</div>
+        <div class="chb-info-box">
+            <p class="chb-info-text">Los tipos están predefinidos en el sistema. Cada uno tiene características y precio base diferentes.</p>
+            <div class="chb-type-example">
+                <i class="fas fa-check-circle"></i> Simple
+            </div>
+            <div class="chb-type-example">
+                <i class="fas fa-check-circle"></i> Doble
+            </div>
+            <div class="chb-type-example">
+                <i class="fas fa-check-circle"></i> Suite
+            </div>
+        </div>
+
+        <div class="chb-help-divider"></div>
+
+        <!-- Estados -->
+        <div class="chb-help-subtitle"><i class="fas fa-circle-info"></i> Estados iniciales</div>
+        <div class="chb-status-item green">
+            <span class="chb-status-dot"></span> Disponible
+        </div>
+        <div class="chb-status-item red">
+            <span class="chb-status-dot"></span> Ocupada
+        </div>
+        <div class="chb-status-item gray">
+            <span class="chb-status-dot"></span> Mantenimiento
+        </div>
+
+        <div class="chb-help-divider"></div>
+
+        <div class="chb-help-note">
+            <i class="fas fa-lightbulb"></i>
+            Puedes agregar hasta 5 imágenes por habitación. Las imágenes deben ser PNG, JPG, WEBP o GIF.
+        </div>
+
+    </aside>
+
+    <!-- ── Card del formulario ══ -->
+    <div class="chb-card">
+
         <form action="<?= url('admin/habitaciones/crear') ?>" method="POST" enctype="multipart/form-data">
-            <div class="row g-3">
+            <div class="chb-form">
 
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">N° Habitación *</label>
-                    <input type="text" name="numero" class="form-control" placeholder="Ej: 101" required>
+                <!-- ── Sección: Datos básicos ── -->
+                <div class="chb-section-label">
+                    <i class="fas fa-info-circle"></i> Datos básicos
                 </div>
 
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Piso *</label>
-                    <input type="number" name="piso" class="form-control" placeholder="Ej: 1" min="1" required>
+                <div class="chb-row-2">
+                    <div class="chb-field">
+                        <label class="chb-label">N° Habitación <span class="chb-req">*</span></label>
+                        <div class="chb-input-icon">
+                            <i class="fas fa-door-open"></i>
+                            <input type="text" name="numero" class="chb-input has-icon" placeholder="Ej: 101" required>
+                        </div>
+                    </div>
+                    <div class="chb-field">
+                        <label class="chb-label">Piso <span class="chb-req">*</span></label>
+                        <div class="chb-input-icon">
+                            <i class="fas fa-building"></i>
+                            <input type="number" name="piso" class="chb-input has-icon" placeholder="Ej: 1" min="1" required>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Tipo *</label>
-                    <select name="tipo" class="form-select" required>
-                        <option value="">Seleccionar tipo</option>
-                        <?php foreach ($tipos as $t): ?>
-                            <option value="<?= $t['idTipoHabitacion'] ?>">
-                                <?= htmlspecialchars($t['nombre']) ?> — Bs. <?= number_format($t['precioBase'], 2) ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
+                <div class="chb-row-2">
+                    <div class="chb-field">
+                        <label class="chb-label">Tipo <span class="chb-req">*</span></label>
+                        <div class="chb-input-icon">
+                            <i class="fas fa-door-closed"></i>
+                            <select name="tipo" class="chb-input chb-select has-icon" required>
+                                <option value="">Seleccionar tipo</option>
+                                <?php foreach ($tipos as $t): ?>
+                                    <option value="<?= $t['idTipoHabitacion'] ?>">
+                                        <?= htmlspecialchars($t['nombre']) ?> — Bs. <?= number_format($t['precioBase'], 2) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chb-field">
+                        <label class="chb-label">Estado <span class="chb-req">*</span></label>
+                        <div class="chb-input-icon">
+                            <i class="fas fa-circle-dot"></i>
+                            <select name="estado" class="chb-input chb-select has-icon" required>
+                                <option value="">Seleccionar estado</option>
+                                <?php foreach ($estados as $e): ?>
+                                    <option value="<?= $e['idEstado'] ?>">
+                                        <?= htmlspecialchars($e['nombre']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Estado *</label>
-                    <select name="estado" class="form-select" required>
-                        <option value="">Seleccionar estado</option>
-                        <?php foreach ($estados as $e): ?>
-                            <option value="<?= $e['idEstado'] ?>">
-                                <?= htmlspecialchars($e['nombre']) ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
+                <!-- ── Sección: Imágenes ── -->
+                <div class="chb-section-label" style="margin-top:.5rem">
+                    <i class="fas fa-images"></i> Imágenes de la habitación
                 </div>
 
-                <div class="col-12">
-                    <label class="form-label fw-semibold">
-                        <i class="fas fa-images me-1 text-primary"></i>Imágenes de la habitación
-                        <small class="text-muted fw-normal">(opcional, máx. 5 MB por imagen)</small>
-                    </label>
-                    <input type="file" name="imagenes[]" id="inputImagenes" class="form-control"
-                           accept="image/jpeg,image/png,image/webp,image/gif" multiple>
-                    <div class="form-text">Puedes seleccionar varias imágenes a la vez. Formatos: JPG, PNG, WEBP, GIF.</div>
+                <div class="chb-row-1">
+                    <div class="chb-field">
+                        <label class="chb-label">Seleccionar imágenes <span class="chb-hint">(máx. 5 MB c/u)</span></label>
+                        <div class="chb-file-input-wrap">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <input type="file" name="imagenes[]" id="inputImagenes" class="chb-file-input"
+                                   accept="image/jpeg,image/png,image/webp,image/gif" multiple>
+                            <label for="inputImagenes" class="chb-file-label">
+                                Haz clic para seleccionar o arrastra archivos aquí
+                                <span class="chb-file-formats">JPG • PNG • WEBP • GIF</span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="col-12">
-                    <div id="previewContainer" class="d-flex flex-wrap gap-2 mt-1"></div>
-                </div>
+                <div class="chb-preview-container" id="previewContainer"></div>
 
-                <div class="col-12 pt-2">
-                    <button type="submit" class="btn btn-primary px-4">
-                        <i class="fas fa-save me-2"></i>Guardar Habitación
+                <!-- ── Submit ── -->
+                <div class="chb-submit-row">
+                    <button type="submit" class="chb-btn-submit">
+                        <i class="fas fa-save"></i> Guardar Habitación
                     </button>
+                    <a href="<?= url('admin/habitaciones') ?>" class="chb-btn-cancel">
+                        Cancelar
+                    </a>
                 </div>
 
             </div>
         </form>
     </div>
-</div>
+
+</div><!-- /chb-layout -->
 
 <script>
 document.getElementById('inputImagenes').addEventListener('change', function () {
     const container = document.getElementById('previewContainer');
     container.innerHTML = '';
-    Array.from(this.files).forEach(file => {
+    if (this.files.length === 0) return;
+
+    Array.from(this.files).slice(0, 5).forEach((file, idx) => {
         const reader = new FileReader();
-        reader.onload = e => {
+        reader.onload = function (e) {
             const wrap = document.createElement('div');
-            wrap.style.cssText = 'position:relative;width:100px;height:80px;';
+            wrap.className = 'chb-preview-item';
             const img = document.createElement('img');
             img.src = e.target.result;
-            img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:6px;border:1px solid #dee2e6;';
+            const badge = document.createElement('span');
+            badge.className = 'chb-preview-badge';
+            badge.textContent = idx + 1;
             wrap.appendChild(img);
+            wrap.appendChild(badge);
             container.appendChild(wrap);
         };
         reader.readAsDataURL(file);

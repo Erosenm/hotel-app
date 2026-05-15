@@ -1,0 +1,327 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap');
+
+:root {
+  --prod-form-font: 'Plus Jakarta Sans', sans-serif;
+  --prod-form-mono: 'JetBrains Mono', monospace;
+  --prod-form-accent: #3c50e0;
+  --prod-form-accent-light: #eef2ff;
+  --prod-form-text: #1e293b;
+  --prod-form-sub: #64748b;
+  --prod-form-muted: #94a3b8;
+  --prod-form-border: #e2e8f0;
+  --prod-form-bg: #f8fafc;
+  --prod-form-card: #ffffff;
+  --prod-form-success: #10b981;
+  --prod-form-warning: #f59e0b;
+  --prod-form-danger: #ef4444;
+  --prod-form-info: #8b5cf6;
+  --prod-form-r: 20px;
+  --prod-form-r-sm: 14px;
+  --prod-form-sh: 0 4px 12px rgba(0,0,0,.04);
+  --prod-form-sh2: 0 8px 30px rgba(0,0,0,.08);
+}
+
+/* ── Layout principal ── */
+.prod-form-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* ── Header ── */
+.prod-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.prod-form-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--prod-form-font);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--prod-form-text);
+  letter-spacing: -0.5px;
+}
+
+.prod-form-title i {
+  font-size: 1.3rem;
+  background: linear-gradient(135deg, var(--prod-form-accent) 0%, #2d3fc7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.prod-form-btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.2rem;
+  background: white;
+  border: 2px solid var(--prod-form-border);
+  border-radius: 12px;
+  color: var(--prod-form-sub);
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.prod-form-btn-back:hover {
+  background: var(--prod-form-bg);
+  border-color: var(--prod-form-accent);
+  color: var(--prod-form-accent);
+  transform: translateX(-3px);
+}
+
+/* ── Card del formulario ── */
+.prod-form-card {
+  background: var(--prod-form-card);
+  border: none;
+  border-radius: var(--prod-form-r);
+  box-shadow: var(--prod-form-sh);
+  overflow: hidden;
+  transition: box-shadow 0.3s;
+}
+
+.prod-form-card:hover {
+  box-shadow: var(--prod-form-sh2);
+}
+
+.prod-form-card-body {
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .prod-form-card-body {
+    padding: 1.5rem;
+  }
+}
+
+/* ── Alertas ── */
+.prod-form-alert {
+  border: none;
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+.prod-form-alert-danger {
+  background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
+  border-left: 4px solid var(--prod-form-danger);
+  color: #991b1b;
+}
+
+/* ── Formulario ── */
+.prod-form-group {
+  margin-bottom: 1.5rem;
+}
+
+.prod-form-label {
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--prod-form-sub);
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.prod-form-label i {
+  color: var(--prod-form-accent);
+  font-size: 0.8rem;
+}
+
+.prod-form-label .required {
+  color: var(--prod-form-danger);
+  font-size: 0.7rem;
+}
+
+.prod-form-input,
+.prod-form-textarea,
+.prod-form-select {
+  width: 100%;
+  border: 2px solid var(--prod-form-border);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  font-family: var(--prod-form-font);
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  background: white;
+}
+
+.prod-form-input:focus,
+.prod-form-textarea:focus,
+.prod-form-select:focus {
+  border-color: var(--prod-form-accent);
+  box-shadow: 0 0 0 4px rgba(60, 80, 224, 0.1);
+  outline: none;
+}
+
+.prod-form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Row de campos (2 columnas) */
+.prod-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .prod-form-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* Grupo dentro de row */
+.prod-form-row .prod-form-group {
+  margin-bottom: 0;
+}
+
+/* Campo de stock con info adicional */
+.prod-form-stock-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--prod-form-bg);
+  border-radius: 10px;
+  font-size: 0.7rem;
+  color: var(--prod-form-muted);
+}
+
+.prod-form-stock-info i {
+  margin-right: 0.3rem;
+}
+
+/* Badge de estado (solo visual) */
+.prod-form-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: var(--prod-form-accent-light);
+  color: var(--prod-form-accent);
+  margin-left: 0.5rem;
+}
+
+/* ── Botones ── */
+.prod-form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 2px solid var(--prod-form-border);
+}
+
+.prod-form-btn-primary {
+  background: linear-gradient(135deg, var(--prod-form-accent) 0%, #2d3fc7 100%);
+  border: none;
+  padding: 0.85rem 2rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  box-shadow: 0 4px 14px rgba(60, 80, 224, 0.3);
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+}
+
+.prod-form-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(60, 80, 224, 0.4);
+}
+
+.prod-form-btn-secondary {
+  background: white;
+  border: 2px solid var(--prod-form-border);
+  padding: 0.85rem 2rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--prod-form-sub);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: all 0.2s;
+}
+
+.prod-form-btn-secondary:hover {
+  border-color: var(--prod-form-accent);
+  color: var(--prod-form-accent);
+  transform: translateY(-2px);
+}
+
+/* Separador visual */
+.prod-form-separator {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--prod-form-border), transparent);
+  margin: 1.5rem 0;
+}
+
+/* Campo de precio con moneda */
+.prod-form-price-wrapper {
+  position: relative;
+}
+
+.prod-form-price-wrapper::before {
+  content: 'Bs.';
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--prod-form-muted);
+  font-weight: 600;
+  font-size: 0.85rem;
+  pointer-events: none;
+}
+
+.prod-form-price-wrapper .prod-form-input {
+  padding-left: 3rem;
+}
+
+/* Tooltip ayuda */
+.prod-form-help {
+  font-size: 0.7rem;
+  color: var(--prod-form-muted);
+  margin-top: 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.prod-form-help i {
+  font-size: 0.65rem;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .prod-form-actions {
+    flex-direction: column;
+  }
+  
+  .prod-form-btn-primary,
+  .prod-form-btn-secondary {
+    justify-content: center;
+  }
+}

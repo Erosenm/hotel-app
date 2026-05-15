@@ -2,7 +2,7 @@
 setlocal enabledelayedexpansion
 set DB=hotel_db
 set USER=root
-set MYSQL="C:\xampp\mysql\bin\mysql.exe"
+set MYSQL="J:\XAMPP\mysql\bin\mysql.exe"
 
 echo =====================================
 echo INICIANDO MIGRACION HOTEL

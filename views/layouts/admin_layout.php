@@ -17,7 +17,7 @@
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
     <a class="sidebar-brand" href="<?= url('adminpanel') ?>">
-        <span>🏨 Hotel Admin</span>
+        <span>Hotel Admin</span>
         <button class="sidebar-close" id="sidebarClose" title="Cerrar menú">✕</button>
     </a>
  
