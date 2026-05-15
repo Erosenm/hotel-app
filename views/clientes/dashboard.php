@@ -6,7 +6,7 @@
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
     padding: 50px 40px 40px;
     color: #fff;
-}
+}-->
 .stat-card {
     border-radius: 16px;
     padding: 24px;
@@ -27,10 +27,10 @@
 </style>
 
 <!-- Hero bienvenida -->
-<div class="cliente-hero">
+    <div class="cliente-hero page-top-space">
     <div style="max-width:1200px;margin:0 auto;">
         <p style="color:#a0b4d0;font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px;">Bienvenido de vuelta</p>
-        <h1 style="font-size:2rem;font-weight:700;margin-bottom:4px;"><?= htmlspecialchars($u['nombre']) ?></h1>
+        <h1 style="color:#FFFFFF;font-size:2rem;font-weight:700;margin-bottom:4px;"><?= htmlspecialchars($u['nombre']) ?></h1>
         <p style="color:#a0b4d0;margin:0;">Hotel Real Plaza — Tu espacio de descanso</p>
     </div>
 </div>

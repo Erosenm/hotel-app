@@ -8,12 +8,10 @@
 .barra-pago-fill { height: 100%; border-radius: 10px; background: linear-gradient(90deg, #198754, #20c997); transition: width .4s; }
 </style>
  
-<div style="background:linear-gradient(135deg,#1a1a2e,#0f3460);padding:40px 20px 30px;color:#fff;">
+<div class="page-top-space" style="background:linear-gradient(135deg,#1a1a2e,#0f3460);padding:40px 20px 30px;color:#fff;">
     <div style="max-width:900px;margin:0 auto;">
         <a href="<?= url('cliente/dashboard') ?>" style="color:#a0b4d0;font-size:.85rem;text-decoration:none;">
-            <i class="fas fa-arrow-left me-2"></i>Mi panel
-        </a>
-        <h2 class="fw-bold mt-2 mb-0">Mis Reservas</h2>
+        <h2 class="fw-bold mt-2 mb-0" style = "color: #FFFFFF">Mis Reservas</h2>
         <p style="color:#a0b4d0;">Historial y estado de todas tus reservas</p>
     </div>
 </div>

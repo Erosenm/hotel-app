@@ -13,9 +13,9 @@
 .filtros-bar { background:#fff; border-radius:16px; box-shadow:0 2px 15px rgba(0,0,0,0.08); padding:20px 24px; margin-bottom:30px; }
 </style>
 
-<div style="background:linear-gradient(135deg,#1a1a2e,#0f3460);padding:40px 20px;color:#fff;text-align:center;">
+<div class="page-top-space"  style="background:linear-gradient(135deg,#1a1a2e,#0f3460);padding:40px 20px;color:#fff;text-align:center;">
     <p style="color:#a0b4d0;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;">ALOJAMIENTO</p>
-    <h1 style="font-size:2.2rem;font-weight:700;">Nuestras Habitaciones</h1>
+    <h1 style="font-size:2.2rem;font-weight:700;color:#FFFFFF">Nuestras Habitaciones</h1>
     <p style="color:#a0b4d0;">Encuentra el espacio perfecto para tu estadía</p>
 </div>
 
