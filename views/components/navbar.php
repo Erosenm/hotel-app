@@ -35,24 +35,29 @@ $isClientPage =
 
                 <?php if (in_array($u['rol'], ['Administrador', 'Recepcionista'])): ?>
                     <a href="<?= url('adminpanel') ?>" class="nav-drop-item admin">
-                        🛠 Panel Admin
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>Panel Admin</span>
                     </a>
                 <?php endif; ?>
 
                 <a href="<?= url('cliente/dashboard') ?>" class="nav-drop-item">
-                    🏠 Mi Panel
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Mi Panel</span>
                 </a>
 
                 <a href="<?= url('cliente/reservas') ?>" class="nav-drop-item">
-                    📅 Mis Reservas
+                <i class="fas fa-calendar-check"></i>
+                <span>Mis Reservas</span>
                 </a>
 
                 <a href="<?= url('cliente/perfil') ?>" class="nav-drop-item">
-                    👤 Mi Perfil
+                <i class="fas fa-user-circle"></i>
+                <span>Mi Perfil</span>
                 </a>
 
                 <a href="<?= url('logout') ?>" class="nav-drop-item logout">
-                    🚪 Cerrar sesión
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Cerrar sesión</span>
                 </a>
 
             </div>

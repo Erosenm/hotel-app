@@ -95,7 +95,7 @@ public function store()
         $stmtRol->execute([$rol]);
         $nombreRol = $stmtRol->fetchColumn();
 
-        if (in_array($nombreRol, ['Administrador', 'Recepcionista'])) {
+        if (in_array($nombreRol, ['Administrador', 'Recepcionista', 'Limpieza', 'Mantenimiento', 'Gerente', 'Contador'])) {
             $conn->prepare("
                 INSERT INTO empleado (codigo, cargo, fechaContratacion, salario, idUsuario_FK)
                 VALUES (UUID(), ?, ?, ?, ?)

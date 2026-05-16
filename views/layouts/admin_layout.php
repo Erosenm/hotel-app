@@ -89,6 +89,7 @@
            class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/bitacora') ? 'active' : '' ?>">
             <i class="fas fa-clipboard-list"></i> Bitácora
         </a>
+
         <?php endif; ?>
     </nav>
  

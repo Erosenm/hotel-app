@@ -8,6 +8,6 @@
     <?php include __DIR__ . '/../components/header.php'; ?>
 </head>
 <body style="margin:0; padding:0;">
-    <?= $content ?>
+    <?= $content ?? '' ?>
 </body>
 </html>
