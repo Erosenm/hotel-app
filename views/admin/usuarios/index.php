@@ -1,5 +1,7 @@
 <link rel="stylesheet" href="<?= url('public/css/cssAdmin/styleUsuarios/styleUsuarioindex.css') ?>">
-
+<?php
+$usuarios = $usuarios ?? [];
+?>
 <!-- ═════════ HEADER ═════════ -->
 <div class="ui-page-header">
 
