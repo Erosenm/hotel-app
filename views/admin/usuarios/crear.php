@@ -1,5 +1,9 @@
 <link rel="stylesheet" href="<?= asset('css/cssAdmin/styleUsuarios/CrearUsuario.css') ?>">
 
+<?php
+$roles = $roles ?? [];
+?>
+
 <!-- ══ Header ══ -->
 <div class="cu-header">
     <div class="cu-title">

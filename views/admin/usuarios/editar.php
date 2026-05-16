@@ -1,5 +1,10 @@
 <link rel="stylesheet" href="<?= asset('css/cssAdmin/styleUsuarios/editUsuario.css') ?>">
 
+<?php
+$usuario = $usuario ?? [];
+$roles = $roles ?? [];
+?>
+
 <!-- ══ Header ══ -->
 <div class="eu-header">
     <div class="eu-title">
