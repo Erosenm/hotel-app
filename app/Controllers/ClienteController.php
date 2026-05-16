@@ -271,6 +271,79 @@ class ClienteController
         }
     }
  
+    // GET /cliente/reservas/detalle  →  detalle de reserva con servicios
+    public function detalleReserva()
+    {
+        require_cliente();
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        require __DIR__ . '/../../config/database.php';
+
+        $idReserva = $_GET['id'] ?? null;
+        $idUsuario = $_SESSION['usuario']['id'];
+
+        if (!$idReserva) {
+            header('Location: ' . url('cliente/reservas')); exit();
+        }
+
+        // Verificar que la reserva pertenece al cliente
+        $stmt = $conn->prepare("
+            SELECT r.*,
+                h.numero AS habitacion_numero, h.piso,
+                t.nombre AS tipo_habitacion, t.precioBase,
+                er.nombre AS estado_reserva,
+                (SELECT rutaImagen FROM habitacion_imagen WHERE idHabitacion_FK = h.idHabitacion LIMIT 1) AS imagen
+            FROM reserva r
+            JOIN habitacion h      ON r.idHabitacion_FK     = h.idHabitacion
+            JOIN tipo_habitacion t  ON h.idTipoHabitacion_FK = t.idTipoHabitacion
+            JOIN estado_reserva er ON r.idEstadoReserva_FK  = er.idEstado
+            WHERE r.idReserva = ? AND r.idUsuario_FK = ?
+            LIMIT 1
+        ");
+        $stmt->execute([$idReserva, $idUsuario]);
+        $reserva = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$reserva) {
+            header('Location: ' . url('cliente/reservas')); exit();
+        }
+
+        // Servicios de la reserva
+        $servicios = $conn->prepare("
+            SELECT s.nombre, s.precio, rs.cantidad, rs.precioUnitario,
+                   (rs.cantidad * rs.precioUnitario) AS subtotal
+            FROM reserva_servicio rs
+            JOIN servicio s ON rs.idServicio = s.idServicio
+            WHERE rs.idReserva = ?
+        ");
+        $servicios->execute([$idReserva]);
+        $servicios = $servicios->fetchAll(PDO::FETCH_ASSOC);
+
+        // Pagos de la reserva
+        $pagos = $conn->prepare("
+            SELECT p.monto, p.fechaPago, p.comprobante,
+                   ep.nombre AS estado, mp.nombre AS metodo,
+                   rc.numero AS recibo
+            FROM pago p
+            JOIN estado_pago ep ON p.idEstadoPago_FK = ep.idEstado
+            JOIN metodo_pago mp ON p.idMetodoPago_FK = mp.idMetodoPago
+            LEFT JOIN recibo rc ON rc.idPago_FK = p.idPago
+            WHERE p.idReserva_FK = ?
+            ORDER BY p.fechaPago DESC
+        ");
+        $pagos->execute([$idReserva]);
+        $pagos = $pagos->fetchAll(PDO::FETCH_ASSOC);
+
+        $totalServicios = array_sum(array_column($servicios, 'subtotal'));
+        $totalPagado    = array_sum(array_map(fn($p) => $p['estado'] === 'Pagado' ? $p['monto'] : 0, $pagos));
+        $pendiente      = max(0, $reserva['precioTotal'] - $totalPagado);
+        $noches         = (new DateTime($reserva['fechaInicio']))->diff(new DateTime($reserva['fechaFin']))->days;
+
+        ob_start();
+        include __DIR__ . '/../../views/clientes/detalle_reserva.php';
+        $content = ob_get_clean();
+        $title = "Detalle Reserva | Hotel Real Plaza";
+        include __DIR__ . '/../../views/layouts/app_layout.php';
+    }
+
     public function misReservas()
     {
         require_cliente();

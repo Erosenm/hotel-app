@@ -1,4 +1,18 @@
-<?php if (session_status() === PHP_SESSION_NONE) session_start(); ?>
+<?php
+if (session_status() === PHP_SESSION_NONE) session_start();
+// Badge de comprobantes QR pendientes
+$comprobantes_pendientes = 0;
+try {
+    if (!isset($conn)) require __DIR__ . '/../../config/database.php';
+    $comprobantes_pendientes = $conn->query("
+        SELECT COUNT(*) FROM pago p
+        JOIN estado_pago ep ON p.idEstadoPago_FK = ep.idEstado
+        WHERE ep.nombre = 'Pendiente' AND p.comprobante IS NOT NULL
+    ")->fetchColumn();
+} catch (Exception $e) {
+    $comprobantes_pendientes = 0;
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -17,7 +31,7 @@
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
     <a class="sidebar-brand" href="<?= url('adminpanel') ?>">
-        <span>Hotel Admin</span>
+        <span>🏨 Hotel Admin</span>
         <button class="sidebar-close" id="sidebarClose" title="Cerrar menú">✕</button>
     </a>
  
@@ -53,6 +67,9 @@
         <a href="<?= url('admin/pagos') ?>"
            class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/pagos') ? 'active' : '' ?>">
             <i class="fas fa-credit-card"></i> Pagos
+            <?php if ($comprobantes_pendientes > 0): ?>
+                <span class="badge bg-warning text-dark ms-auto"><?= $comprobantes_pendientes ?></span>
+            <?php endif; ?>
         </a>
  
         <?php if ($_SESSION['usuario']['rol'] === 'Administrador'): ?>
@@ -89,7 +106,6 @@
            class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/bitacora') ? 'active' : '' ?>">
             <i class="fas fa-clipboard-list"></i> Bitácora
         </a>
-
         <?php endif; ?>
     </nav>
  
@@ -103,7 +119,7 @@
 <!-- CONTENIDO -->
 <div class="main-content">
     <div class="top-bar">
-        <div class="d-flex align-items-center gap-3">
+        <div class="d-flex align-items-center">
             <!-- Hamburguesa solo en móvil -->
             <button class="btn-hamburger" id="btnHamburger" title="Abrir menú">
                 <i class="fas fa-bars"></i>
@@ -117,24 +133,24 @@
                 </ol>
             </nav>
         </div>
-        <span class="text-muted">
+        <span class="text-muted" style="font-size:0.85rem">
             <i class="fas fa-clock me-1"></i> <?= date('d/m/Y H:i') ?>
         </span>
     </div>
  
     <!-- Alertas flotantes -->
     <?php if (!empty($_SESSION['success'])): ?>
-        <div class="alert alert-success alert-dismissible alert-floating" role="alert">
+        <div class="alert alert-success alert-dismissible alert-floating">
             <i class="fas fa-check-circle me-2"></i><?= $_SESSION['success'] ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
         <?php unset($_SESSION['success']); ?>
     <?php endif; ?>
  
     <?php if (!empty($_SESSION['error'])): ?>
-        <div class="alert alert-danger alert-dismissible alert-floating" role="alert">
+        <div class="alert alert-danger alert-dismissible alert-floating">
             <i class="fas fa-exclamation-circle me-2"></i><?= $_SESSION['error'] ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
         <?php unset($_SESSION['error']); ?>
     <?php endif; ?>

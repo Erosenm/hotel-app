@@ -412,4 +412,76 @@ class ReservaController
         header('Location: ' . url('admin/reservas')); exit();
     }
 
+
+    // ─── Detalle de reserva ───────────────────────────────────────────────────
+    public function detalle()
+    {
+        require_recepcionista();
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        require __DIR__ . '/../../config/database.php';
+
+        $id = $_GET['id'] ?? null;
+        if (!$id) { header('Location: ' . url('admin/reservas')); exit(); }
+
+        $stmt = $conn->prepare("
+            SELECT r.*,
+                er.nombre    AS estado_reserva,
+                u.nombre     AS cliente_nombre,
+                u.paterno    AS cliente_paterno,
+                u.email      AS cliente_email,
+                h.numero     AS habitacion_numero,
+                h.piso       AS habitacion_piso,
+                t.nombre     AS tipo_habitacion,
+                t.precioBase AS precio_noche
+            FROM reserva r
+            LEFT JOIN estado_reserva er ON r.idEstadoReserva_FK = er.idEstado
+            LEFT JOIN usuario u         ON r.idUsuario_FK       = u.idUsuario
+            LEFT JOIN habitacion h      ON r.idHabitacion_FK    = h.idHabitacion
+            LEFT JOIN tipo_habitacion t ON h.idTipoHabitacion_FK = t.idTipoHabitacion
+            WHERE r.idReserva = ? LIMIT 1
+        ");
+        $stmt->execute([$id]);
+        $reserva = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$reserva) { header('Location: ' . url('admin/reservas')); exit(); }
+
+        // Servicios
+        $svcStmt = $conn->prepare("
+            SELECT s.nombre, rs.cantidad, rs.precioUnitario
+            FROM reserva_servicio rs
+            JOIN servicio s ON rs.idServicio = s.idServicio
+            WHERE rs.idReserva = ?
+        ");
+        $svcStmt->execute([$id]);
+        $servicios = $svcStmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Servicios disponibles para agregar
+        $serviciosDisp = $conn->query("SELECT * FROM servicio ORDER BY nombre")->fetchAll(PDO::FETCH_ASSOC);
+
+        // Pagos
+        $pagoStmt = $conn->prepare("
+            SELECT p.monto, p.fechaPago, p.comprobante,
+                   ep.nombre AS estado, mp.nombre AS metodo,
+                   rc.numero AS recibo
+            FROM pago p
+            JOIN estado_pago ep ON p.idEstadoPago_FK = ep.idEstado
+            JOIN metodo_pago mp ON p.idMetodoPago_FK = mp.idMetodoPago
+            LEFT JOIN recibo rc ON rc.idPago_FK = p.idPago
+            WHERE p.idReserva_FK = ?
+            ORDER BY p.fechaPago DESC
+        ");
+        $pagoStmt->execute([$id]);
+        $pagos = $pagoStmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $totalServicios = array_sum(array_map(fn($s) => $s['cantidad'] * $s['precioUnitario'], $servicios));
+        $totalPagado    = array_sum(array_map(fn($p) => $p['estado'] === 'Pagado' ? $p['monto'] : 0, $pagos));
+        $pendiente      = max(0, $reserva['precioTotal'] - $totalPagado);
+
+        ob_start();
+        include __DIR__ . '/../../views/admin/reservas/detalle.php';
+        $content = ob_get_clean();
+        $title = "Detalle Reserva #$id | Admin";
+        include __DIR__ . '/../../views/layouts/admin_layout.php';
+    }
+
 }

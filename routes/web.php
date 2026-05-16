@@ -70,6 +70,7 @@ return [
     ['method' => 'GET',  'path' => '/admin/reportes',              'target' => 'ReporteController@index'],
 
     // Check-in / Check-out
+    ['method' => 'GET',  'path' => '/admin/reservas/detalle',       'target' => 'ReservaController@detalle'],
     ['method' => 'GET',  'path' => '/admin/reservas/checkin',      'target' => 'ReservaController@checkin'],
     ['method' => 'GET',  'path' => '/admin/reservas/checkout',     'target' => 'ReservaController@checkout'],
     ['method' => 'POST', 'path' => '/admin/reservas/servicio',     'target' => 'ReservaController@agregarServicio'],
@@ -112,4 +113,5 @@ return [
     ['method' => 'GET',  'path' => '/cliente/pagar',              'target' => 'ClienteController@pagar'],
     ['method' => 'POST', 'path' => '/cliente/pagar',              'target' => 'ClienteController@procesarPago'],
     ['method' => 'GET',  'path' => '/cliente/pago/confirmacion',  'target' => 'ClienteController@confirmacionPago'],
+    ['method' => 'GET',  'path' => '/cliente/reservas/detalle',    'target' => 'ClienteController@detalleReserva'],
 ];

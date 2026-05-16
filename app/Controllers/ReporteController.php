@@ -5,7 +5,7 @@ class ReporteController
 {
     public function index()
     {
-        require_admin();
+        require_gerente();
         require __DIR__ . '/../../config/database.php';
 
         $desde = $_GET['desde'] ?? date('Y-m-01');
@@ -80,4 +80,4 @@ class ReporteController
         $title = "Reportes | Admin";
         include __DIR__ . '/../../views/layouts/admin_layout.php';
     }
-}
+} 

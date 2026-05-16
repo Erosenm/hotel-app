@@ -6,6 +6,15 @@ class AdminPanelController
     public function index()
     {
         require_recepcionista();
+        if (session_status() === PHP_SESSION_NONE) session_start();
+
+        // Gerente y Contador solo ven reportes
+        $rolActual = $_SESSION['usuario']['rol'] ?? '';
+        if (in_array($rolActual, ['Gerente', 'Contador'])) {
+            header('Location: ' . url('admin/reportes'));
+            exit();
+        }
+
         require __DIR__ . '/../../config/database.php';
  
         $stmt = $conn->query("
@@ -82,6 +91,43 @@ class AdminPanelController
         ")->fetchAll(PDO::FETCH_ASSOC);
  
         $roles = $conn->query("SELECT idRol, nombre FROM rol")->fetchAll(PDO::FETCH_ASSOC);
+
+        // Ingresos últimos 6 meses para gráfica
+        $ingresos_meses = $conn->query("
+            SELECT DATE_FORMAT(p.fechaPago, '%Y-%m') AS mes,
+                   DATE_FORMAT(p.fechaPago, '%b %Y') AS mes_label,
+                   COALESCE(SUM(p.monto), 0) AS total
+            FROM pago p
+            JOIN estado_pago ep ON p.idEstadoPago_FK = ep.idEstado
+            WHERE ep.nombre = 'Pagado'
+              AND p.fechaPago >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+            GROUP BY mes, mes_label
+            ORDER BY mes ASC
+        ")->fetchAll(PDO::FETCH_ASSOC);
+
+        // Reservas por estado para gráfica torta
+        $reservas_estado = $conn->query("
+            SELECT er.nombre AS estado, COUNT(*) AS total
+            FROM reserva r
+            JOIN estado_reserva er ON r.idEstadoReserva_FK = er.idEstado
+            GROUP BY er.nombre
+        ")->fetchAll(PDO::FETCH_ASSOC);
+
+        // Habitaciones por estado
+        $habitaciones_estado = $conn->query("
+            SELECT eh.nombre AS estado, COUNT(*) AS total
+            FROM habitacion h
+            JOIN estado_habitacion eh ON h.idEstadoHabitacion_FK = eh.idEstado
+            GROUP BY eh.nombre
+        ")->fetchAll(PDO::FETCH_ASSOC);
+
+        // Stock bajo
+        $productos_bajo_stock = $conn->query("
+            SELECT nombre, stock, stockMinimo
+            FROM producto
+            WHERE stock <= stockMinimo AND estado = 'Activo'
+            ORDER BY stock ASC LIMIT 5
+        ")->fetchAll(PDO::FETCH_ASSOC);
  
         ob_start();
         include __DIR__ . '/../../views/admin/dashboard.php';
