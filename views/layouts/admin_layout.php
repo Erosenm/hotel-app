@@ -19,6 +19,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?? 'Admin | Hotel' ?></title>
+    <link rel="icon" type="image/png" href="<?= asset('imgs/logo.jpg') ?>">
     <?php include __DIR__ . '/../components/header.php'; ?>
     <link rel="stylesheet" href="<?= asset('css/cssAdmin/styleAdmin.css') ?>">
     

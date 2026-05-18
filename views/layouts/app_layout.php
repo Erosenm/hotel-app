@@ -9,7 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <head>
     <title><?= $title ?? 'Hotel' ?></title>
     <!-- <link rel="icon" href="/hotel-app/public/img/logo.png"> -->
-    
+    <link rel="icon" type="image/png" href="<?= asset('imgs/logo.jpg') ?>">
     <?php include __DIR__ . '/../components/header.php'; ?>
 
     <?php if (!empty($styles)): ?>
