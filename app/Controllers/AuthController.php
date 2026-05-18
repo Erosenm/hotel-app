@@ -57,6 +57,16 @@ class AuthController
             exit();
         }
 
+        // Verificar bloqueo activo antes de consultar la base de datos
+        $claveHora = 'login_bloqueo_hasta_' . md5($email);
+        if (!empty($_SESSION[$claveHora]) && $_SESSION[$claveHora] > time()) {
+            $restante = $_SESSION[$claveHora] - time();
+            $minutos  = ceil($restante / 60);
+            $_SESSION['error'] = "Demasiados intentos fallidos. Espera {$minutos} minuto(s) para volver a intentar.";
+            header("Location: " . url('login'));
+            exit();
+        }
+
         $stmt = $conn->prepare("
             SELECT u.*, ur.idRol, r.nombre AS rol
             FROM usuario u
@@ -75,10 +85,49 @@ class AuthController
         }
 
         if (!password_verify($password, $usuario['password'])) {
-            $_SESSION['error'] = "Correo o contraseña incorrectos.";
+            // --- Bloqueo por intentos fallidos ---
+            $maxIntentos  = 3;
+            $tiempoEspera = 2 * 60; 
+
+            // Inicializar contadores por email (evita mezclar intentos entre usuarios)
+            $clave = 'login_intentos_' . md5($email);
+            $claveHora = 'login_bloqueo_hasta_' . md5($email);
+
+            if (!isset($_SESSION[$claveHora])) $_SESSION[$claveHora] = 0;
+            if (!isset($_SESSION[$clave]))     $_SESSION[$clave]     = 0;
+
+            // Si ya está bloqueado, verificar si el tiempo expiró
+            if ($_SESSION[$claveHora] > time()) {
+                $restante = $_SESSION[$claveHora] - time();
+                $minutos  = ceil($restante / 60);
+                $_SESSION['error'] = "Demasiados intentos fallidos. Espera {$minutos} minuto(s) para volver a intentar.";
+                header("Location: " . url('login'));
+                exit();
+            }
+
+            // Incrementar contador de intentos
+            $_SESSION[$clave]++;
+
+            $intentosRestantes = $maxIntentos - $_SESSION[$clave];
+
+            if ($_SESSION[$clave] >= $maxIntentos) {
+                // Bloquear y resetear contador para el próximo ciclo
+                $_SESSION[$claveHora] = time() + $tiempoEspera;
+                $_SESSION[$clave]     = 0;
+                $_SESSION['error']    = "Bloqueado por 5 minutos por demasiados intentos fallidos.";
+            } else {
+                $plural = $intentosRestantes === 1 ? "intento" : "intentos";
+                $_SESSION['error'] = "Correo o contraseña incorrectos. Te quedan {$intentosRestantes} {$plural}.";
+            }
+
             header("Location: " . url('login'));
             exit();
         }
+
+        // Si la contraseña es correcta, limpiar contadores de bloqueo
+        $clave     = 'login_intentos_' . md5($email);
+        $claveHora = 'login_bloqueo_hasta_' . md5($email);
+        unset($_SESSION[$clave], $_SESSION[$claveHora]);
 
         if ($usuario['estado'] === 'Suspendido') {
             $_SESSION['error'] = "Tu cuenta ha sido suspendida. Contacta al administrador.";
