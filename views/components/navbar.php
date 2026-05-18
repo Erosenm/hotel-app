@@ -9,10 +9,14 @@ $isClientPage =
     str_contains($current, 'cliente/dashboard') ||
     str_contains($current, 'cliente/reservas') ||
     str_contains($current, 'cliente/perfil') ||
-    str_contains($current, 'habitaciones');
+    str_contains($current, 'habitaciones') ||
+    str_contains($current, 'habitaciones/detalle')||
+    str_contains($current, 'pagar') ||
+    str_contains($current, 'pago/confirmacion')||
+    str_contains($current, 'reservar');
 ?>
 
-<header id="main-header" class="<?= $isClientPage ? 'scrolled' : '' ?>">
+<header  id="main-header" class="<?= $isClientPage ? 'scrolled' : '' ?>">
     <div class="logo">REAL PLAZA HOTEL</div>
 
     <nav>

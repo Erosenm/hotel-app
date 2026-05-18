@@ -7,7 +7,7 @@
 .amenity-item:last-child { border-bottom:none; }
 </style>
 
-<div style="max-width:1100px;margin:0 auto;padding:30px 20px;">
+<div style="max-width:1100px;margin:0 auto;padding:90px 20px;">
     <nav class="mb-4">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="<?= url('/') ?>">Inicio</a></li>

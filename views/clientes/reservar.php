@@ -4,14 +4,14 @@
 .precio-calculo { background:#f8f9fa; border-radius:12px; padding:16px; }
 </style>
 
-<div style="max-width:900px;margin:0 auto;padding:30px 20px;">
-    <nav class="mb-4">
+<div style="max-width:900px;margin:0 auto; padding:40px 20px;">
+  <nav class="mb-4 page-top-space">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="<?= url('/') ?>">Inicio</a></li>
             <li class="breadcrumb-item"><a href="<?= url('habitaciones') ?>">Habitaciones</a></li>
             <li class="breadcrumb-item active">Reservar</li>
         </ol>
-    </nav>
+
 
     <?php if (!empty($_SESSION['error'])): ?>
         <div class="alert alert-danger alert-dismissible fade show">

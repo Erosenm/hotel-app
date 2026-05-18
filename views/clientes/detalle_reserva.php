@@ -7,12 +7,12 @@
 </style>
 
 <!-- Header -->
-<div style="background:linear-gradient(135deg,#1a1a2e,#0f3460);padding:40px 20px 30px;color:#fff;">
+<div class="page-top-space" style="background:linear-gradient(135deg,#1a1a2e,#0f3460);padding:40px 20px 30px;color:#fff;">
     <div style="max-width:860px;margin:0 auto;">
         <a href="<?= url('cliente/reservas') ?>" style="color:#a0b4d0;font-size:.85rem;text-decoration:none;">
-            <i class="fas fa-arrow-left me-2"></i>Mis reservas
+            
         </a>
-        <h2 class="fw-bold mt-2 mb-0">Detalle de Reserva</h2>
+        <h2 style = "color:#FFFFFF;" class="fw-bold mt-2 mb-0">Detalle de Reserva</h2>
         <p style="color:#a0b4d0;">
             Habitación <?= htmlspecialchars($reserva['habitacion_numero']) ?> ·
             <?= date('d/m/Y', strtotime($reserva['fechaInicio'])) ?> →

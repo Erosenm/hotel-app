@@ -22,11 +22,11 @@
 }
 </style>
  
-<div style="background:linear-gradient(135deg,#1a1a2e,#0f3460);padding:50px 20px 40px;color:#fff;text-align:center;">
+<div  class = "page-top-space" style="background:linear-gradient(135deg,#1a1a2e,#0f3460);padding:50px 20px 40px;color:#fff;text-align:center;">
     <div class="check-circle">
         <i class="fas fa-check fa-2x text-white"></i>
     </div>
-    <h2 class="fw-bold mb-1">¡Pago registrado!</h2>
+    <h2 style="color:#fff;" class="fw-bold mb-1">¡Pago registrado!</h2>
     <p style="color:#a0b4d0;max-width:400px;margin:0 auto;">
         Tu pago fue procesado correctamente. Guarda tu número de recibo.
     </p>
