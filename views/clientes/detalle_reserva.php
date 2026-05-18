@@ -1,3 +1,12 @@
+
+<?php
+$reserva = $reserva ?? [];
+$noches = $noches?? [];
+$pendiente = $pendiente ?? [];
+$totalServicios = $totalServicios ?? [];
+$servicios = $servicios ?? [];
+?>
+
 <style>
 .timeline-item { border-left: 2px solid #e9ecef; padding-left: 20px; position: relative; margin-bottom: 16px; }
 .timeline-item::before { content:''; position:absolute; left:-7px; top:4px; width:12px; height:12px; border-radius:50%; background:#0f3460; border:2px solid #fff; box-shadow:0 0 0 2px #0f3460; }
@@ -7,12 +16,12 @@
 </style>
 
 <!-- Header -->
-<div class="page-top-space" style="background:linear-gradient(135deg,#1a1a2e,#0f3460);padding:40px 20px 30px;color:#fff;">
+<div style="background:linear-gradient(135deg,#1a1a2e,#0f3460);padding:40px 20px 30px;color:#fff;">
     <div style="max-width:860px;margin:0 auto;">
         <a href="<?= url('cliente/reservas') ?>" style="color:#a0b4d0;font-size:.85rem;text-decoration:none;">
-            
+            <i class="fas fa-arrow-left me-2"></i>Mis reservas
         </a>
-        <h2 style = "color:#FFFFFF;" class="fw-bold mt-2 mb-0">Detalle de Reserva</h2>
+        <h2 class="fw-bold mt-2 mb-0">Detalle de Reserva</h2>
         <p style="color:#a0b4d0;">
             Habitación <?= htmlspecialchars($reserva['habitacion_numero']) ?> ·
             <?= date('d/m/Y', strtotime($reserva['fechaInicio'])) ?> →
@@ -79,12 +88,16 @@ $badge   = $colores[$reserva['estado_reserva']] ?? 'secondary';
         </div>
 
         <!-- Servicios agregados -->
-        <?php if (!empty($servicios)): ?>
         <div class="card border-0 shadow-sm mb-4">
-            <div class="card-header bg-white border-0 pt-3">
+            <div class="card-header bg-white border-0 pt-3 d-flex justify-content-between align-items-center">
                 <h6 class="fw-semibold mb-0">
                     <i class="fas fa-concierge-bell me-2 text-info"></i>Servicios adicionales
                 </h6>
+                <?php if (in_array($reserva['estado_reserva'], ['Pendiente','Confirmada'])): ?>
+                <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#modalPedirServicio">
+                    <i class="fas fa-plus me-1"></i>Solicitar servicio
+                </button>
+                <?php endif; ?>
             </div>
             <div class="card-body p-0">
                 <table class="table mb-0">
@@ -109,7 +122,26 @@ $badge   = $colores[$reserva['estado_reserva']] ?? 'secondary';
                 </table>
             </div>
         </div>
-        <?php endif; ?>
+
+<?php if (in_array($reserva['estado_reserva'], ['Pendiente','Confirmada'])): ?>
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white border-0 pt-3 d-flex justify-content-between align-items-center">
+            <h6 class="fw-semibold mb-0">
+                <i class="fas fa-concierge-bell me-2 text-info"></i>Servicios adicionales
+            </h6>
+            <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#modalPedirServicio">
+                <i class="fas fa-plus me-1"></i>Solicitar servicio
+            </button>
+        </div>
+        <div class="card-body text-center text-muted py-4">
+            <i class="fas fa-concierge-bell fa-2x mb-2 d-block text-muted opacity-50"></i>
+            No tienes servicios adicionales en esta reserva.<br>
+            <small>Puedes solicitar masajes, desayunos, lavandería y más.</small>
+        </div>
+    </div>
+<?php endif; ?>
+
+       
 
         <!-- Historial de pagos -->
         <?php if (!empty($pagos)): ?>
@@ -214,3 +246,83 @@ $badge   = $colores[$reserva['estado_reserva']] ?? 'secondary';
 
 </div>
 </div>
+
+<!-- Modal solicitar servicio -->
+<div class="modal fade" id="modalPedirServicio" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title fw-semibold">
+                    <i class="fas fa-concierge-bell me-2 text-info"></i>Solicitar Servicio
+                </h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="<?= url('cliente/reservas/servicio') ?>">
+                <input type="hidden" name="idReserva" value="<?= $reserva['idReserva'] ?>">
+                <div class="modal-body">
+                    <p class="text-muted small mb-3">
+                        El servicio será agregado a tu reserva y sumado al total a pagar.
+                    </p>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Servicio <span class="text-danger">*</span></label>
+                        <select name="idServicio" id="selectServicio" class="form-select" required onchange="actualizarPrecio()">
+                            <option value="">— Seleccionar servicio —</option>
+                            <?php foreach ($serviciosDisp as $sv): ?>
+                                <option value="<?= $sv['idServicio'] ?>"
+                                        data-precio="<?= $sv['precio'] ?>">
+                                    <?= htmlspecialchars($sv['nombre']) ?>
+                                    — Bs. <?= number_format($sv['precio'], 2) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Cantidad</label>
+                        <input type="number" name="cantidad" id="cantidadServicio"
+                               class="form-control" min="1" max="10" value="1"
+                               onchange="actualizarPrecio()">
+                    </div>
+
+                    <!-- Preview precio -->
+                    <div id="previewPrecio" class="alert alert-info py-2 d-none">
+                        <div class="d-flex justify-content-between">
+                            <span>Subtotal estimado:</span>
+                            <strong id="txtSubtotal">Bs. 0.00</strong>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning py-2 small">
+                        <i class="fas fa-info-circle me-1"></i>
+                        El monto será añadido al total de tu reserva.
+                        Un recepcionista confirmará la solicitud.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-info text-white">
+                        <i class="fas fa-check me-1"></i>Solicitar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function actualizarPrecio() {
+    const sel      = document.getElementById('selectServicio');
+    const cant     = parseInt(document.getElementById('cantidadServicio').value) || 1;
+    const precio   = parseFloat(sel.options[sel.selectedIndex]?.dataset.precio || 0);
+    const preview  = document.getElementById('previewPrecio');
+    const subtotal = document.getElementById('txtSubtotal');
+
+    if (precio > 0) {
+        preview.classList.remove('d-none');
+        subtotal.textContent = 'Bs. ' + (precio * cant).toFixed(2);
+    } else {
+        preview.classList.add('d-none');
+    }
+}
+</script>

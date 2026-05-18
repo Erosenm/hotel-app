@@ -81,7 +81,8 @@ class PagoController
         ")->fetchAll(PDO::FETCH_ASSOC);
  
         $metodos = $conn->query("SELECT * FROM metodo_pago ORDER BY idMetodoPago")->fetchAll(PDO::FETCH_ASSOC);
- 
+        $preseleccionado = $_GET['idReserva'] ?? null;
+
         ob_start();
         include __DIR__ . '/../../views/admin/pagos/create.php';
         $content = ob_get_clean();

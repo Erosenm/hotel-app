@@ -1,3 +1,8 @@
+
+<?php
+$reservas = $reservas ?? [];
+?>
+
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="fw-bold mb-0">
         <i class="fas fa-plus-circle me-2 text-primary"></i>Registrar Pago
@@ -28,6 +33,7 @@
                     <option value="<?= $r['idReserva'] ?>"
                         data-total="<?= $r['precioTotal'] ?>"
                         data-pagado="<?= $r['monto_pagado'] ?>"
+                        <?= isset($preseleccionado) && $preseleccionado == $r['idReserva'] ? 'selected' : '' ?>"
                         data-pendiente="<?= max(0, $r['precioTotal'] - $r['monto_pagado']) ?>">
                         [<?= htmlspecialchars(substr($r['codigo'], 0, 8)) ?>]
                         <?= htmlspecialchars($r['cliente_nombre'] . ' ' . $r['cliente_paterno']) ?>
@@ -56,4 +62,3 @@
                             <div class="fw-bold text-danger" id="infoPendiente">—</div>
                         </div>
                     </div>
-      

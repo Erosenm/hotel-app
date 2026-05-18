@@ -337,6 +337,9 @@ class ClienteController
         $pendiente      = max(0, $reserva['precioTotal'] - $totalPagado);
         $noches         = (new DateTime($reserva['fechaInicio']))->diff(new DateTime($reserva['fechaFin']))->days;
 
+        // Servicios disponibles para solicitar
+        $serviciosDisp = $conn->query("SELECT * FROM servicio ORDER BY nombre ASC")->fetchAll(PDO::FETCH_ASSOC);
+
         ob_start();
         include __DIR__ . '/../../views/clientes/detalle_reserva.php';
         $content = ob_get_clean();
@@ -637,6 +640,90 @@ class ClienteController
         include __DIR__ . '/../../views/layouts/app_layout.php';
     }
  
+
+    // POST /cliente/reservas/servicio  →  solicitar servicio adicional
+    public function pedirServicio()
+    {
+        require_cliente();
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        require __DIR__ . '/../../config/database.php';
+
+        $idReserva  = $_POST['idReserva']  ?? null;
+        $idServicio = $_POST['idServicio'] ?? null;
+        $cantidad   = (int)($_POST['cantidad'] ?? 1);
+        $idUsuario  = $_SESSION['usuario']['id'];
+
+        if (!$idReserva || !$idServicio || $cantidad < 1) {
+            $_SESSION['error'] = 'Datos incompletos.';
+            header('Location: ' . url('cliente/reservas/detalle?id=' . $idReserva));
+            exit();
+        }
+
+        // Verificar que la reserva pertenece al cliente y está activa
+        $stmt = $conn->prepare("
+            SELECT r.idReserva, er.nombre AS estado
+            FROM reserva r
+            JOIN estado_reserva er ON r.idEstadoReserva_FK = er.idEstado
+            WHERE r.idReserva = ? AND r.idUsuario_FK = ?
+            AND er.nombre IN ('Pendiente', 'Confirmada')
+            LIMIT 1
+        ");
+        $stmt->execute([$idReserva, $idUsuario]);
+        $reserva = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$reserva) {
+            $_SESSION['error'] = 'No puedes agregar servicios a esta reserva.';
+            header('Location: ' . url('cliente/reservas'));
+            exit();
+        }
+
+        // Precio del servicio
+        $precioStmt = $conn->prepare("SELECT precio, nombre FROM servicio WHERE idServicio = ? LIMIT 1");
+        $precioStmt->execute([$idServicio]);
+        $servicio = $precioStmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$servicio) {
+            $_SESSION['error'] = 'Servicio no encontrado.';
+            header('Location: ' . url('cliente/reservas/detalle?id=' . $idReserva));
+            exit();
+        }
+
+        // Insertar o actualizar cantidad
+        $existe = $conn->prepare("SELECT cantidad FROM reserva_servicio WHERE idReserva = ? AND idServicio = ?");
+        $existe->execute([$idReserva, $idServicio]);
+        $existente = $existe->fetch(PDO::FETCH_ASSOC);
+
+        if ($existente) {
+            $conn->prepare("UPDATE reserva_servicio SET cantidad = cantidad + ? WHERE idReserva = ? AND idServicio = ?")
+                 ->execute([$cantidad, $idReserva, $idServicio]);
+        } else {
+            $conn->prepare("INSERT INTO reserva_servicio (idReserva, idServicio, cantidad, precioUnitario) VALUES (?, ?, ?, ?)")
+                 ->execute([$idReserva, $idServicio, $cantidad, $servicio['precio']]);
+        }
+
+        // Actualizar precio total de la reserva
+        $conn->prepare("
+            UPDATE reserva SET precioTotal = (
+                SELECT t.precioBase * DATEDIFF(r2.fechaFin, r2.fechaInicio)
+                FROM reserva r2
+                JOIN habitacion h ON r2.idHabitacion_FK = h.idHabitacion
+                JOIN tipo_habitacion t ON h.idTipoHabitacion_FK = t.idTipoHabitacion
+                WHERE r2.idReserva = ?
+            ) + (
+                SELECT COALESCE(SUM(rs.cantidad * rs.precioUnitario), 0)
+                FROM reserva_servicio rs WHERE rs.idReserva = ?
+            )
+            WHERE idReserva = ?
+        ")->execute([$idReserva, $idReserva, $idReserva]);
+
+        $conn->prepare("INSERT INTO bitacora (accion, idUsuario_FK) VALUES (?, ?)")
+             ->execute(["Cliente solicitó servicio '{$servicio['nombre']}' x{$cantidad} en reserva #$idReserva", $idUsuario]);
+
+        $_SESSION['success'] = "✅ Servicio '{$servicio['nombre']}' agregado correctamente a tu reserva.";
+        header('Location: ' . url('cliente/reservas/detalle?id=' . $idReserva));
+        exit();
+    }
+
     public function perfil()
     {
         require_cliente();
