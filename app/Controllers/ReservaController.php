@@ -317,6 +317,28 @@ class ReservaController
         $id = $_GET['id'] ?? null;
         if (!$id) { header('Location: ' . url('admin/reservas')); exit(); }
 
+        // Verificar si tiene pago pendiente
+        $pagoStmt = $conn->prepare("
+            SELECT
+                r.precioTotal,
+                COALESCE(SUM(CASE WHEN ep.nombre = 'Pagado' THEN p.monto ELSE 0 END), 0) AS pagado,
+                COUNT(CASE WHEN ep.nombre = 'Pendiente' AND p.comprobante IS NOT NULL THEN 1 END) AS comp_pendientes
+            FROM reserva r
+            LEFT JOIN pago p ON p.idReserva_FK = r.idReserva
+            LEFT JOIN estado_pago ep ON p.idEstadoPago_FK = ep.idEstado
+            WHERE r.idReserva = ?
+            GROUP BY r.idReserva
+        ");
+        $pagoStmt->execute([$id]);
+        $pago = $pagoStmt->fetch(PDO::FETCH_ASSOC);
+
+        // Si hay comprobantes QR pendientes de aprobar, avisar
+        if ($pago && $pago['comp_pendientes'] > 0) {
+            $_SESSION['error'] = "⚠️ Esta reserva tiene comprobantes QR pendientes de verificación. Aprueba el pago antes del check-in.";
+            header('Location: ' . url('admin/reservas'));
+            exit();
+        }
+
         // Estado Confirmada → Ocupada (habitación)
         $idEstOcupada = $conn->query("SELECT idEstado FROM estado_habitacion WHERE nombre = 'Ocupada' LIMIT 1")->fetchColumn();
         $conn->prepare("UPDATE habitacion h JOIN reserva r ON r.idHabitacion_FK = h.idHabitacion SET h.idEstadoHabitacion_FK = ? WHERE r.idReserva = ?")

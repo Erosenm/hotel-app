@@ -244,4 +244,39 @@ class HabitacionController
             }
         }
     }
+
+    // ─── Cambiar estado rápido ────────────────────────────────────────────────
+    public function cambiarEstado()
+    {
+        require_recepcionista();
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        require __DIR__ . '/../../config/database.php';
+
+        $id     = $_GET['id']     ?? null;
+        $estado = $_GET['estado'] ?? null;
+        $permitidos = ['Disponible', 'Mantenimiento', 'Limpieza', 'Ocupada', 'Reservada'];
+
+        if (!$id || !in_array($estado, $permitidos)) {
+            header('Location: ' . url('admin/habitaciones')); exit();
+        }
+
+        $idEstado = $conn->prepare("SELECT idEstado FROM estado_habitacion WHERE nombre = ? LIMIT 1");
+        $idEstado->execute([$estado]);
+        $idEstado = $idEstado->fetchColumn();
+
+        if (!$idEstado) {
+            $_SESSION['error'] = 'Estado no válido.';
+            header('Location: ' . url('admin/habitaciones')); exit();
+        }
+
+        $conn->prepare("UPDATE habitacion SET idEstadoHabitacion_FK = ? WHERE idHabitacion = ?")
+             ->execute([$idEstado, $id]);
+
+        $conn->prepare("INSERT INTO bitacora (accion, idUsuario_FK) VALUES (?, ?)")
+             ->execute(["Cambió estado de habitación ID $id a $estado", $_SESSION['usuario']['id']]);
+
+        $_SESSION['success'] = "Estado de habitación actualizado a: $estado";
+        header('Location: ' . url('admin/habitaciones')); exit();
+    }
+
 }

@@ -35,6 +35,7 @@ return [
     ['method' => 'GET',  'path' => '/admin/habitaciones/editar',          'target' => 'HabitacionController@edit'],
     ['method' => 'POST', 'path' => '/admin/habitaciones/editar',          'target' => 'HabitacionController@update'],
     ['method' => 'GET',  'path' => '/admin/habitaciones/imagen/eliminar', 'target' => 'HabitacionController@eliminarImagen'],
+    ['method' => 'GET',  'path' => '/admin/habitaciones/estado',         'target' => 'HabitacionController@cambiarEstado'],
  
     // Reservas
     ['method' => 'GET',  'path' => '/admin/reservas',                  'target' => 'ReservaController@index'],
@@ -114,4 +115,5 @@ return [
     ['method' => 'POST', 'path' => '/cliente/pagar',              'target' => 'ClienteController@procesarPago'],
     ['method' => 'GET',  'path' => '/cliente/pago/confirmacion',  'target' => 'ClienteController@confirmacionPago'],
     ['method' => 'GET',  'path' => '/cliente/reservas/detalle',    'target' => 'ClienteController@detalleReserva'],
+    ['method' => 'POST', 'path' => '/cliente/reservas/servicio',   'target' => 'ClienteController@pedirServicio'],
 ];

@@ -46,7 +46,7 @@ foreach ($routes as $r) {
             exit;
         } else {
             http_response_code(500);
-            echo "Error 500: El controlador {$controller} no existe en app/Controllers.";
+            include __DIR__ . '/500.php';
             exit;
         }
     }
@@ -55,10 +55,6 @@ foreach ($routes as $r) {
 // Si no encuentra ruta
     if (!$routeFound) {
         http_response_code(404);
-        echo "404 - Página no encontrada. (Ruta limpia detectada: '{$path}')";
+        include __DIR__ . '/404.php';
+        exit;
     }
-    // if (!$routeFound) {
-    // http_response_code(404);
-    // include __DIR__ . '/404.php';
-    // exit;
-    // }

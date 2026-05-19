@@ -602,6 +602,7 @@ class ClienteController
                 'monto'     => $monto,
                 'idReserva' => $idReserva,
                 'fecha'     => date('d/m/Y H:i'),
+                'esQR'      => $esQR,
             ];
  
             header("Location: " . url('cliente/pago/confirmacion'));
@@ -762,6 +763,33 @@ class ClienteController
             exit();
         }
  
+        $passwordActual = $_POST['password_actual'] ?? '';
+        $passwordConfirm = $_POST['password_confirm'] ?? '';
+
+        // Validar contraseña si se quiere cambiar
+        if (!empty($password)) {
+            if (strlen($password) < 6) {
+                $_SESSION['error'] = "La nueva contraseña debe tener al menos 6 caracteres.";
+                header("Location: " . url('cliente/perfil')); exit();
+            }
+            if ($password !== $passwordConfirm) {
+                $_SESSION['error'] = "Las contraseñas nuevas no coinciden.";
+                header("Location: " . url('cliente/perfil')); exit();
+            }
+            if (empty($passwordActual)) {
+                $_SESSION['error'] = "Debes ingresar tu contraseña actual para cambiarla.";
+                header("Location: " . url('cliente/perfil')); exit();
+            }
+            // Verificar contraseña actual
+            $hashActual = $conn->prepare("SELECT password FROM usuario WHERE idUsuario = ? LIMIT 1");
+            $hashActual->execute([$idUsuario]);
+            $hashActual = $hashActual->fetchColumn();
+            if (!password_verify($passwordActual, $hashActual)) {
+                $_SESSION['error'] = "La contraseña actual es incorrecta.";
+                header("Location: " . url('cliente/perfil')); exit();
+            }
+        }
+
         try {
             if (!empty($password)) {
                 $hash = password_hash($password, PASSWORD_DEFAULT);

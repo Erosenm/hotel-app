@@ -10,12 +10,12 @@
 .strength-fill { height:100%; border-radius:10px; width:0%; transition:width .4s, background .4s; }
 </style>
 
-<div class="page-top-space" style="background:linear-gradient(135deg,#1a1a2e,#0f3460);padding:40px 20px 30px;color:#fff;">
+<div style="background:linear-gradient(135deg,#1a1a2e,#0f3460);padding:40px 20px 30px;color:#fff;">
     <div style="max-width:700px;margin:0 auto;">
         <a href="<?= url('cliente/dashboard') ?>" style="color:#a0b4d0;font-size:.85rem;text-decoration:none;">
-            
+            <i class="fas fa-arrow-left me-2"></i>Mi panel
         </a>
-        <h2 style=color:#FFFFFF class="fw-bold mt-2 mb-0">Mi Perfil</h2>
+        <h2 class="fw-bold mt-2 mb-0">Mi Perfil</h2>
         <p style="color:#a0b4d0;">Administra tu información personal</p>
     </div>
 </div>
@@ -105,11 +105,15 @@
                 <div class="col-12">
                     <hr class="my-1">
                     <p class="text-muted small mb-2">
-                        <i class="fas fa-lock me-1"></i>Cambiar contraseña (opcional — deja vacío para no cambiar)
+                        <i class="fas fa-lock me-1"></i>Cambiar contraseña <span class="text-muted fw-normal">(opcional)</span>
                     </p>
                 </div>
 
                 <div class="col-md-6">
+                    <label class="form-label fw-semibold">Contraseña actual</label>
+                    <input type="password" name="password_actual" class="form-control mb-3"
+                           placeholder="Ingresa tu contraseña actual">
+
                     <label class="form-label fw-semibold">Nueva contraseña</label>
                     <input type="password" name="password" id="pwInput" class="form-control"
                            placeholder="Mínimo 8 caracteres">
@@ -120,8 +124,8 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold">Confirmar contraseña</label>
-                    <input type="password" id="pwConfirm" class="form-control" placeholder="Repite la contraseña">
+                    <label class="form-label fw-semibold">Confirmar nueva contraseña</label>
+                    <input type="password" name="password_confirm" id="pwConfirm" class="form-control" placeholder="Repite la nueva contraseña">
                     <small id="pwMatch" class="fw-semibold" style="font-size:.75rem;"></small>
                 </div>
 

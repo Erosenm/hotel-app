@@ -32,7 +32,7 @@ try {
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
     <a class="sidebar-brand" href="<?= url('adminpanel') ?>">
-        <span>🏨 Hotel Admin</span>
+        <span>Hotel Admin</span>
         <button class="sidebar-close" id="sidebarClose" title="Cerrar menú">✕</button>
     </a>
  
@@ -97,6 +97,15 @@ try {
         <a href="<?= url('admin/limpieza') ?>"
            class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/limpieza') ? 'active' : '' ?>">
             <i class="fas fa-broom"></i> Limpieza
+            <?php
+            try {
+                $nLimpieza = $conn->query("
+                    SELECT COUNT(*) FROM tarea_limpieza
+                    WHERE estado IN ('Pendiente','En proceso')
+                ")->fetchColumn();
+                if ($nLimpieza > 0) echo '<span class="badge bg-info ms-auto">' . $nLimpieza . '</span>';
+            } catch (Exception $e) {}
+            ?>
         </a>
         <a href="<?= url('admin/perfil') ?>"
            class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/perfil') ? 'active' : '' ?>">
