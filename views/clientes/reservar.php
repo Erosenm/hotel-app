@@ -83,7 +83,7 @@
                 <p style="color:#a0b4d0;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:4px;">
                     <?= htmlspecialchars($habitacion['tipo']) ?>
                 </p>
-                <h4 class="fw-bold mb-1">Habitación <?= htmlspecialchars($habitacion['numero']) ?></h4>
+                <h4 style="color:#fff;" class="fw-bold mb-1">Habitación <?= htmlspecialchars($habitacion['numero']) ?></h4>
                 <p style="color:#a0b4d0;margin-bottom:16px;">Piso <?= $habitacion['piso'] ?></p>
                 <div style="font-size:1.6rem;font-weight:700;">
                     Bs. <?= number_format($habitacion['precio'], 2) ?>
