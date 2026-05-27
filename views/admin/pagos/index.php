@@ -208,10 +208,13 @@ $pendientesQR = array_filter($pagos, fn($p) => $p['estado_pago'] === 'Pendiente'
                     </td>
                     <td>
                         <?php if ($p['recibo_numero']): ?>
-                            <span class="pagos-recibo">
-                                <i class="fas fa-receipt"></i>
+                            <a href="<?= url('recibo/ver?id=' . $p['idRecibo']) ?>"
+                               target="_blank"
+                               class="pagos-recibo text-decoration-none" title="Ver recibo">
+                                <i class="fas fa-receipt me-1"></i>
                                 <?= htmlspecialchars($p['recibo_numero']) ?>
-                            </span>
+                                <i class="fas fa-external-link-alt ms-1" style="font-size:.65rem;opacity:.6;"></i>
+                            </a>
                         <?php else: ?>
                             <span class="text-muted small">—</span>
                         <?php endif; ?>

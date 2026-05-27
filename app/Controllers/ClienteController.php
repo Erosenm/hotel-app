@@ -40,7 +40,34 @@ class ClienteController
         ");
         $totales->execute([$idUsuario]);
         $stats = $totales->fetch(PDO::FETCH_ASSOC);
- 
+
+        // Total gastado
+        $gastadoStmt = $conn->prepare("
+            SELECT COALESCE(SUM(p.monto), 0)
+            FROM pago p
+            JOIN estado_pago ep ON p.idEstadoPago_FK = ep.idEstado
+            JOIN reserva r      ON p.idReserva_FK    = r.idReserva
+            WHERE r.idUsuario_FK = ? AND ep.nombre = 'Pagado'
+        ");
+        $gastadoStmt->execute([$idUsuario]);
+        $stats['total_gastado'] = $gastadoStmt->fetchColumn();
+
+        // Próxima reserva activa
+        $proximaStmt = $conn->prepare("
+            SELECT r.fechaInicio, r.fechaFin, h.numero AS hab_numero,
+                   t.nombre AS tipo, er.nombre AS estado
+            FROM reserva r
+            JOIN habitacion h      ON r.idHabitacion_FK     = h.idHabitacion
+            JOIN tipo_habitacion t  ON h.idTipoHabitacion_FK = t.idTipoHabitacion
+            JOIN estado_reserva er  ON r.idEstadoReserva_FK  = er.idEstado
+            WHERE r.idUsuario_FK = ?
+              AND er.nombre IN ('Pendiente','Confirmada')
+              AND r.fechaInicio >= CURDATE()
+            ORDER BY r.fechaInicio ASC LIMIT 1
+        ");
+        $proximaStmt->execute([$idUsuario]);
+        $proximaReserva = $proximaStmt->fetch(PDO::FETCH_ASSOC);
+
         ob_start();
         include __DIR__ . '/../../views/clientes/dashboard.php';
         $content = ob_get_clean();
@@ -597,12 +624,21 @@ class ClienteController
             $conn->commit();
  
             // Guardar datos del recibo en sesión para mostrarlo
+            // Obtener idRecibo recién creado
+            $idReciboNuevo = null;
+            if (!$esQR) {
+                $rStmt = $conn->prepare("SELECT idRecibo FROM recibo WHERE numero = ? LIMIT 1");
+                $rStmt->execute([$numRecibo]);
+                $idReciboNuevo = $rStmt->fetchColumn();
+            }
+
             $_SESSION['recibo'] = [
                 'numero'    => $numRecibo,
                 'monto'     => $monto,
                 'idReserva' => $idReserva,
                 'fecha'     => date('d/m/Y H:i'),
                 'esQR'      => $esQR,
+                'idRecibo'  => $idReciboNuevo,
             ];
  
             header("Location: " . url('cliente/pago/confirmacion'));

@@ -232,6 +232,26 @@ CREATE TABLE tarea_limpieza (
     FOREIGN KEY (idUsuario_FK) REFERENCES usuario(idUsuario)
 );
  
+ -- =========================
+-- MANTENIMIENTO / INCIDENCIAS
+-- =========================
+ 
+CREATE TABLE incidencia (
+    idIncidencia INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    prioridad ENUM('Baja','Media','Alta','Urgente') DEFAULT 'Media',
+    estado ENUM('Pendiente','En proceso','Resuelta') DEFAULT 'Pendiente',
+    idHabitacion_FK INT DEFAULT NULL,
+    idUsuario_FK INT NOT NULL,
+    idAsignado_FK INT DEFAULT NULL,
+    fechaCreacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    fechaResolucion DATETIME DEFAULT NULL,
+    FOREIGN KEY (idHabitacion_FK) REFERENCES habitacion(idHabitacion),
+    FOREIGN KEY (idUsuario_FK) REFERENCES usuario(idUsuario),
+    FOREIGN KEY (idAsignado_FK) REFERENCES usuario(idUsuario)
+);
+
 -- =========================
 -- RECUPERACIÓN DE CONTRASEÑA
 -- =========================

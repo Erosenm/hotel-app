@@ -79,7 +79,37 @@
                 <div class="text-muted small mt-1">Completadas</div>
             </div>
         </div>
+        <div class="col-6 col-md-3">
+            <div class="stat-card bg-white">
+                <div style="font-size:1.4rem;font-weight:700;color:#c8a96e;">Bs. <?= number_format($stats['total_gastado'] ?? 0, 2) ?></div>
+                <div class="text-muted small mt-1">Total pagado</div>
+            </div>
+        </div>
     </div>
+
+    <!-- Próxima reserva -->
+    <?php if (!empty($proximaReserva)): ?>
+    <div class="card border-0 shadow-sm mb-4" style="border-left:4px solid #c8a96e;border-radius:12px;">
+        <div class="card-body d-flex align-items-center gap-3">
+            <div style="background:#fffbf2;border-radius:12px;padding:14px;">
+                <i class="fas fa-calendar-check fa-2x" style="color:#c8a96e;"></i>
+            </div>
+            <div class="flex-grow-1">
+                <div class="text-muted small">Próxima reserva</div>
+                <div class="fw-bold">Hab. <?= htmlspecialchars($proximaReserva['hab_numero']) ?> — <?= htmlspecialchars($proximaReserva['tipo']) ?></div>
+                <div class="text-muted small">
+                    <i class="fas fa-calendar me-1"></i>
+                    <?= date('d/m/Y', strtotime($proximaReserva['fechaInicio'])) ?> →
+                    <?= date('d/m/Y', strtotime($proximaReserva['fechaFin'])) ?>
+                </div>
+            </div>
+            <span class="badge bg-<?= $proximaReserva['estado'] === 'Confirmada' ? 'success' : 'warning' ?>">
+                <?= $proximaReserva['estado'] ?>
+            </span>
+            <a href="<?= url('cliente/reservas') ?>" class="btn btn-sm btn-outline-primary">Ver</a>
+        </div>
+    </div>
+    <?php endif; ?>
 
     <!-- Acciones rápidas -->
     <div class="row g-3 mb-4">

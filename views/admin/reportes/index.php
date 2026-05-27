@@ -11,18 +11,35 @@
 <div class="card border-0 shadow-sm mb-4">
     <div class="card-body py-3">
         <form method="GET" class="row g-3 align-items-end">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label class="form-label fw-semibold small">Desde</label>
                 <input type="date" name="desde" class="form-control" value="<?= htmlspecialchars($desde) ?>">
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label class="form-label fw-semibold small">Hasta</label>
                 <input type="date" name="hasta" class="form-control" value="<?= htmlspecialchars($hasta) ?>">
             </div>
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <button type="submit" class="btn btn-primary w-100">
                     <i class="fas fa-search me-1"></i>Filtrar
                 </button>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-semibold small">Exportar</label>
+                <div class="d-flex gap-2">
+                    <a href="<?= url('admin/reportes/exportar') ?>?desde=<?= urlencode($desde) ?>&hasta=<?= urlencode($hasta) ?>&tipo=pagos"
+                       class="btn btn-success btn-sm flex-fill" title="Exportar pagos a Excel">
+                        <i class="fas fa-file-excel me-1"></i>Pagos
+                    </a>
+                    <a href="<?= url('admin/reportes/exportar') ?>?desde=<?= urlencode($desde) ?>&hasta=<?= urlencode($hasta) ?>&tipo=reservas"
+                       class="btn btn-info btn-sm flex-fill text-white" title="Exportar reservas a Excel">
+                        <i class="fas fa-file-excel me-1"></i>Reservas
+                    </a>
+                    <a href="<?= url('admin/reportes/exportar') ?>?tipo=inventario"
+                       class="btn btn-warning btn-sm flex-fill" title="Exportar inventario a Excel">
+                        <i class="fas fa-file-excel me-1"></i>Stock
+                    </a>
+                </div>
             </div>
         </form>
     </div>
