@@ -114,7 +114,7 @@ class AuthController
                 // Bloquear y resetear contador para el próximo ciclo
                 $_SESSION[$claveHora] = time() + $tiempoEspera;
                 $_SESSION[$clave]     = 0;
-                $_SESSION['error']    = "Bloqueado por 5 minutos por demasiados intentos fallidos.";
+                $_SESSION['error']    = "Bloqueado por 2 minutos por demasiados intentos fallidos.";
             } else {
                 $plural = $intentosRestantes === 1 ? "intento" : "intentos";
                 $_SESSION['error'] = "Correo o contraseña incorrectos. Te quedan {$intentosRestantes} {$plural}.";

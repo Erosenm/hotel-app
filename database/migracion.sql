@@ -354,6 +354,25 @@ INSERT IGNORE INTO producto (nombre, descripcion, precio, stock, stockMinimo, un
 ('Lavado traje/vestido',  'Lavado en seco traje formal',           50.00,   0,  0, 'prenda',  4),
 -- Transporte
 ('Traslado aeropuerto',   'Traslado ida o vuelta al aeropuerto',  120.00,   0,  0, 'viaje',   5);
+
+-- Habitaciones
+INSERT INTO habitacion (numero, piso, idTipoHabitacion_FK, idEstadoHabitacion_FK) VALUES
+('101', 1, 1, 1),
+('102', 1, 1, 1),
+('201', 2, 2, 1),
+('202', 2, 2, 1),
+('301', 3, 3, 1),
+('401', 4, 4, 1),
+('501', 5, 5, 1);
+
+-- Servicios
+INSERT INTO servicio (nombre, precio) VALUES
+('Room Service - Desayuno', 85.00),
+('Room Service - Almuerzo', 120.00),
+('Room Service - Cena', 150.00),
+('Lavandería', 50.00),
+('Masaje Relajante', 200.00),
+('Transporte Aeropuerto', 180.00);
  
 -- =========================
 -- INDICES

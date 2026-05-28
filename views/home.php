@@ -230,57 +230,6 @@
             });
         });
     </script>
-    <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-$isLoggedIn = isset($_SESSION['usuario']) && !empty($_SESSION['usuario']);
-$nombreReal = $isLoggedIn ? $_SESSION['usuario']['nombre'] : 'Visitante';
-$emailReal  = $isLoggedIn ? $_SESSION['usuario']['email']  : '';
-$usuarioId  = $isLoggedIn ? (string)$_SESSION['usuario']['id'] : '';
-$sessionIdN8N = $isLoggedIn ? 'hotel_real_' . $usuarioId : 'guest_' . session_id();
-
-$jsMetadata = json_encode([
-    'logeado' => $isLoggedIn,
-    'nombre'  => $nombreReal,
-    'email'   => $emailReal,
-    'user_id' => $usuarioId
-]);
-
-$mensajeFinal = $isLoggedIn
-    ? "Hola {$nombreReal}, Bienvenido de nuevo al Hotel Real Plaza. En que puedo ayudarte?"
-    : "Bienvenido al Hotel Real Plaza. Para reservar necesitas iniciar sesion. En que te puedo ayudar?";
-?>
-
-<link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
-<style>
-  :root {
-    --chat--color--primary: #35f939 !important;
-    --chat--toggle--background: #35f939 !important;
-    --chat--header--background: #17c7e6 !important;
-  }
-</style>
-
-<script type="module">
-  import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
-
-  createChat({
-    webhookUrl: 'http://localhost:5678/webhook/35a1c34d-e20b-4be3-8293-22d888afa5fc/chat',
-    showWelcomeScreen: false,
-    allowTextSelection: true,
-    sessionId: '<?php echo $sessionIdN8N; ?>',
-    title: 'Hotel Real Plaza',
-    metadata: <?php echo $jsMetadata; ?>,
-    initialMessages: [<?php echo json_encode($mensajeFinal); ?>],
-    i18n: {
-      en: {
-        welcomeMessage: 'Bienvenido',
-        inputPlaceholder: 'Escribe aqui...'
-      }
-    }
-  });
-</script>
-
+    
 </body>
 </html>

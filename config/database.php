@@ -8,8 +8,7 @@ try {
     $conn = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Depuración en consola del navegador
-    echo "<script>console.log('Conexión a la base de datos exitosa');</script>";
+
 } catch (PDOException $e) {
     // Depuración en consola del navegador con error
     echo "<script>console.error('Error de conexión: " . addslashes($e->getMessage()) . "');</script>";
