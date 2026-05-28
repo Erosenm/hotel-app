@@ -1,4 +1,3 @@
-
 <?php
 $reserva = $reserva ?? [];
 $noches = $noches?? [];
@@ -176,6 +175,19 @@ $badge   = $colores[$reserva['estado_reserva']] ?? 'secondary';
                                 <div class="badge bg-warning text-dark mt-1">
                                     <i class="fas fa-clock me-1"></i>Comprobante en revisión
                                 </div>
+                            <?php endif; ?>
+                            <?php if ($p['estado'] === 'Pagado' && !empty($p['recibo'])): ?>
+                                <?php
+                                // Get idRecibo
+                                $rStmt = $conn->prepare("SELECT idRecibo FROM recibo WHERE numero = ? LIMIT 1");
+                                $rStmt->execute([$p['recibo']]);
+                                $idR = $rStmt->fetchColumn();
+                                if ($idR): ?>
+                                <a href="<?= url('recibo/ver?id=' . $idR) ?>" target="_blank"
+                                   class="btn btn-sm btn-outline-success mt-1">
+                                    <i class="fas fa-file-pdf me-1"></i>Ver recibo
+                                </a>
+                                <?php endif; ?>
                             <?php endif; ?>
                         </div>
                     </div>

@@ -17,6 +17,9 @@ return [
     ['method' => 'GET',  'path' => '/register',            'target' => 'RegisterController@register'],
     ['method' => 'POST', 'path' => '/register',            'target' => 'RegisterController@store'],
  
+    // Recibo
+    ['method' => 'GET',  'path' => '/recibo/ver',  'target' => 'ReciboController@ver'],
+
     // ── ADMIN ──────────────────────────────────────────────
     ['method' => 'GET',  'path' => '/adminpanel',          'target' => 'AdminPanelController@index'],
  
@@ -54,6 +57,12 @@ return [
     ['method' => 'POST', 'path' => '/admin/productos/stock',        'target' => 'ProductoController@ajustarStock'],
     ['method' => 'GET',  'path' => '/admin/productos/eliminar',     'target' => 'ProductoController@delete'],
 
+    // Mantenimiento
+    ['method' => 'GET',  'path' => '/admin/mantenimiento',         'target' => 'MantenimientoController@index'],
+    ['method' => 'POST', 'path' => '/admin/mantenimiento/crear',   'target' => 'MantenimientoController@crear'],
+    ['method' => 'GET',  'path' => '/admin/mantenimiento/estado',  'target' => 'MantenimientoController@estado'],
+    ['method' => 'POST', 'path' => '/admin/mantenimiento/asignar', 'target' => 'MantenimientoController@asignar'],
+
     // Calendario
     ['method' => 'GET',  'path' => '/admin/calendario',            'target' => 'CalendarioController@index'],
 
@@ -69,6 +78,7 @@ return [
 
     // Reportes
     ['method' => 'GET',  'path' => '/admin/reportes',              'target' => 'ReporteController@index'],
+    ['method' => 'GET',  'path' => '/admin/reportes/exportar',      'target' => 'ReporteController@exportarCSV'],
 
     // Check-in / Check-out
     ['method' => 'GET',  'path' => '/admin/reservas/detalle',       'target' => 'ReservaController@detalle'],

@@ -152,7 +152,27 @@ class AuthController
         $conn->prepare("INSERT INTO bitacora (accion, idUsuario_FK) VALUES (?, ?)")
              ->execute(["Inicio de sesión", $usuario['idUsuario']]);
 
-        header("Location: " . url('adminpanel'));
+        // Redirigir según rol
+        $rol = $usuario['rol'] ?? 'Cliente';
+        switch ($rol) {
+            case 'Cliente':
+                header("Location: " . url('cliente/dashboard'));
+                break;
+            case 'Limpieza':
+                header("Location: " . url('admin/limpieza'));
+                break;
+            case 'Mantenimiento':
+                header("Location: " . url('admin/mantenimiento'));
+                break;
+            case 'Gerente':
+            case 'Contador':
+                header("Location: " . url('admin/reportes'));
+                break;
+            default:
+                // Administrador, Recepcionista
+                header("Location: " . url('adminpanel'));
+                break;
+        }
         exit();
     }
 

@@ -41,15 +41,20 @@ try {
         <?= htmlspecialchars($_SESSION['usuario']['rol'] ?? '') ?>
     </div>
  
+    <?php $rolActivo = $_SESSION['usuario']['rol'] ?? ''; ?>
     <nav class="sidebar-nav">
+
+        <?php if (!in_array($rolActivo, ['Limpieza','Mantenimiento','Gerente','Contador'])): ?>
         <div class="sidebar-label">Principal</div>
         <a href="<?= url('adminpanel') ?>"
            class="<?= !str_contains($_SERVER['REQUEST_URI'], 'admin/') && str_contains($_SERVER['REQUEST_URI'], 'adminpanel') ? 'active' : '' ?>">
             <i class="fas fa-tachometer-alt"></i> Dashboard
         </a>
- 
+        <?php endif; ?>
+
+        <?php if (in_array($rolActivo, ['Administrador','Recepcionista'])): ?>
         <div class="sidebar-label">Gestión</div>
-        <?php if ($_SESSION['usuario']['rol'] === 'Administrador'): ?>
+        <?php if ($rolActivo === 'Administrador'): ?>
         <a href="<?= url('admin/usuarios') ?>"
             class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/usuarios') ? 'active' : '' ?>">
             <i class="fas fa-users"></i> Usuarios
@@ -59,12 +64,10 @@ try {
            class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/habitaciones') ? 'active' : '' ?>">
             <i class="fas fa-bed"></i> Habitaciones
         </a>
-        
         <a href="<?= url('admin/reservas') ?>"
            class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/reservas') ? 'active' : '' ?>">
             <i class="fas fa-calendar-check"></i> Reservas
         </a>
- 
         <a href="<?= url('admin/pagos') ?>"
            class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/pagos') ? 'active' : '' ?>">
             <i class="fas fa-credit-card"></i> Pagos
@@ -72,8 +75,14 @@ try {
                 <span class="badge bg-warning text-dark ms-auto"><?= $comprobantes_pendientes ?></span>
             <?php endif; ?>
         </a>
- 
-        <?php if ($_SESSION['usuario']['rol'] === 'Administrador'): ?>
+        <a href="<?= url('admin/calendario') ?>"
+           class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/calendario') ? 'active' : '' ?>">
+            <i class="fas fa-calendar-alt"></i> Calendario
+        </a>
+        <?php endif; ?>
+
+        <?php if ($rolActivo === 'Administrador'): ?>
+        <div class="sidebar-label">Inventario</div>
         <a href="<?= url('admin/productos') ?>"
            class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/productos') ? 'active' : '' ?>">
             <i class="fas fa-box"></i> Productos
@@ -86,37 +95,51 @@ try {
            class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/servicios') ? 'active' : '' ?>">
             <i class="fas fa-concierge-bell"></i> Servicios
         </a>
-        <a href="<?= url('admin/reportes') ?>"
-           class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/reportes') ? 'active' : '' ?>">
-            <i class="fas fa-chart-line"></i> Reportes
-        </a>
-        <a href="<?= url('admin/calendario') ?>"
-           class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/calendario') ? 'active' : '' ?>">
-            <i class="fas fa-calendar-alt"></i> Calendario
-        </a>
+        <?php endif; ?>
+
+        <?php if (in_array($rolActivo, ['Administrador','Recepcionista','Limpieza'])): ?>
+        <div class="sidebar-label">Operaciones</div>
         <a href="<?= url('admin/limpieza') ?>"
            class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/limpieza') ? 'active' : '' ?>">
             <i class="fas fa-broom"></i> Limpieza
             <?php
             try {
-                $nLimpieza = $conn->query("
-                    SELECT COUNT(*) FROM tarea_limpieza
-                    WHERE estado IN ('Pendiente','En proceso')
-                ")->fetchColumn();
+                $nLimpieza = $conn->query("SELECT COUNT(*) FROM tarea_limpieza WHERE estado IN ('Pendiente','En proceso')")->fetchColumn();
                 if ($nLimpieza > 0) echo '<span class="badge bg-info ms-auto">' . $nLimpieza . '</span>';
             } catch (Exception $e) {}
             ?>
         </a>
+        <?php endif; ?>
+
+        <?php if (in_array($rolActivo, ['Administrador','Mantenimiento'])): ?>
+        <a href="<?= url('admin/mantenimiento') ?>"
+           class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/mantenimiento') ? 'active' : '' ?>">
+            <i class="fas fa-tools"></i> Mantenimiento
+        </a>
+        <?php endif; ?>
+
+        <?php if (in_array($rolActivo, ['Administrador','Gerente','Contador'])): ?>
+        <div class="sidebar-label">Análisis</div>
+        <a href="<?= url('admin/reportes') ?>"
+           class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/reportes') ? 'active' : '' ?>">
+            <i class="fas fa-chart-line"></i> Reportes
+        </a>
+        <?php endif; ?>
+
+        <div class="sidebar-label">Mi cuenta</div>
         <a href="<?= url('admin/perfil') ?>"
            class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/perfil') ? 'active' : '' ?>">
             <i class="fas fa-user-circle"></i> Mi Perfil
         </a>
+
+        <?php if ($rolActivo === 'Administrador'): ?>
         <div class="sidebar-label">Sistema</div>
         <a href="<?= url('admin/bitacora') ?>"
            class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/bitacora') ? 'active' : '' ?>">
             <i class="fas fa-clipboard-list"></i> Bitácora
         </a>
         <?php endif; ?>
+
     </nav>
  
     <div class="sidebar-footer">

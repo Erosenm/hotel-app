@@ -82,6 +82,12 @@
  
     <!-- Acciones -->
     <div class="d-flex gap-3 justify-content-center mt-4 flex-wrap">
+        <?php if (!empty($recibo['idRecibo']) && empty($recibo['esQR'])): ?>
+        <a href="<?= url('recibo/ver?id=' . $recibo['idRecibo']) ?>"
+           target="_blank" class="btn btn-success px-4">
+            <i class="fas fa-file-pdf me-2"></i>Ver recibo / Imprimir
+        </a>
+        <?php endif; ?>
         <a href="<?= url('cliente/reservas') ?>" class="btn btn-primary px-4">
             <i class="fas fa-calendar-check me-2"></i>Ver mis reservas
         </a>
