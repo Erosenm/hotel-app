@@ -104,6 +104,34 @@ class ChatbotController
             exit();
         }
 
+        if ($accion === 'pedir_servicio') {
+            $idReserva      = (int)($body['idReserva'] ?? 0) ?: null;
+            $idServicio     = (int)($body['idServicio'] ?? 0) ?: null;
+            $cantidad       = (int)($body['cantidad'] ?? 1);
+
+            if (!$idReserva || !$idServicio) {
+                echo json_encode(['ok' => false, 'error' => 'Faltan datos']);
+                exit();
+            }
+
+            try {
+                $precio = $conn->prepare("SELECT precio FROM servicio WHERE idServicio = ?");
+                $precio->execute([$idServicio]);
+                $precioUnitario = $precio->fetchColumn();
+
+                $conn->prepare("
+                    INSERT INTO reserva_servicio (idReserva, idServicio, cantidad, precioUnitario)
+                    VALUES (?, ?, ?, ?)
+                    ON DUPLICATE KEY UPDATE cantidad = cantidad + ?, precioUnitario = ?
+                ")->execute([$idReserva, $idServicio, $cantidad, $precioUnitario, $cantidad, $precioUnitario]);
+
+                echo json_encode(['ok' => true, 'mensaje' => 'Servicio solicitado correctamente']);
+            } catch (PDOException $e) {
+                echo json_encode(['ok' => false, 'error' => $e->getMessage()]);
+            }
+            exit();
+        }
+
         echo json_encode(['ok' => false, 'error' => 'Accion no reconocida']);
     }
 }

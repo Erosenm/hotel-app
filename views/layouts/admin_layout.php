@@ -122,7 +122,11 @@ try {
         <div class="sidebar-label">Análisis</div>
         <a href="<?= url('admin/reportes') ?>"
            class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/reportes') ? 'active' : '' ?>">
-            <i class="fas fa-chart-line"></i> Reportes
+           <i class="fas fa-chart-line"></i> Reportes
+        </a>
+        <a href="<?= url('admin/ia-chat') ?>"
+            class="<?= str_contains($_SERVER['REQUEST_URI'], 'admin/ia-chat') ? 'active' : '' ?>">
+            <i class="fas fa-robot"></i> IA Chat
         </a>
         <?php endif; ?>
 

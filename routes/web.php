@@ -126,5 +126,8 @@ return [
     ['method' => 'GET',  'path' => '/cliente/pago/confirmacion',  'target' => 'ClienteController@confirmacionPago'],
     ['method' => 'GET',  'path' => '/cliente/reservas/detalle',    'target' => 'ClienteController@detalleReserva'],
     ['method' => 'POST', 'path' => '/cliente/reservas/servicio',   'target' => 'ClienteController@pedirServicio'],
+    
+    // ChatBot
     ['method' => 'POST', 'path' => '/chatbot/reserva', 'target' => 'ChatbotController@handle'],
+    ['method' => 'GET',  'path' => '/admin/ia-chat', 'target' => 'IaChatController@index'],
 ];
