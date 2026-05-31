@@ -71,7 +71,7 @@
     <div class="col-md-4">
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-<?= $cfg['color'] ?> bg-opacity-10 border-0">
-                <h6 class="fw-semibold mb-0 text-<?= $cfg['color'] ?>">
+                <h6 class="fw-semibold mb-0">
                     <i class="fas <?= $cfg['icon'] ?> me-2"></i><?= $estado ?>
                     <span class="badge bg-<?= $cfg['color'] ?> ms-2"><?= count($tareasFiltradas) ?></span>
                 </h6>

@@ -44,7 +44,7 @@ class ReservaController
         include __DIR__ . '/../../views/layouts/admin_layout.php';
     }
 
-    // ─── Formulario nueva reserva ─────────────────────────────────────────────
+    // ─── Formulario nueva reserva 
     public function create()
     {
         require_recepcionista();
@@ -369,6 +369,24 @@ class ReservaController
         $idEstLimpieza = $conn->query("SELECT idEstado FROM estado_habitacion WHERE nombre = 'Limpieza' LIMIT 1")->fetchColumn();
         $conn->prepare("UPDATE habitacion h JOIN reserva r ON r.idHabitacion_FK = h.idHabitacion SET h.idEstadoHabitacion_FK = ? WHERE r.idReserva = ?")
              ->execute([$idEstLimpieza, $id]);
+
+             // Obtener la habitación asociada a la reserva
+            $stmtHab = $conn->prepare("SELECT idHabitacion_FK FROM reserva WHERE idReserva = ? LIMIT 1");
+            $stmtHab->execute([$id]);
+
+            $idHabitacion = $stmtHab->fetchColumn();
+
+            // Evitar tareas duplicadas
+            $existe = $conn->prepare(" SELECT COUNT(*) FROM tarea_limpieza WHERE idHabitacion_FK = ? AND estado IN ('Pendiente', 'En proceso')");
+            $existe->execute([$idHabitacion]);
+
+if ($existe->fetchColumn() == 0) {
+
+    $crear = $conn->prepare("INSERT INTO tarea_limpieza (idHabitacion_FK, estado, observaciones)
+        VALUES ( ?, 'Pendiente', 'Check-out realizado, habitación lista para limpieza.')");
+
+    $crear->execute([$idHabitacion]);
+}
 
         // Reserva → Completada
         $idEstComp = $conn->query("SELECT idEstado FROM estado_reserva WHERE nombre = 'Completada' LIMIT 1")->fetchColumn();
