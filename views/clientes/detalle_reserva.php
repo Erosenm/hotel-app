@@ -4,6 +4,7 @@ $noches = $noches?? [];
 $pendiente = $pendiente ?? [];
 $totalServicios = $totalServicios ?? [];
 $servicios = $servicios ?? [];
+$serviciosDisp = $serviciosDisp ?? [];
 ?>
 
 <style>
@@ -12,6 +13,42 @@ $servicios = $servicios ?? [];
 .timeline-item.success::before { background:#10b981; box-shadow:0 0 0 2px #10b981; }
 .timeline-item.warning::before { background:#f59e0b; box-shadow:0 0 0 2px #f59e0b; }
 .timeline-item.danger::before  { background:#ef4444; box-shadow:0 0 0 2px #ef4444; }
+
+/* Modal servicios mejorado */
+.servicio-card {
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: all .2s;
+    margin-bottom: 10px;
+    background: #fff;
+}
+.servicio-card:hover {
+    border-color: #0dcaf0;
+    background: #f0fdff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(13,202,240,.15);
+}
+.servicio-card.selected {
+    border-color: #0dcaf0;
+    background: #e0f8fd;
+}
+.servicio-card .precio-badge {
+    background: #0dcaf0;
+    color: #fff;
+    border-radius: 20px;
+    padding: 2px 10px;
+    font-size: .8rem;
+    font-weight: 600;
+}
+.modal-servicios-list {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 4px 2px;
+}
+.modal-servicios-list::-webkit-scrollbar { width: 4px; }
+.modal-servicios-list::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
 </style>
 
 <!-- Header -->
@@ -93,12 +130,13 @@ $badge   = $colores[$reserva['estado_reserva']] ?? 'secondary';
                     <i class="fas fa-concierge-bell me-2 text-info"></i>Servicios adicionales
                 </h6>
                 <?php if (in_array($reserva['estado_reserva'], ['Pendiente','Confirmada'])): ?>
-                <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#modalPedirServicio">
+                <button class="btn btn-sm btn-dark px-3" data-bs-toggle="modal" data-bs-target="#modalPedirServicio">
                     <i class="fas fa-plus me-1"></i>Solicitar servicio
                 </button>
                 <?php endif; ?>
             </div>
             <div class="card-body p-0">
+                <?php if (!empty($servicios)): ?>
                 <table class="table mb-0">
                     <thead class="table-light">
                         <tr><th>Servicio</th><th class="text-center">Cant.</th><th class="text-end">Subtotal</th></tr>
@@ -119,28 +157,22 @@ $badge   = $colores[$reserva['estado_reserva']] ?? 'secondary';
                         </tr>
                     </tfoot>
                 </table>
+                <?php else: ?>
+                <div class="text-center text-muted py-4">
+                    <i class="fas fa-concierge-bell fa-2x mb-2 d-block opacity-25"></i>
+                    No tienes servicios adicionales en esta reserva.<br>
+                    <small>Puedes solicitar masajes, desayunos, lavandería y más.</small>
+                    <?php if (in_array($reserva['estado_reserva'], ['Pendiente','Confirmada'])): ?>
+                    <div class="mt-3">
+                        <button class="btn btn-sm btn-dark px-4" data-bs-toggle="modal" data-bs-target="#modalPedirServicio">
+                            <i class="fas fa-plus me-1"></i>Añadir servicio
+                        </button>
+                    </div>
+                    <?php endif; ?>
+                </div>
+                <?php endif; ?>
             </div>
         </div>
-
-<?php if (in_array($reserva['estado_reserva'], ['Pendiente','Confirmada'])): ?>
-    <div class="card border-0 shadow-sm mb-4">
-        <div class="card-header bg-white border-0 pt-3 d-flex justify-content-between align-items-center">
-            <h6 class="fw-semibold mb-0">
-                <i class="fas fa-concierge-bell me-2 text-info"></i>Servicios adicionales
-            </h6>
-            <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#modalPedirServicio">
-                <i class="fas fa-plus me-1"></i>Solicitar servicio
-            </button>
-        </div>
-        <div class="card-body text-center text-muted py-4">
-            <i class="fas fa-concierge-bell fa-2x mb-2 d-block text-muted opacity-50"></i>
-            No tienes servicios adicionales en esta reserva.<br>
-            <small>Puedes solicitar masajes, desayunos, lavandería y más.</small>
-        </div>
-    </div>
-<?php endif; ?>
-
-       
 
         <!-- Historial de pagos -->
         <?php if (!empty($pagos)): ?>
@@ -178,7 +210,6 @@ $badge   = $colores[$reserva['estado_reserva']] ?? 'secondary';
                             <?php endif; ?>
                             <?php if ($p['estado'] === 'Pagado' && !empty($p['recibo'])): ?>
                                 <?php
-                                // Get idRecibo
                                 $rStmt = $conn->prepare("SELECT idRecibo FROM recibo WHERE numero = ? LIMIT 1");
                                 $rStmt->execute([$p['recibo']]);
                                 $idR = $rStmt->fetchColumn();
@@ -236,7 +267,7 @@ $badge   = $colores[$reserva['estado_reserva']] ?? 'secondary';
 
                 <?php if ($pendiente > 0 && in_array($reserva['estado_reserva'], ['Pendiente','Confirmada'])): ?>
                     <a href="<?= url('cliente/pagar?id=' . $reserva['idReserva']) ?>"
-                       class="btn btn-success w-100 mt-3">
+                       class="btn btn-dark w-100 mt-3">
                         <i class="fas fa-credit-card me-2"></i>Pagar ahora
                     </a>
                 <?php elseif ($pendiente == 0): ?>
@@ -259,82 +290,171 @@ $badge   = $colores[$reserva['estado_reserva']] ?? 'secondary';
 </div>
 </div>
 
-<!-- Modal solicitar servicio -->
+<!-- ============================================================
+     MODAL SOLICITAR SERVICIO — mejorado con tarjetas visuales
+     ============================================================ -->
 <div class="modal fade" id="modalPedirServicio" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h6 class="modal-title fw-semibold">
-                    <i class="fas fa-concierge-bell me-2 text-info"></i>Solicitar Servicio
-                </h6>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow">
+
+            <!-- Header -->
+            <div class="modal-header border-0" style="background:linear-gradient(135deg,#1a1a2e,#0f3460);color:#fff;">
+                <div>
+                    <h5 class="modal-title fw-bold mb-0">
+                        <i class="fas fa-concierge-bell me-2"></i>Solicitar Servicio Adicional
+                    </h5>
+                    <p class="mb-0 mt-1" style="font-size:.82rem;color:#a0b4d0;">
+                        Selecciona el servicio que deseas agregar a tu reserva
+                    </p>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
-            <form method="POST" action="<?= url('cliente/reservas/servicio') ?>">
+
+            <form method="POST" action="<?= url('cliente/reservas/servicio') ?>" id="formServicio">
                 <input type="hidden" name="idReserva" value="<?= $reserva['idReserva'] ?>">
-                <div class="modal-body">
-                    <p class="text-muted small mb-3">
-                        El servicio será agregado a tu reserva y sumado al total a pagar.
+                <input type="hidden" name="idServicio" id="hiddenIdServicio" required>
+
+                <div class="modal-body p-4">
+
+                    <?php if (empty($serviciosDisp)): ?>
+                        <div class="text-center text-muted py-4">
+                            <i class="fas fa-box-open fa-2x mb-2 d-block opacity-25"></i>
+                            No hay servicios disponibles en este momento.
+                        </div>
+                    <?php else: ?>
+
+                    <!-- Buscador -->
+                    <div class="mb-3 position-relative">
+                        <i class="fas fa-search position-absolute" style="left:12px;top:50%;transform:translateY(-50%);color:#adb5bd;"></i>
+                        <input type="text" id="buscadorServicio" class="form-control ps-4"
+                               placeholder="Buscar servicio..." oninput="filtrarServicios()">
+                    </div>
+
+                    <!-- Tarjetas de servicios -->
+                    <div class="modal-servicios-list" id="listaServicios">
+                        <?php foreach ($serviciosDisp as $sv): ?>
+                        <div class="servicio-card"
+                             data-id="<?= $sv['idServicio'] ?>"
+                             data-precio="<?= $sv['precio'] ?>"
+                             data-nombre="<?= strtolower(htmlspecialchars($sv['nombre'])) ?>"
+                             onclick="seleccionarServicio(this)">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div style="width:38px;height:38px;background:#e0f8fd;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                                        <i class="fas fa-star text-info"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-semibold" style="font-size:.95rem;"><?= htmlspecialchars($sv['nombre']) ?></div>
+                                        <div class="text-muted" style="font-size:.78rem;">Por unidad</div>
+                                    </div>
+                                </div>
+                                <span class="precio-badge">Bs. <?= number_format($sv['precio'], 2) ?></span>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <p id="sinResultados" class="text-center text-muted d-none py-2">
+                        <i class="fas fa-search me-1"></i>Sin resultados
                     </p>
 
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Servicio <span class="text-danger">*</span></label>
-                        <select name="idServicio" id="selectServicio" class="form-select" required onchange="actualizarPrecio()">
-                            <option value="">— Seleccionar servicio —</option>
-                            <?php foreach ($serviciosDisp as $sv): ?>
-                                <option value="<?= $sv['idServicio'] ?>"
-                                        data-precio="<?= $sv['precio'] ?>">
-                                    <?= htmlspecialchars($sv['nombre']) ?>
-                                    — Bs. <?= number_format($sv['precio'], 2) ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Cantidad</label>
-                        <input type="number" name="cantidad" id="cantidadServicio"
-                               class="form-control" min="1" max="10" value="1"
-                               onchange="actualizarPrecio()">
-                    </div>
-
-                    <!-- Preview precio -->
-                    <div id="previewPrecio" class="alert alert-info py-2 d-none">
-                        <div class="d-flex justify-content-between">
-                            <span>Subtotal estimado:</span>
-                            <strong id="txtSubtotal">Bs. 0.00</strong>
+                    <!-- Cantidad y preview (oculto hasta selección) -->
+                    <div id="detalleSeleccion" class="d-none mt-3">
+                        <hr class="my-3">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-sm-6">
+                                <label class="form-label fw-semibold small text-muted text-uppercase">Cantidad</label>
+                                <div class="input-group">
+                                    <button type="button" class="btn btn-outline-secondary" onclick="cambiarCantidad(-1)">−</button>
+                                    <input type="number" name="cantidad" id="cantidadServicio"
+                                           class="form-control text-center fw-bold" min="1" max="10" value="1"
+                                           oninput="actualizarPrecio()">
+                                    <button type="button" class="btn btn-outline-secondary" onclick="cambiarCantidad(1)">+</button>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="form-label fw-semibold small text-muted text-uppercase">Subtotal estimado</label>
+                                <div class="alert alert-info mb-0 py-2 text-center">
+                                    <strong id="txtSubtotal" class="fs-5">Bs. 0.00</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="alert alert-warning py-2 small mt-3 mb-0">
+                            <i class="fas fa-info-circle me-1"></i>
+                            El monto será añadido al total de tu reserva.
+                            Un recepcionista confirmará la solicitud.
                         </div>
                     </div>
 
-                    <div class="alert alert-warning py-2 small">
-                        <i class="fas fa-info-circle me-1"></i>
-                        El monto será añadido al total de tu reserva.
-                        Un recepcionista confirmará la solicitud.
-                    </div>
+                    <?php endif; ?>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-info text-white">
-                        <i class="fas fa-check me-1"></i>Solicitar
+
+                <?php if (!empty($serviciosDisp)): ?>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-dark px-4" id="btnSolicitar" disabled>
+                        <i class="fas fa-check me-1"></i>Solicitar servicio
                     </button>
                 </div>
+                <?php endif; ?>
             </form>
         </div>
     </div>
 </div>
 
 <script>
-function actualizarPrecio() {
-    const sel      = document.getElementById('selectServicio');
-    const cant     = parseInt(document.getElementById('cantidadServicio').value) || 1;
-    const precio   = parseFloat(sel.options[sel.selectedIndex]?.dataset.precio || 0);
-    const preview  = document.getElementById('previewPrecio');
-    const subtotal = document.getElementById('txtSubtotal');
+let precioSeleccionado = 0;
 
-    if (precio > 0) {
-        preview.classList.remove('d-none');
-        subtotal.textContent = 'Bs. ' + (precio * cant).toFixed(2);
-    } else {
-        preview.classList.add('d-none');
-    }
+function seleccionarServicio(card) {
+    // Deselect all
+    document.querySelectorAll('.servicio-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+
+    const id     = card.dataset.id;
+    const precio = parseFloat(card.dataset.precio);
+
+    document.getElementById('hiddenIdServicio').value = id;
+    precioSeleccionado = precio;
+
+    document.getElementById('detalleSeleccion').classList.remove('d-none');
+    document.getElementById('btnSolicitar').removeAttribute('disabled');
+    document.getElementById('cantidadServicio').value = 1;
+    actualizarPrecio();
 }
+
+function actualizarPrecio() {
+    const cant = parseInt(document.getElementById('cantidadServicio').value) || 1;
+    document.getElementById('txtSubtotal').textContent = 'Bs. ' + (precioSeleccionado * cant).toFixed(2);
+}
+
+function cambiarCantidad(delta) {
+    const input = document.getElementById('cantidadServicio');
+    const val = Math.min(10, Math.max(1, (parseInt(input.value) || 1) + delta));
+    input.value = val;
+    actualizarPrecio();
+}
+
+function filtrarServicios() {
+    const q = document.getElementById('buscadorServicio').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.servicio-card');
+    let visibles = 0;
+    cards.forEach(c => {
+        const match = c.dataset.nombre.includes(q);
+        c.style.display = match ? '' : 'none';
+        if (match) visibles++;
+    });
+    document.getElementById('sinResultados').classList.toggle('d-none', visibles > 0);
+}
+
+// Reset modal al cerrar
+document.getElementById('modalPedirServicio').addEventListener('hidden.bs.modal', function() {
+    document.querySelectorAll('.servicio-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('hiddenIdServicio').value = '';
+    document.getElementById('detalleSeleccion').classList.add('d-none');
+    document.getElementById('btnSolicitar').setAttribute('disabled', true);
+    document.getElementById('buscadorServicio').value = '';
+    filtrarServicios();
+    document.getElementById('cantidadServicio').value = 1;
+    precioSeleccionado = 0;
+});
 </script>

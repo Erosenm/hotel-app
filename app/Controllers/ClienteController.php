@@ -753,9 +753,12 @@ class ClienteController
             WHERE idReserva = ?
         ")->execute([$idReserva, $idReserva, $idReserva]);
 
-        $conn->prepare("INSERT INTO bitacora (accion, idUsuario_FK) VALUES (?, ?)")
-             ->execute(["Cliente solicitó servicio '{$servicio['nombre']}' x{$cantidad} en reserva #$idReserva", $idUsuario]);
-
+       try {
+            $conn->prepare("INSERT INTO bitacora (accion, idUsuario_FK) VALUES (?, ?)")
+                 ->execute(["Cliente solicitó servicio '{$servicio['nombre']}' x{$cantidad} en reserva #$idReserva", $idUsuario]);
+       } catch (PDOException $e) {
+          error_log('Bitacora error: ' . $e->getMessage());
+     }
         $_SESSION['success'] = "✅ Servicio '{$servicio['nombre']}' agregado correctamente a tu reserva.";
         header('Location: ' . url('cliente/reservas/detalle?id=' . $idReserva));
         exit();
