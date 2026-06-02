@@ -204,17 +204,18 @@ class ReservaController
 
             $conn->beginTransaction();
 
-            $conn->prepare("
-                INSERT INTO reserva (fechaInicio, fechaFin, cantidadPersonas, precioTotal, idEstadoReserva_FK, idUsuario_FK, idHabitacion_FK, idEmpleado_FK)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            ")->execute([$fechaInicio, $fechaFin, $personas, $total, $idEstado, $idCliente, $idHabitacion, $idEmpleado]);
+            // Registrar reserva mediante procedimiento
+            $stmt = $conn->prepare("CALL sp_registrar_reserva(?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$fechaInicio, $fechaFin, $personas, $total, $idEstado, $idCliente, $idHabitacion, $idEmpleado]);
 
-            $idReserva = $conn->lastInsertId();
+            $idReserva = $stmt->fetch(PDO::FETCH_ASSOC)['idReserva'];
+            $stmt->closeCursor();
+            
 
             // Marcar habitación como Reservada
-            $idEstHab = $conn->query("SELECT idEstado FROM estado_habitacion WHERE nombre = 'Reservada' LIMIT 1")->fetchColumn();
-            $conn->prepare("UPDATE habitacion SET idEstadoHabitacion_FK = ? WHERE idHabitacion = ?")
-                 ->execute([$idEstHab, $idHabitacion]);
+            //$idEstHab = $conn->query("SELECT idEstado FROM estado_habitacion WHERE nombre = 'Reservada' LIMIT 1")->fetchColumn();
+            // $conn->prepare("UPDATE habitacion SET idEstadoHabitacion_FK = ? WHERE idHabitacion = ?")
+            //    ->execute([$idEstHab, $idHabitacion]);
 
             $conn->prepare("INSERT INTO bitacora (accion, idUsuario_FK) VALUES (?, ?)")
                  ->execute(["Reserva #$idReserva creada por recepcionista para cliente ID $idCliente", $idUsuarioActual]);
