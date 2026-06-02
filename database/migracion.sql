@@ -397,43 +397,166 @@ INSERT INTO servicio (nombre, precio) VALUES
 -- =========================
 -- INDICES
 -- =========================
- 
--- RESERVAS
--- CREATE INDEX idx_reserva_fecha ON reserva(fechaInicio, fechaFin);
--- CREATE INDEX idx_reserva_usuario ON reserva(idUsuario_FK);
--- CREATE INDEX idx_reserva_habitacion ON reserva(idHabitacion_FK);
- 
--- PAGOS
--- CREATE INDEX idx_pago_fecha ON pago(fechaPago);
--- CREATE INDEX idx_pago_reserva ON pago(idReserva_FK);
- 
--- PRODUCTOS
--- CREATE INDEX idx_producto_categoria ON producto(idCategoria_FK);
--- CREATE INDEX idx_producto_estado ON producto(estado);
- 
--- BITACORA
--- CREATE INDEX idx_bitacora_fecha ON bitacora(fechaHora);
--- CREATE INDEX idx_bitacora_usuario ON bitacora(idUsuario_FK);
- 
--- IA
--- CREATE INDEX idx_ia_log_fecha ON ia_log(fecha);
--- CREATE INDEX idx_ia_mensaje_usuario ON ia_mensaje(idUsuario_FK);
- 
--- PASSWORD RESET
--- CREATE INDEX idx_reset_expira ON password_reset(expira);
- 
--- =========================
--- PARTICIONES
--- =========================
- 
--- =========================
--- FUNCIONES
--- =========================
- 
+
+-- Reservas
+
+CREATE INDEX idx_reserva_habitacion
+ON reserva(idHabitacion_FK);
+
+CREATE INDEX idx_reserva_usuario
+ON reserva(idUsuario_FK);
+
+CREATE INDEX idx_reserva_estado
+ON reserva(idEstadoReserva_FK);
+
+-- Pagos
+
+CREATE INDEX idx_pago_reserva
+ON pago(idReserva_FK);
+
+CREATE INDEX idx_pago_estado
+ON pago(idEstadoPago_FK);
+
+CREATE INDEX idx_pago_metodo
+ON pago(idMetodoPago_FK);
+
+
 -- =========================
 -- PROCEDIMIENTOS
 -- =========================
- 
+
+DROP PROCEDURE IF EXISTS sp_registrar_reserva;
+DROP PROCEDURE IF EXISTS sp_registrar_pago;
+
+DELIMITER $$
+
+CREATE PROCEDURE sp_registrar_reserva(
+    IN p_fechaInicio DATE,
+    IN p_fechaFin DATE,
+    IN p_personas INT,
+    IN p_precioTotal DECIMAL(10,2),
+    IN p_estado INT,
+    IN p_usuario INT,
+    IN p_habitacion INT,
+    IN p_empleado INT
+)
+BEGIN
+
+    INSERT INTO reserva(
+        fechaInicio,
+        fechaFin,
+        cantidadPersonas,
+        precioTotal,
+        idEstadoReserva_FK,
+        idUsuario_FK,
+        idHabitacion_FK,
+        idEmpleado_FK
+    )
+    VALUES(
+        p_fechaInicio,
+        p_fechaFin,
+        p_personas,
+        p_precioTotal,
+        p_estado,
+        p_usuario,
+        p_habitacion,
+        p_empleado
+    );
+
+    SELECT LAST_INSERT_ID() AS idReserva;
+
+END$$
+
+
+CREATE PROCEDURE sp_registrar_pago(
+    IN p_monto DECIMAL(10,2),
+    IN p_estado INT,
+    IN p_reserva INT,
+    IN p_metodo INT,
+    IN p_empleado INT
+)
+BEGIN
+
+    INSERT INTO pago(
+        monto,
+        idEstadoPago_FK,
+        idReserva_FK,
+        idMetodoPago_FK,
+        idEmpleado_FK
+    )
+    VALUES(
+        p_monto,
+        p_estado,
+        p_reserva,
+        p_metodo,
+        p_empleado
+    );
+
+    SELECT LAST_INSERT_ID() AS idPago;
+
+END$$
+
+DELIMITER ;
+
 -- =========================
 -- TRIGGERS
 -- =========================
+
+DROP TRIGGER IF EXISTS trg_reserva_habitacion;
+DROP TRIGGER IF EXISTS trg_actualizar_stock;
+DROP TRIGGER IF EXISTS trg_pago_bitacora;
+
+DELIMITER $$
+
+CREATE TRIGGER trg_reserva_habitacion
+AFTER INSERT ON reserva
+FOR EACH ROW
+BEGIN
+
+    IF NEW.idEstadoReserva_FK = 2 THEN
+
+        UPDATE habitacion
+        SET idEstadoHabitacion_FK = 3
+        WHERE idHabitacion = NEW.idHabitacion_FK;
+
+    END IF;
+
+END$$
+
+
+CREATE TRIGGER trg_actualizar_stock
+AFTER INSERT ON reserva_producto
+FOR EACH ROW
+BEGIN
+
+    UPDATE producto
+    SET stock = stock - NEW.cantidad
+    WHERE idProducto = NEW.idProducto;
+
+END$$
+
+
+CREATE TRIGGER trg_pago_bitacora
+AFTER INSERT ON pago
+FOR EACH ROW
+BEGIN
+
+    INSERT INTO bitacora(
+        accion,
+        idUsuario_FK
+    )
+    VALUES(
+        CONCAT(
+            'Pago registrado. ID Pago: ',
+            NEW.idPago,
+            ' | Reserva: ',
+            NEW.idReserva_FK,
+            ' | Monto: ',
+            NEW.monto
+        ),
+        NULL
+    );
+
+END$$
+
+DELIMITER ;
