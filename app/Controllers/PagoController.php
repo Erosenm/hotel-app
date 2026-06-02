@@ -121,13 +121,13 @@ class PagoController
  
             $conn->beginTransaction();
  
-            // Insertar pago
-            $stmt = $conn->prepare("
-                INSERT INTO pago (monto, idEstadoPago_FK, idReserva_FK, idMetodoPago_FK, idEmpleado_FK)
-                VALUES (?, ?, ?, ?, ?)
-            ");
+            // Insertar pago mediante procedimiento
+            $stmt = $conn->prepare("CALL sp_registrar_pago(?, ?, ?, ?, ?)");
             $stmt->execute([$monto, $idEstPagado, $idReserva, $idMetodo, $idEmpleado ?: null]);
-            $idPago = $conn->lastInsertId();
+
+            $idPago = $stmt->fetch(PDO::FETCH_ASSOC)['idPago'];
+
+            $stmt->closeCursor();
  
             // Generar recibo automático
             $numRecibo = 'REC-' . strtoupper(substr(uniqid(), -6));
@@ -157,8 +157,8 @@ class PagoController
             }
  
             // Bitácora
-            $conn->prepare("INSERT INTO bitacora (accion, idUsuario_FK) VALUES (?, ?)")
-                 ->execute(["Registró pago ID $idPago por Bs. $monto en reserva ID $idReserva", $_SESSION['usuario']['id']]);
+           // $conn->prepare("INSERT INTO bitacora (accion, idUsuario_FK) VALUES (?, ?)")
+             //    ->execute(["Registró pago ID $idPago por Bs. $monto en reserva ID $idReserva", $_SESSION['usuario']['id']]);
  
             $conn->commit();
  
