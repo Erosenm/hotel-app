@@ -409,6 +409,10 @@ ON reserva(idUsuario_FK);
 CREATE INDEX idx_reserva_estado
 ON reserva(idEstadoReserva_FK);
 
+CREATE INDEX idx_reserva_fechas
+ON reserva(fechaInicio, fechaFin);
+
+
 -- Pagos
 
 CREATE INDEX idx_pago_reserva
@@ -419,6 +423,16 @@ ON pago(idEstadoPago_FK);
 
 CREATE INDEX idx_pago_metodo
 ON pago(idMetodoPago_FK);
+
+CREATE INDEX idx_pago_estado_fecha
+ON pago(idEstadoPago_FK, fechaPago);
+
+--Recibo
+
+CREATE INDEX idx_recibo_pago
+ON recibo(idPago_FK);
+
+
 
 
 -- =========================
@@ -505,6 +519,8 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS trg_reserva_habitacion;
 DROP TRIGGER IF EXISTS trg_actualizar_stock;
 DROP TRIGGER IF EXISTS trg_pago_bitacora;
+DROP TRIGGER IF EXISTS trg_cancelacion_reserva;
+DROP TRIGGER IF EXISTS trg_reserva_bitacora;
 
 DELIMITER $$
 
@@ -556,6 +572,60 @@ BEGIN
         ),
         NULL
     );
+
+END$$
+
+DELIMITER ;
+
+
+DELIMITER $$
+
+CREATE TRIGGER trg_reserva_bitacora
+AFTER INSERT ON reserva
+FOR EACH ROW
+BEGIN
+
+    INSERT INTO bitacora(
+        accion,
+        idUsuario_FK
+    )
+    VALUES(
+        CONCAT(
+            'Nueva reserva registrada. ID Reserva: ',
+            NEW.idReserva,
+            ' | Habitación: ',
+            NEW.idHabitacion_FK
+        ),
+        NEW.idUsuario_FK
+    );
+
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER trg_cancelacion_reserva
+AFTER UPDATE ON reserva
+FOR EACH ROW
+BEGIN
+
+    IF NEW.idEstadoReserva_FK = 3
+       AND OLD.idEstadoReserva_FK <> 3 THEN
+
+        INSERT INTO bitacora(
+            accion,
+            idUsuario_FK
+        )
+        VALUES(
+            CONCAT(
+                'Reserva cancelada. ID Reserva: ',
+                NEW.idReserva
+            ),
+            NEW.idUsuario_FK
+        );
+
+    END IF;
 
 END$$
 
