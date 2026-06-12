@@ -1,0 +1,504 @@
+/* ============================================================
+   index.css — Gestión de Categorías (Estilo Premium)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap');
+
+:root {
+  --cat-font: 'Plus Jakarta Sans', sans-serif;
+  --cat-mono: 'JetBrains Mono', monospace;
+  --cat-accent: #3c50e0;
+  --cat-accent-light: #eef2ff;
+  --cat-text: #1e293b;
+  --cat-sub: #64748b;
+  --cat-muted: #94a3b8;
+  --cat-border: #e2e8f0;
+  --cat-bg: #f8fafc;
+  --cat-card: #ffffff;
+  --cat-success: #10b981;
+  --cat-warning: #f59e0b;
+  --cat-danger: #ef4444;
+  --cat-info: #8b5cf6;
+  --cat-r: 16px;
+  --cat-r-sm: 12px;
+  --cat-sh: 0 1px 3px rgba(0,0,0,.04), 0 1px 2px rgba(0,0,0,.03);
+  --cat-sh2: 0 8px 24px rgba(0,0,0,.08);
+}
+
+/* ── Header ── */
+.cat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.cat-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--cat-font);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--cat-text);
+  letter-spacing: -.5px;
+}
+
+.cat-title i {
+  color: var(--cat-accent);
+  font-size: 1.3rem;
+}
+
+.cat-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--cat-accent);
+  color: #fff;
+  font-family: var(--cat-font);
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.65rem 1.4rem;
+  border-radius: var(--cat-r-sm);
+  text-decoration: none;
+  transition: all .15s cubic-bezier(.4,0,.2,1);
+  box-shadow: 0 4px 14px rgba(60,80,224,.25);
+  border: none;
+  cursor: pointer;
+}
+
+.cat-btn-primary:hover {
+  background: #2d3fc7;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(60,80,224,.35);
+}
+
+/* ── Alertas ── */
+.cat-alert {
+  border: none;
+  border-radius: var(--cat-r-sm);
+  padding: 1rem 1.25rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+.cat-alert-success {
+  background: linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%);
+  border-left: 4px solid var(--cat-success);
+  color: #065f46;
+}
+
+.cat-alert-danger {
+  background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
+  border-left: 4px solid var(--cat-danger);
+  color: #991b1b;
+}
+
+/* ── Stats Cards (si las hubiera, pero dejamos espacio) ── */
+.cat-stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.cat-stat-card {
+  background: var(--cat-card);
+  border: 1px solid var(--cat-border);
+  border-radius: var(--cat-r);
+  padding: 1.2rem;
+  box-shadow: var(--cat-sh);
+  transition: all 0.2s;
+}
+
+.cat-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--cat-sh2);
+}
+
+/* ── Tabla Premium ── */
+.cat-table-card {
+  background: var(--cat-card);
+  border: 1px solid var(--cat-border);
+  border-radius: var(--cat-r);
+  box-shadow: var(--cat-sh);
+  overflow: hidden;
+  transition: box-shadow .2s;
+}
+
+.cat-table-card:hover {
+  box-shadow: var(--cat-sh2);
+}
+
+.cat-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--cat-font);
+  font-size: 0.875rem;
+}
+
+.cat-table thead tr {
+  background: #f8fafc;
+  border-bottom: 2px solid var(--cat-border);
+}
+
+.cat-table thead th {
+  padding: 1rem 1.2rem;
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--cat-muted);
+}
+
+.cat-table thead th:last-child {
+  text-align: right;
+}
+
+.cat-table tbody tr {
+  border-bottom: 1px solid #f1f5f9;
+  transition: background .12s;
+}
+
+.cat-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.cat-table tbody tr:hover {
+  background: #f8faff;
+}
+
+.cat-table tbody td {
+  padding: 1rem 1.2rem;
+  vertical-align: middle;
+  color: var(--cat-text);
+}
+
+/* Nombre de categoría */
+.cat-nombre {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.cat-nombre-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--cat-accent-light) 0%, #ffffff 100%);
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cat-accent);
+  font-size: 1rem;
+}
+
+.cat-nombre-text {
+  font-weight: 800;
+  color: var(--cat-text);
+}
+
+/* Descripción */
+.cat-descripcion {
+  color: var(--cat-sub);
+  font-size: 0.8rem;
+  max-width: 300px;
+}
+
+.cat-descripcion i {
+  color: var(--cat-muted);
+  margin-right: 0.3rem;
+}
+
+/* Badge de productos */
+.cat-productos-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 30px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.cat-productos-badge.primary {
+  background: var(--cat-accent-light);
+  color: var(--cat-accent);
+}
+
+.cat-productos-badge.secondary {
+  background: #f1f5f9;
+  color: var(--cat-sub);
+}
+
+/* Acciones */
+.cat-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.cat-action-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  text-decoration: none;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.cat-action-btn.primary {
+  background: var(--cat-accent-light);
+  color: var(--cat-accent);
+  border: 1px solid #c7d2fe;
+}
+
+.cat-action-btn.primary:hover {
+  background: var(--cat-accent);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.cat-action-btn.danger {
+  background: #fef2f2;
+  color: var(--cat-danger);
+  border: 1px solid #fee2e2;
+}
+
+.cat-action-btn.danger:hover:not(:disabled) {
+  background: var(--cat-danger);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.cat-action-btn.danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Empty state */
+.cat-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  color: var(--cat-muted);
+  gap: 0.8rem;
+}
+
+.cat-empty i {
+  font-size: 2.4rem;
+  opacity: 0.35;
+}
+
+.cat-empty p {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--cat-sub);
+}
+
+/* Footer de tabla */
+.cat-table-footer {
+  padding: 1rem 1.2rem;
+  border-top: 1px solid var(--cat-border);
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--cat-muted);
+  font-weight: 500;
+}
+
+.cat-table-footer strong {
+  color: var(--cat-text);
+  font-weight: 800;
+}
+
+.cat-table-footer i {
+  color: var(--cat-accent);
+}
+
+/* ============================================================
+   MODALES PREMIUM
+   ============================================================ */
+
+.cat-modal .modal-content {
+  border: none;
+  border-radius: var(--cat-r);
+  overflow: hidden;
+  box-shadow: var(--cat-sh2);
+}
+
+.cat-modal .modal-header {
+  background: linear-gradient(135deg, #f8fafc 0%, white 100%);
+  border-bottom: 2px solid var(--cat-border);
+  padding: 1.25rem 1.5rem;
+}
+
+.cat-modal .modal-title {
+  font-weight: 800;
+  color: var(--cat-text);
+  font-family: var(--cat-font);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cat-modal .modal-title i {
+  color: var(--cat-accent);
+  font-size: 1.1rem;
+}
+
+.cat-modal .modal-body {
+  padding: 1.75rem;
+}
+
+.cat-modal .modal-footer {
+  border-top: 1px solid var(--cat-border);
+  padding: 1rem 1.5rem;
+  background: #fafbfc;
+}
+
+/* Formulario dentro de modales */
+.cat-modal .form-label {
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--cat-sub);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.cat-modal .form-label i {
+  color: var(--cat-accent);
+  font-size: 0.7rem;
+}
+
+.cat-modal .form-control,
+.cat-modal .form-select {
+  border: 2px solid var(--cat-border);
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  font-family: var(--cat-font);
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.cat-modal .form-control:focus,
+.cat-modal .form-select:focus {
+  border-color: var(--cat-accent);
+  box-shadow: 0 0 0 3px rgba(60, 80, 224, 0.1);
+  outline: none;
+}
+
+.cat-modal textarea.form-control {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.cat-modal .btn-secondary {
+  background: white;
+  border: 2px solid var(--cat-border);
+  color: var(--cat-sub);
+  font-weight: 600;
+  padding: 0.5rem 1.25rem;
+  border-radius: 10px;
+  transition: all 0.2s;
+}
+
+.cat-modal .btn-secondary:hover {
+  border-color: var(--cat-accent);
+  color: var(--cat-accent);
+}
+
+.cat-modal .btn-primary {
+  background: linear-gradient(135deg, var(--cat-accent) 0%, #2d3fc7 100%);
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 700;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(60, 80, 224, 0.25);
+}
+
+.cat-modal .btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(60, 80, 224, 0.35);
+}
+
+/* Campo requerido */
+.cat-required {
+  color: var(--cat-danger);
+  font-size: 0.7rem;
+  margin-left: 0.2rem;
+}
+
+/* Tooltip ayuda */
+.cat-help-text {
+  font-size: 0.7rem;
+  color: var(--cat-muted);
+  margin-top: 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.cat-help-text i {
+  font-size: 0.65rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cat-table thead th {
+    font-size: 0.6rem;
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .cat-table tbody td {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .cat-nombre-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+  }
+  
+  .cat-actions {
+    flex-direction: column;
+  }
+  
+  .cat-modal .modal-body {
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .cat-title {
+    font-size: 1.25rem;
+  }
+  
+  .cat-nombre-text {
+    font-size: 0.85rem;
+  }
+  
+  .cat-descripcion {
+    font-size: 0.7rem;
+  }
+}
