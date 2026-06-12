@@ -28,7 +28,7 @@
             <div class="res-stat-icon">
                 <i class="fas fa-calendar"></i>
             </div>
-            <span class="res-stat-emoji">📋</span>
+            <span class="res-stat-emoji"></span>
         </div>
 
         <div class="res-stat-value"><?= $stats['total'] ?></div>
@@ -46,7 +46,7 @@
             <div class="res-stat-icon">
                 <i class="fas fa-clock"></i>
             </div>
-            <span class="res-stat-emoji">⏳</span>
+            <span class="res-stat-emoji"></span>
         </div>
 
         <div class="res-stat-value"><?= $stats['pendientes'] ?></div>
@@ -64,7 +64,7 @@
             <div class="res-stat-icon">
                 <i class="fas fa-check"></i>
             </div>
-            <span class="res-stat-emoji">✅</span>
+            <span class="res-stat-emoji"></span>
         </div>
 
         <div class="res-stat-value"><?= $stats['confirmadas'] ?></div>
@@ -82,7 +82,7 @@
             <div class="res-stat-icon">
                 <i class="fas fa-times"></i>
             </div>
-            <span class="res-stat-emoji">❌</span>
+            <span class="res-stat-emoji"></span>
         </div>
 
         <div class="res-stat-value"><?= $stats['canceladas'] ?></div>

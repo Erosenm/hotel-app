@@ -1,0 +1,345 @@
+/* ============================================================
+   form.css — Crear/Editar Servicio (Estilo Premium)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap');
+
+:root {
+  --serv-font: 'Plus Jakarta Sans', sans-serif;
+  --serv-mono: 'JetBrains Mono', monospace;
+  --serv-accent: #3c50e0;
+  --serv-accent-light: #eef2ff;
+  --serv-text: #1e293b;
+  --serv-sub: #64748b;
+  --serv-muted: #94a3b8;
+  --serv-border: #e2e8f0;
+  --serv-bg: #f8fafc;
+  --serv-card: #ffffff;
+  --serv-success: #10b981;
+  --serv-warning: #f59e0b;
+  --serv-danger: #ef4444;
+  --serv-info: #8b5cf6;
+  --serv-r: 20px;
+  --serv-r-sm: 14px;
+  --serv-sh: 0 4px 12px rgba(0,0,0,.04);
+  --serv-sh2: 0 8px 30px rgba(0,0,0,.08);
+  --serv-sh3: 0 20px 40px -12px rgba(0,0,0,.15);
+}
+
+/* ── Layout principal ── */
+.serv-form-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* ── Header ── */
+.serv-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.serv-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--serv-font);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--serv-text);
+  letter-spacing: -0.5px;
+}
+
+.serv-title i {
+  font-size: 1.3rem;
+  background: linear-gradient(135deg, var(--serv-accent) 0%, #2d3fc7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.serv-btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1.2rem;
+  background: white;
+  border: 2px solid var(--serv-border);
+  border-radius: 12px;
+  color: var(--serv-sub);
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.serv-btn-back:hover {
+  background: var(--serv-bg);
+  border-color: var(--serv-accent);
+  color: var(--serv-accent);
+  transform: translateX(-3px);
+}
+
+/* ── Alertas ── */
+.serv-alert {
+  border: none;
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+.serv-alert-danger {
+  background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
+  border-left: 4px solid var(--serv-danger);
+  color: #991b1b;
+}
+
+/* ── Card del formulario ── */
+.serv-card {
+  background: var(--serv-card);
+  border: none;
+  border-radius: var(--serv-r);
+  box-shadow: var(--serv-sh);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.serv-card:hover {
+  box-shadow: var(--serv-sh2);
+  transform: translateY(-2px);
+}
+
+.serv-card-header {
+  background: linear-gradient(135deg, #fafbfc 0%, #ffffff 100%);
+  border-bottom: 2px solid var(--serv-border);
+  padding: 1.25rem 1.75rem;
+}
+
+.serv-card-header h3 {
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  color: var(--serv-text);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.serv-card-header h3 i {
+  color: var(--serv-accent);
+  font-size: 1rem;
+}
+
+.serv-card-body {
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .serv-card-body {
+    padding: 1.5rem;
+  }
+}
+
+/* ── Formulario ── */
+.serv-form-group {
+  margin-bottom: 1.75rem;
+}
+
+.serv-form-label {
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--serv-sub);
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.serv-form-label i {
+  color: var(--serv-accent);
+  font-size: 0.8rem;
+  width: 18px;
+}
+
+.serv-form-label .required {
+  color: var(--serv-danger);
+  font-size: 0.7rem;
+  margin-left: 0.2rem;
+}
+
+.serv-form-input {
+  width: 100%;
+  border: 2px solid var(--serv-border);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  font-family: var(--serv-font);
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  background: white;
+}
+
+.serv-form-input:focus {
+  border-color: var(--serv-accent);
+  box-shadow: 0 0 0 4px rgba(60, 80, 224, 0.1);
+  outline: none;
+}
+
+.serv-form-input::placeholder {
+  color: var(--serv-muted);
+  font-size: 0.85rem;
+}
+
+/* Campo de precio con moneda */
+.serv-price-wrapper {
+  position: relative;
+}
+
+.serv-price-wrapper::before {
+  content: 'Bs.';
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--serv-muted);
+  font-weight: 700;
+  font-size: 0.85rem;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.serv-price-wrapper .serv-form-input {
+  padding-left: 3rem;
+}
+
+/* Tooltip ayuda */
+.serv-help-text {
+  font-size: 0.7rem;
+  color: var(--serv-muted);
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.serv-help-text i {
+  font-size: 0.65rem;
+  color: var(--serv-accent);
+}
+
+/* ── Separador visual ── */
+.serv-separator {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--serv-border), transparent);
+  margin: 1.5rem 0;
+}
+
+/* ── Botones ── */
+.serv-form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.serv-btn-primary {
+  background: linear-gradient(135deg, var(--serv-accent) 0%, #2d3fc7 100%);
+  border: none;
+  padding: 0.85rem 2rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  box-shadow: 0 4px 14px rgba(60, 80, 224, 0.3);
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+}
+
+.serv-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(60, 80, 224, 0.4);
+}
+
+.serv-btn-primary i {
+  font-size: 0.9rem;
+}
+
+.serv-btn-secondary {
+  background: white;
+  border: 2px solid var(--serv-border);
+  padding: 0.85rem 2rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--serv-sub);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: all 0.2s;
+}
+
+.serv-btn-secondary:hover {
+  border-color: var(--serv-accent);
+  color: var(--serv-accent);
+  transform: translateY(-2px);
+}
+
+/* ── Vista previa (opcional) ── */
+.serv-preview {
+  background: linear-gradient(135deg, var(--serv-bg) 0%, #ffffff 100%);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-top: 1.5rem;
+  border: 1px dashed var(--serv-border);
+  text-align: center;
+}
+
+.serv-preview p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--serv-muted);
+}
+
+.serv-preview strong {
+  color: var(--serv-accent);
+  font-weight: 800;
+}
+
+/* ── Responsive ── */
+@media (max-width: 576px) {
+  .serv-title {
+    font-size: 1.25rem;
+  }
+  
+  .serv-form-actions {
+    flex-direction: column;
+  }
+  
+  .serv-btn-primary,
+  .serv-btn-secondary {
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .serv-card-header {
+    padding: 1rem 1.25rem;
+  }
+  
+  .serv-form-input {
+    padding: 0.7rem 0.9rem;
+  }
+  
+  .serv-price-wrapper::before {
+    left: 0.9rem;
+  }
+}

@@ -1,0 +1,578 @@
+/* ============================================================
+   index.css — Mantenimiento (Estilo Premium con Barras)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap');
+
+:root {
+  --mant-font: 'Plus Jakarta Sans', sans-serif;
+  --mant-mono: 'JetBrains Mono', monospace;
+  --mant-accent: #3c50e0;
+  --mant-accent-light: #eef2ff;
+  --mant-text: #1e293b;
+  --mant-sub: #64748b;
+  --mant-muted: #94a3b8;
+  --mant-border: #e2e8f0;
+  --mant-bg: #f8fafc;
+  --mant-card: #ffffff;
+  --mant-danger: #ef4444;
+  --mant-danger-light: #fef2f2;
+  --mant-warning: #f59e0b;
+  --mant-warning-light: #fffbeb;
+  --mant-info: #06b6d4;
+  --mant-info-light: #ecfeff;
+  --mant-success: #10b981;
+  --mant-success-light: #ecfdf5;
+  --mant-secondary: #64748b;
+  --mant-secondary-light: #f1f5f9;
+  --mant-radius: 16px;
+  --mant-radius-sm: 12px;
+  --mant-sh: 0 1px 3px rgba(0,0,0,.04), 0 1px 2px rgba(0,0,0,.03);
+  --mant-sh2: 0 8px 24px rgba(0,0,0,.08);
+}
+
+/* ── HEADER ── */
+.mant-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.mant-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--mant-font);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--mant-text);
+  letter-spacing: -.5px;
+}
+
+.mant-title i {
+  color: var(--mant-accent);
+  font-size: 1.3rem;
+}
+
+.mant-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--mant-accent);
+  color: #fff;
+  font-family: var(--mant-font);
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.65rem 1.4rem;
+  border-radius: var(--mant-radius-sm);
+  border: none;
+  transition: all .15s cubic-bezier(.4,0,.2,1);
+  box-shadow: 0 4px 14px rgba(60,80,224,.25);
+  cursor: pointer;
+}
+
+.mant-btn-primary:hover {
+  background: #2d3fc7;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(60,80,224,.35);
+}
+
+/* ── ALERTAS PREMIUM ── */
+.mant-alert {
+  border-radius: var(--mant-radius-sm);
+  padding: 1rem 1.25rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  background: white;
+  border-left: 4px solid;
+}
+
+.mant-alert-success {
+  background: linear-gradient(135deg, var(--mant-success-light) 0%, #ffffff 100%);
+  border-left-color: var(--mant-success);
+  color: #065f46;
+}
+
+.mant-alert-danger {
+  background: linear-gradient(135deg, var(--mant-danger-light) 0%, #ffffff 100%);
+  border-left-color: var(--mant-danger);
+  color: #991b1b;
+}
+
+.mant-alert-warning {
+  background: linear-gradient(135deg, var(--mant-warning-light) 0%, #ffffff 100%);
+  border-left-color: var(--mant-warning);
+  color: #92400e;
+}
+
+/* ══ STATS CARDS PREMIUM CON BARRAS ══ */
+.mant-stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 1100px) {
+  .mant-stats-row { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+}
+
+@media (max-width: 640px) {
+  .mant-stats-row { grid-template-columns: 1fr; gap: 0.9rem; }
+}
+
+.mant-stat-card {
+  background: var(--mant-card);
+  border: 1px solid var(--mant-border);
+  border-radius: var(--mant-radius);
+  padding: 1.4rem 1.2rem 1.2rem;
+  box-shadow: var(--mant-sh);
+  position: relative;
+  overflow: hidden;
+  transition: transform .18s cubic-bezier(.4,0,.2,1), box-shadow .18s;
+}
+
+.mant-stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--mant-sh2);
+}
+
+.mant-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  border-radius: var(--mant-radius) var(--mant-radius) 0 0;
+  background: var(--_accent);
+}
+
+.mant-stat-card.total        { --_accent: #64748b; --_ibg: #f1f5f9; --_ic: #64748b; }
+.mant-stat-card.pendientes   { --_accent: #f59e0b; --_ibg: #fffbeb; --_ic: #f59e0b; }
+.mant-stat-card.enproceso    { --_accent: #06b6d4; --_ibg: #ecfeff; --_ic: #06b6d4; }
+.mant-stat-card.resueltas    { --_accent: #10b981; --_ibg: #ecfdf5; --_ic: #10b981; }
+
+.mant-stat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+}
+
+.mant-stat-icon {
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  background: var(--_ibg);
+  color: var(--_ic);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+}
+
+.mant-stat-emoji {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.mant-stat-value {
+  font-family: var(--mant-font);
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--mant-text);
+  line-height: 1;
+  letter-spacing: -1.5px;
+  margin-bottom: 0.15rem;
+}
+
+.mant-stat-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--mant-muted);
+  margin-bottom: 0.9rem;
+}
+
+.mant-stat-bar-track {
+  height: 5px;
+  background: #f1f5f9;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 0.45rem;
+}
+
+.mant-stat-bar-fill {
+  height: 100%;
+  border-radius: 10px;
+  background: var(--_accent);
+  transition: width .6s ease;
+}
+
+.mant-stat-pct {
+  font-size: 0.7rem;
+  color: var(--mant-muted);
+  font-family: var(--mant-font);
+  font-weight: 600;
+}
+
+/* ══ KANBAN COLUMNAS ══ */
+.mant-kanban {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+@media (max-width: 900px) {
+  .mant-kanban {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mant-column {
+  background: var(--mant-card);
+  border: 1px solid var(--mant-border);
+  border-radius: var(--mant-radius);
+  overflow: hidden;
+  box-shadow: var(--mant-sh);
+  transition: all 0.2s;
+}
+
+.mant-column:hover {
+  box-shadow: var(--mant-sh2);
+}
+
+.mant-column-header {
+  padding: 1rem 1.2rem;
+  border-bottom: 2px solid var(--mant-border);
+  background: #fafbfc;
+}
+
+.mant-column-header h6 {
+  font-size: 0.85rem;
+  font-weight: 800;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mant-column-badge {
+  background: #e2e8f0;
+  color: var(--mant-sub);
+  padding: 0.2rem 0.6rem;
+  border-radius: 30px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-left: auto;
+}
+
+.mant-column-body {
+  padding: 1rem;
+  min-height: 320px;
+  background: #ffffff;
+}
+
+/* ── TARJETAS DE INCIDENCIAS ── */
+.mant-card {
+  background: white;
+  border: 1px solid var(--mant-border);
+  border-radius: var(--mant-radius-sm);
+  margin-bottom: 0.9rem;
+  padding: 1rem;
+  transition: all 0.15s;
+}
+
+.mant-card:hover {
+  border-color: var(--mant-accent);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transform: translateY(-2px);
+}
+
+.mant-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.mant-card-title {
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: var(--mant-text);
+  flex: 1;
+}
+
+.mant-prioridad-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.mant-prioridad-badge.baja     { background: #f1f5f9; color: #475569; }
+.mant-prioridad-badge.media    { background: #dbeafe; color: #1d4ed8; }
+.mant-prioridad-badge.alta     { background: #fed7aa; color: #c2410c; }
+.mant-prioridad-badge.urgente  { background: #fee2e2; color: #dc2626; }
+
+.mant-card-room {
+  font-size: 0.7rem;
+  color: var(--mant-sub);
+  margin-bottom: 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.mant-card-desc {
+  font-size: 0.7rem;
+  color: var(--mant-muted);
+  font-style: italic;
+  margin-bottom: 0.6rem;
+  padding: 0.3rem 0.5rem;
+  background: #fafbfc;
+  border-radius: 6px;
+  border-left: 2px solid var(--mant-accent);
+}
+
+.mant-card-assignee {
+  font-size: 0.7rem;
+  color: var(--mant-accent);
+  margin-bottom: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: var(--mant-accent-light);
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+}
+
+.mant-card-unassigned {
+  font-size: 0.7rem;
+  color: var(--mant-warning);
+  margin-bottom: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: var(--mant-warning-light);
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+}
+
+.mant-card-date {
+  font-size: 0.65rem;
+  color: var(--mant-muted);
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.mant-card-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.mant-btn-sm {
+  padding: 0.35rem 0.8rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.mant-btn-outline-info {
+  background: white;
+  border: 1px solid #bae6fd;
+  color: #0891b2;
+}
+
+.mant-btn-outline-info:hover {
+  background: #e0f2fe;
+  transform: translateY(-1px);
+}
+
+.mant-btn-success {
+  background: var(--mant-success);
+  color: white;
+}
+
+.mant-btn-success:hover {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+.mant-btn-outline-secondary {
+  background: white;
+  border: 1px solid var(--mant-border);
+  color: var(--mant-sub);
+}
+
+.mant-btn-outline-secondary:hover {
+  border-color: var(--mant-accent);
+  color: var(--mant-accent);
+  transform: translateY(-1px);
+}
+
+/* Empty state */
+.mant-empty-column {
+  text-align: center;
+  padding: 2rem 0.5rem;
+  color: var(--mant-muted);
+  font-size: 0.75rem;
+}
+
+.mant-empty-column i {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.4;
+}
+
+/* ══ MODALES MEJORADOS (más legibles) ══ */
+.mant-modal .modal-content {
+  border: none;
+  border-radius: var(--mant-radius);
+  overflow: hidden;
+  box-shadow: var(--mant-sh2);
+}
+
+.mant-modal .modal-header {
+  background: linear-gradient(135deg, #f8fafc 0%, white 100%);
+  border-bottom: 2px solid var(--mant-border);
+  padding: 1.2rem 1.5rem;
+}
+
+.mant-modal .modal-title {
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--mant-text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mant-modal .modal-title i {
+  color: var(--mant-accent);
+}
+
+.mant-modal .modal-body {
+  padding: 1.75rem;
+}
+
+.mant-modal .modal-footer {
+  border-top: 1px solid var(--mant-border);
+  padding: 1rem 1.5rem;
+  background: #fafbfc;
+}
+
+.mant-modal .form-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--mant-sub);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.mant-modal .form-label i {
+  color: var(--mant-accent);
+}
+
+.mant-modal .form-control,
+.mant-modal .form-select {
+  border: 2px solid var(--mant-border);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.mant-modal .form-control:focus,
+.mant-modal .form-select:focus {
+  border-color: var(--mant-accent);
+  box-shadow: 0 0 0 3px rgba(60,80,224,.1);
+  outline: none;
+}
+
+.mant-modal textarea.form-control {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.mant-modal .row {
+  margin-top: 0.5rem;
+}
+
+.mant-modal .btn-secondary {
+  background: white;
+  border: 2px solid var(--mant-border);
+  color: var(--mant-sub);
+  font-weight: 600;
+  padding: 0.5rem 1.2rem;
+  border-radius: 10px;
+}
+
+.mant-modal .btn-secondary:hover {
+  border-color: var(--mant-accent);
+  color: var(--mant-accent);
+}
+
+.mant-modal .btn-primary {
+  background: var(--mant-accent);
+  border: none;
+  font-weight: 600;
+  padding: 0.5rem 1.5rem;
+  border-radius: 10px;
+}
+
+.mant-modal .btn-primary:hover {
+  background: #2d3fc7;
+}
+
+/* Información de incidencia en modal asignar */
+.mant-modal-info {
+  background: var(--mant-accent-light);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.mant-modal-info p {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.mant-modal-info strong {
+  color: var(--mant-accent);
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .mant-modal .modal-body {
+    padding: 1.25rem;
+  }
+  
+  .mant-card-actions {
+    flex-direction: column;
+  }
+  
+  .mant-btn-sm {
+    justify-content: center;
+  }
+}

@@ -1,0 +1,312 @@
+/* ============================================================
+   index.css — Servicios del Hotel
+   Estilo limpio, profesional y con personalidad
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap');
+
+:root {
+  --serv-index-font: 'Inter', system-ui, -apple-system, sans-serif;
+  --serv-index-accent: #3b82f6;
+  --serv-index-accent-dark: #2563eb;
+  --serv-index-accent-light: #eff6ff;
+  --serv-index-text: #1e293b;
+  --serv-index-sub: #5b6e8c;
+  --serv-index-muted: #94a3b8;
+  --serv-index-border: #e4e7ec;
+  --serv-index-bg: #f8fafc;
+  --serv-index-card: #ffffff;
+  --serv-index-success: #10b981;
+  --serv-index-danger: #ef4444;
+  --serv-index-danger-light: #fef2f2;
+  --serv-index-radius: 14px;
+  --serv-index-radius-sm: 10px;
+  --serv-index-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  --serv-index-shadow-hover: 0 8px 20px rgba(0,0,0,0.07);
+}
+
+/* ── HEADER ── */
+.serv-index-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.serv-index-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.serv-index-title i {
+  font-size: 1.4rem;
+  color: var(--serv-index-accent);
+}
+
+.serv-index-title h4 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--serv-index-text);
+  letter-spacing: -0.3px;
+}
+
+/* Botón nuevo servicio */
+.serv-index-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--serv-index-accent);
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.5rem 1.1rem;
+  border-radius: var(--serv-index-radius-sm);
+  text-decoration: none;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.serv-index-btn:hover {
+  background: var(--serv-index-accent-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(59,130,246,0.25);
+  color: white;
+}
+
+/* ── ALERTAS ── */
+.serv-index-alert {
+  border-radius: var(--serv-index-radius-sm);
+  padding: 0.9rem 1.1rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.serv-index-alert-success {
+  background: #f0fdf4;
+  border-left: 3px solid var(--serv-index-success);
+  color: #166534;
+}
+
+.serv-index-alert-danger {
+  background: var(--serv-index-danger-light);
+  border-left: 3px solid var(--serv-index-danger);
+  color: #991b1b;
+}
+
+/* ── TABLA CARD ── */
+.serv-index-table-card {
+  background: var(--serv-index-card);
+  border: 1px solid var(--serv-index-border);
+  border-radius: var(--serv-index-radius);
+  overflow: hidden;
+  box-shadow: var(--serv-index-shadow);
+  transition: box-shadow 0.2s;
+}
+
+.serv-index-table-card:hover {
+  box-shadow: var(--serv-index-shadow-hover);
+}
+
+/* Tabla */
+.serv-index-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--serv-index-font);
+}
+
+.serv-index-table thead {
+  background: #f9fafb;
+  border-bottom: 1px solid var(--serv-index-border);
+}
+
+.serv-index-table thead th {
+  padding: 0.9rem 1.2rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--serv-index-sub);
+}
+
+.serv-index-table thead th:last-child {
+  text-align: right;
+}
+
+.serv-index-table tbody tr {
+  border-bottom: 1px solid #f0f1f3;
+  transition: background 0.15s;
+}
+
+.serv-index-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.serv-index-table tbody tr:hover {
+  background: #fafbfc;
+}
+
+.serv-index-table tbody td {
+  padding: 1rem 1.2rem;
+  vertical-align: middle;
+  font-size: 0.9rem;
+  color: var(--serv-index-text);
+}
+
+/* Número de fila */
+.serv-index-number {
+  color: var(--serv-index-muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+  width: 45px;
+}
+
+/* Nombre del servicio */
+.serv-index-nombre {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.serv-index-nombre-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--serv-index-accent-light);
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--serv-index-accent);
+  font-size: 0.9rem;
+}
+
+/* Precio */
+.serv-index-precio {
+  font-weight: 700;
+  color: var(--serv-index-accent);
+  font-size: 0.95rem;
+}
+
+/* Botones de acción */
+.serv-index-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.serv-index-action {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-size: 0.8rem;
+}
+
+.serv-index-action-edit {
+  background: var(--serv-index-accent-light);
+  color: var(--serv-index-accent);
+  border: 1px solid #dbeafe;
+}
+
+.serv-index-action-edit:hover {
+  background: var(--serv-index-accent);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.serv-index-action-delete {
+  background: var(--serv-index-danger-light);
+  color: var(--serv-index-danger);
+  border: 1px solid #fee2e2;
+}
+
+.serv-index-action-delete:hover {
+  background: var(--serv-index-danger);
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* Empty state */
+.serv-index-empty {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: var(--serv-index-muted);
+}
+
+.serv-index-empty i {
+  font-size: 2.2rem;
+  margin-bottom: 0.8rem;
+  opacity: 0.5;
+}
+
+.serv-index-empty p {
+  font-size: 0.85rem;
+  margin: 0;
+  color: var(--serv-index-sub);
+}
+
+/* Footer de tabla */
+.serv-index-footer {
+  padding: 0.8rem 1.2rem;
+  border-top: 1px solid var(--serv-index-border);
+  background: #f9fafb;
+  font-size: 0.75rem;
+  color: var(--serv-index-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.serv-index-footer i {
+  color: var(--serv-index-accent);
+}
+
+.serv-index-footer strong {
+  color: var(--serv-index-text);
+  font-weight: 700;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .serv-index-title h4 {
+    font-size: 1.1rem;
+  }
+  
+  .serv-index-table thead th {
+    font-size: 0.6rem;
+    padding: 0.7rem 0.8rem;
+  }
+  
+  .serv-index-table tbody td {
+    padding: 0.8rem;
+  }
+  
+  .serv-index-nombre-icon {
+    width: 26px;
+    height: 26px;
+    font-size: 0.7rem;
+  }
+  
+  .serv-index-actions {
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  
+  .serv-index-action {
+    width: 28px;
+    height: 28px;
+  }
+}
