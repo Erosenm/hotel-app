@@ -1,0 +1,352 @@
+/* ============================================================
+   index.css — Mi Perfil (Versión Neutra y Limpia)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap');
+
+:root {
+  --perf-font: 'Inter', system-ui, -apple-system, sans-serif;
+  --perf-accent: #2563eb;
+  --perf-accent-light: #eff6ff;
+  --perf-text: #1e293b;
+  --perf-sub: #5b6e8c;
+  --perf-muted: #94a3b8;
+  --perf-border: #e9edf2;
+  --perf-bg: #f7f9fc;
+  --perf-card: #ffffff;
+  --perf-success: #10b981;
+  --perf-warning: #f59e0b;
+  --perf-radius: 20px;
+  --perf-radius-sm: 14px;
+  --perf-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 1px 1px rgba(0,0,0,0.02);
+  --perf-shadow-md: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* ── BASE ── */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--perf-bg);
+}
+
+/* ── CONTENEDOR PRINCIPAL (más ancho) ── */
+.perf-container {
+  width: 100%;
+  padding: 1.5rem 2rem;
+}
+
+@media (max-width: 768px) {
+  .perf-container {
+    padding: 1rem;
+  }
+}
+
+/* ── HEADER ── */
+.perf-header {
+  margin-bottom: 2rem;
+}
+
+.perf-header h4 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--perf-text);
+  letter-spacing: -0.3px;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.perf-header h4 i {
+  color: var(--perf-accent);
+  font-size: 1.4rem;
+}
+
+/* ── ALERTAS ── */
+.perf-alert {
+  border-radius: 12px;
+  padding: 0.9rem 1.2rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  background: white;
+}
+
+.perf-alert-success {
+  border-left: 3px solid var(--perf-success);
+  color: #166534;
+  background: #f0fdf4;
+}
+
+.perf-alert-danger {
+  border-left: 3px solid #ef4444;
+  color: #991b1b;
+  background: #fef2f2;
+}
+
+/* ── GRID DE 2 COLUMNAS ── */
+.perf-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.8rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .perf-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* ── CARDS ── */
+.perf-card {
+  background: var(--perf-card);
+  border: 1px solid var(--perf-border);
+  border-radius: var(--perf-radius);
+  overflow: hidden;
+  box-shadow: var(--perf-shadow);
+}
+
+.perf-card-header {
+  padding: 1.1rem 1.5rem;
+  border-bottom: 1px solid var(--perf-border);
+  background: white;
+}
+
+.perf-card-header h6 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--perf-text);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.perf-card-header h6 i {
+  color: var(--perf-accent);
+  font-size: 1rem;
+}
+
+.perf-card-body {
+  padding: 1.5rem;
+}
+
+/* ── AVATAR ── */
+.perf-avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 1.8rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--perf-border);
+}
+
+.perf-avatar {
+  width: 70px;
+  height: 70px;
+  background: #eef2ff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--perf-accent);
+}
+
+.perf-avatar-info h5 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 0.3rem 0;
+  color: var(--perf-text);
+}
+
+.perf-role-badge {
+  display: inline-block;
+  padding: 0.2rem 0.8rem;
+  background: #f1f5f9;
+  color: #475569;
+  border-radius: 30px;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+/* ── FORMULARIO (más claro y legible) ── */
+.perf-form-group {
+  margin-bottom: 1.2rem;
+}
+
+.perf-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--perf-sub);
+  margin-bottom: 0.3rem;
+  letter-spacing: 0.3px;
+}
+
+.perf-input {
+  width: 100%;
+  border: 1px solid var(--perf-border);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  font-family: var(--perf-font);
+  background: white;
+  transition: all 0.2s;
+}
+
+.perf-input:focus {
+  border-color: var(--perf-accent);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.08);
+}
+
+.perf-input:disabled {
+  background: #fafbfc;
+  color: var(--perf-sub);
+}
+
+.perf-help {
+  font-size: 0.65rem;
+  color: var(--perf-muted);
+  margin-top: 0.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* ── FILA DE INFO ADICIONAL ── */
+.perf-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #f0f2f5;
+}
+
+.perf-info-row:last-child {
+  border-bottom: none;
+}
+
+.perf-info-label {
+  font-size: 0.75rem;
+  color: var(--perf-muted);
+}
+
+.perf-info-value {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--perf-text);
+}
+
+/* ── MEDIDOR DE CONTRASEÑA ── */
+.perf-strength {
+  margin-top: 0.5rem;
+}
+
+.perf-strength-bars {
+  display: flex;
+  gap: 0.3rem;
+  margin-bottom: 0.2rem;
+}
+
+.perf-strength-bar {
+  flex: 1;
+  height: 3px;
+  background: #e2e8f0;
+  border-radius: 3px;
+}
+
+.perf-strength-bar.active {
+  background: var(--perf-success);
+}
+
+.perf-strength-text {
+  font-size: 0.65rem;
+  color: var(--perf-muted);
+}
+
+/* ── BOTONES ── */
+.perf-btn {
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.perf-btn-primary {
+  background: white;
+  border: 1px solid var(--perf-border);
+  color: var(--perf-text);
+}
+
+.perf-btn-primary:hover {
+  border-color: var(--perf-accent);
+  color: var(--perf-accent);
+  background: var(--perf-accent-light);
+}
+
+.perf-btn-warning {
+  background: white;
+  border: 1px solid var(--perf-border);
+  color: var(--perf-text);
+}
+
+.perf-btn-warning:hover {
+  border-color: #f59e0b;
+  color: #d97706;
+  background: #fffbeb;
+}
+
+.perf-btn-warning:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── SECCIÓN DE RECOMENDACIONES ── */
+.perf-recommend {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--perf-border);
+  font-size: 0.7rem;
+  color: var(--perf-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  .perf-card-body {
+    padding: 1rem;
+  }
+  
+  .perf-avatar-row {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .perf-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .perf-info-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+  }
+}
