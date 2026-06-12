@@ -1,0 +1,656 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap');
+
+:root {
+    --client-font: 'Inter', system-ui, -apple-system, sans-serif;
+    --client-gold: #c8a96e;
+    --client-gold-dark: #b8924a;
+    --client-gold-light: #fdf8f0;
+    --client-dark: #1a1a2e;
+    --client-dark-light: #2d2d44;
+    --client-text: #2c3e50;
+    --client-sub: #6c757d;
+    --client-muted: #95a5a6;
+    --client-border: #ecf0f1;
+    --client-bg: #f8f9fa;
+    --client-card: #ffffff;
+    --client-success: #27ae60;
+    --client-warning: #f39c12;
+    --client-danger: #e74c3c;
+    --client-radius: 24px;
+    --client-radius-sm: 16px;
+    --client-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    --client-shadow-md: 0 8px 30px rgba(0, 0, 0, 0.08);
+    --client-transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ── RESET PARA QUE EL HERO NO SE SUPERPONGA AL NAVBAR ── */
+body {
+    background: var(--client-bg);
+    font-family: var(--client-font);
+    color: var(--client-text);
+    margin: 0;
+    padding: 0;
+}
+/* Aseguramos que el hero esté justo debajo del navbar */
+.client-hero {
+    margin-top: 0;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+}
+
+/* ── HERO SECTION ── */
+.client-hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f3460 100%);
+    padding: 2.5rem 2rem 3rem;
+    position: relative;
+    overflow: hidden;
+    margin-top: 80px; /* ← Agrega esto: espacio para el navbar fijo */
+}
+
+.client-hero::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -10%;
+    width: 60%;
+    height: 150%;
+    background: radial-gradient(circle, rgba(200, 169, 110, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.client-hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--client-gold), transparent);
+}
+
+.client-hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.client-hero-badge {
+    display: inline-block;
+    background: rgba(200, 169, 110, 0.15);
+    backdrop-filter: blur(4px);
+    padding: 0.25rem 1rem;
+    border-radius: 30px;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--client-gold);
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+}
+
+.client-hero h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+.client-hero-sub {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    margin: 0;
+    max-width: 500px;
+}
+
+/* ── MAIN CONTAINER ── */
+.client-main {
+    max-width: 1200px;
+    margin: -2rem auto 0;
+    padding: 0 2rem 2rem;
+    position: relative;
+    z-index: 5;
+}
+
+@media (max-width: 768px) {
+    .client-main {
+        padding: 0 1rem 1.5rem;
+    }
+
+    .client-hero {
+        padding: 1.8rem 1.2rem 2.2rem;
+    }
+
+    .client-hero h1 {
+        font-size: 1.5rem;
+    }
+}
+
+/* ── ALERTAS ── */
+.client-alert {
+    border-radius: var(--client-radius-sm);
+    padding: 0.9rem 1.2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: white;
+    border-left: 4px solid;
+    box-shadow: var(--client-shadow);
+}
+
+.client-alert-success {
+    border-left-color: var(--client-success);
+    color: #1e8449;
+}
+
+.client-alert-danger {
+    border-left-color: var(--client-danger);
+    color: #c0392b;
+}
+
+/* ══ STATS CARDS ══ */
+.client-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 1000px) {
+    .client-stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .client-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.client-stat {
+    background: var(--client-card);
+    border-radius: var(--client-radius-sm);
+    padding: 1rem 0.8rem;
+    text-align: center;
+    transition: var(--client-transition);
+    box-shadow: var(--client-shadow);
+    border: 1px solid var(--client-border);
+}
+
+.client-stat:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--client-shadow-md);
+}
+
+.client-stat-number {
+    font-size: 1.8rem;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+.client-stat-number.total {
+    color: var(--client-dark);
+}
+
+.client-stat-number.confirmadas {
+    color: var(--client-success);
+}
+
+.client-stat-number.pendientes {
+    color: var(--client-warning);
+}
+
+.client-stat-number.completadas {
+    color: #7f8c8d;
+}
+
+.client-stat-number.gastado {
+    color: var(--client-gold);
+}
+
+.client-stat-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--client-muted);
+    margin-top: 0.3rem;
+}
+
+/* ══ PRÓXIMA RESERVA DESTACADA ══ */
+.client-next-card {
+    background: linear-gradient(135deg, white 0%, var(--client-gold-light) 100%);
+    border: 1px solid var(--client-border);
+    border-radius: var(--client-radius);
+    margin-bottom: 2rem;
+    overflow: hidden;
+    transition: var(--client-transition);
+}
+
+.client-next-card:hover {
+    box-shadow: var(--client-shadow-md);
+    border-color: var(--client-gold);
+}
+
+.client-next-content {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 1rem 1.5rem;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+    .client-next-content {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+.client-next-icon {
+    background: var(--client-gold);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 16px rgba(200, 169, 110, 0.25);
+}
+
+.client-next-icon i {
+    font-size: 1.4rem;
+    color: white;
+}
+
+.client-next-info {
+    flex: 1;
+}
+
+.client-next-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--client-gold);
+}
+
+.client-next-title {
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--client-dark);
+    margin: 0.2rem 0;
+}
+
+.client-next-dates {
+    font-size: 0.75rem;
+    color: var(--client-sub);
+}
+
+.client-next-badge {
+    padding: 0.25rem 0.9rem;
+    border-radius: 30px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.client-next-badge.confirmada {
+    background: #e8f8f5;
+    color: #1abc9c;
+}
+
+.client-next-badge.pendiente {
+    background: #fef9e7;
+    color: #f39c12;
+}
+
+.client-next-btn {
+    background: transparent;
+    border: 1px solid var(--client-gold);
+    border-radius: 30px;
+    padding: 0.4rem 1rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--client-gold);
+    text-decoration: none;
+    transition: var(--client-transition);
+}
+
+.client-next-btn:hover {
+    background: var(--client-gold);
+    color: white;
+}
+
+/* ══ ACCIONES RÁPIDAS ══ */
+.client-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+    .client-actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .client-actions-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.client-action {
+    background: var(--client-card);
+    border: 1px solid var(--client-border);
+    border-radius: var(--client-radius-sm);
+    padding: 1rem;
+    text-align: center;
+    text-decoration: none;
+    transition: var(--client-transition);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.client-action:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--client-shadow-md);
+    border-color: var(--client-gold);
+}
+
+.client-action-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.client-action-icon.blue {
+    background: #e8f0fe;
+    color: #2c3e50;
+}
+
+.client-action-icon.green {
+    background: #e8f8f5;
+    color: #27ae60;
+}
+
+.client-action-icon.teal {
+    background: #e0f2f1;
+    color: #14b8a6;
+}
+
+.client-action-icon.red {
+    background: #fdedec;
+    color: #e74c3c;
+}
+
+.client-action span {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--client-text);
+}
+
+/* ══ TÍTULOS DE SECCIÓN ══ */
+.client-section {
+    margin-bottom: 1.5rem;
+}
+
+.client-section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.client-section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.client-section-title i {
+    font-size: 1.1rem;
+    color: var(--client-gold);
+}
+
+.client-section-title h5 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--client-dark);
+}
+
+.client-section-link {
+    font-size: 0.7rem;
+    color: var(--client-gold);
+    text-decoration: none;
+    transition: var(--client-transition);
+}
+
+.client-section-link:hover {
+    color: var(--client-gold-dark);
+    text-decoration: underline;
+}
+
+/* ══ RESERVAS RECIENTES ══ */
+.client-reservas-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+    .client-reservas-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.client-reserva {
+    background: var(--client-card);
+    border: 1px solid var(--client-border);
+    border-radius: var(--client-radius-sm);
+    overflow: hidden;
+    transition: var(--client-transition);
+    display: flex;
+}
+
+@media (max-width: 480px) {
+    .client-reserva {
+        flex-direction: column;
+    }
+}
+
+.client-reserva:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--client-shadow-md);
+}
+
+.client-reserva-img {
+    width: 100px;
+    flex-shrink: 0;
+    background: #f1f3f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.client-reserva-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.client-reserva-img-placeholder {
+    width: 100px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f1f3f5;
+    color: var(--client-muted);
+}
+
+.client-reserva-content {
+    flex: 1;
+    padding: 0.9rem;
+}
+
+.client-reserva-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.client-reserva-hab {
+    font-weight: 800;
+    font-size: 0.85rem;
+    color: var(--client-dark);
+}
+
+.client-reserva-badge {
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 0.2rem 0.7rem;
+    border-radius: 30px;
+}
+
+.client-reserva-badge.confirmada {
+    background: #e8f8f5;
+    color: #1abc9c;
+}
+
+.client-reserva-badge.pendiente {
+    background: #fef9e7;
+    color: #f39c12;
+}
+
+.client-reserva-badge.cancelada {
+    background: #fdedec;
+    color: #e74c3c;
+}
+
+.client-reserva-badge.completada {
+    background: #f4f6f7;
+    color: #7f8c8d;
+}
+
+.client-reserva-dates {
+    font-size: 0.65rem;
+    color: var(--client-sub);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    flex-wrap: wrap;
+}
+
+.client-reserva-price {
+    font-weight: 800;
+    color: var(--client-gold);
+    font-size: 0.8rem;
+}
+
+/* ══ EMPTY STATE ══ */
+.client-empty {
+    background: var(--client-card);
+    border-radius: var(--client-radius);
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    border: 1px solid var(--client-border);
+}
+
+.client-empty i {
+    font-size: 2.2rem;
+    color: var(--client-muted);
+    margin-bottom: 0.8rem;
+    opacity: 0.5;
+}
+
+.client-empty h6 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--client-sub);
+    margin-bottom: 0.5rem;
+}
+
+.client-empty p {
+    font-size: 0.75rem;
+    color: var(--client-muted);
+    margin-bottom: 1rem;
+}
+
+.client-empty .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1.3rem;
+    background: var(--client-gold);
+    border: none;
+    border-radius: 30px;
+    color: white;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-decoration: none;
+    transition: var(--client-transition);
+}
+
+.client-empty .btn:hover {
+    background: var(--client-gold-dark);
+    transform: translateY(-2px);
+}
+
+/* ══ BOTÓN VER TODAS ══ */
+.client-view-all {
+    text-align: center;
+    margin-top: 0.5rem;
+}
+
+.client-view-all .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1.3rem;
+    border: 1px solid var(--client-border);
+    border-radius: 30px;
+    background: white;
+    color: var(--client-sub);
+    font-weight: 500;
+    font-size: 0.75rem;
+    text-decoration: none;
+    transition: var(--client-transition);
+}
+
+.client-view-all .btn-outline:hover {
+    border-color: var(--client-gold);
+    color: var(--client-gold);
+    transform: translateY(-2px);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+    .client-hero h1 {
+        font-size: 1.5rem;
+    }
+
+    .client-stat-number {
+        font-size: 1.3rem;
+    }
+}
