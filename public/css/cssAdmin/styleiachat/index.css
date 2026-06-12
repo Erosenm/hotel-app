@@ -1,0 +1,389 @@
+/* ============================================================
+   index.css — Dashboard IA Chat (Estilo Moderno)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap');
+
+:root {
+  --ia-font: 'Plus Jakarta Sans', sans-serif;
+  --ia-mono: 'JetBrains Mono', monospace;
+  --ia-accent: #4f46e5;
+  --ia-accent-light: #eef2ff;
+  --ia-accent-dark: #4338ca;
+  --ia-text: #1e293b;
+  --ia-sub: #64748b;
+  --ia-muted: #94a3b8;
+  --ia-border: #e2e8f0;
+  --ia-bg: #f8fafc;
+  --ia-card: #ffffff;
+  --ia-success: #10b981;
+  --ia-success-light: #ecfdf5;
+  --ia-warning: #f59e0b;
+  --ia-warning-light: #fffbeb;
+  --ia-danger: #ef4444;
+  --ia-danger-light: #fef2f2;
+  --ia-radius: 16px;
+  --ia-radius-sm: 12px;
+  --ia-shadow: 0 1px 3px rgba(0,0,0,.04), 0 1px 2px rgba(0,0,0,.03);
+  --ia-shadow-md: 0 4px 12px rgba(0,0,0,.06);
+  --ia-shadow-lg: 0 8px 24px rgba(0,0,0,.08);
+  --ia-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+}
+
+/* ── LAYOUT PRINCIPAL ── */
+.ia-container {
+  padding: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ── HEADER ── */
+.ia-header {
+  display: flex;
+align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+}
+
+.ia-header-icon {
+  width: 44px;
+  height: 44px;
+  background: var(--ia-gradient);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 14px rgba(79,70,229,.25);
+}
+
+.ia-header-icon i {
+  font-size: 1.3rem;
+  color: white;
+}
+
+.ia-header h4 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin: 0;
+  background: var(--ia-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.3px;
+}
+
+.ia-header span {
+  font-size: 0.7rem;
+  background: var(--ia-accent-light);
+  color: var(--ia-accent);
+  padding: 0.2rem 0.6rem;
+  border-radius: 30px;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+
+/* ══ STATS CARDS PREMIUM ══ */
+.ia-stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 1.75rem;
+}
+
+@media (max-width: 768px) {
+  .ia-stats-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ia-stat-card {
+  background: var(--ia-card);
+  border: 1px solid var(--ia-border);
+  border-radius: var(--ia-radius);
+  padding: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.2s;
+  box-shadow: var(--ia-shadow);
+}
+
+.ia-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--ia-shadow-md);
+}
+
+.ia-stat-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  color: white;
+}
+
+.ia-stat-icon.purple {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  box-shadow: 0 4px 10px rgba(79,70,229,.25);
+}
+
+.ia-stat-icon.green {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 4px 10px rgba(16,185,129,.25);
+}
+
+.ia-stat-icon.orange {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  box-shadow: 0 4px 10px rgba(245,158,11,.25);
+}
+
+.ia-stat-info {
+  flex: 1;
+}
+
+.ia-stat-number {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--ia-text);
+  line-height: 1.2;
+  letter-spacing: -1px;
+}
+
+.ia-stat-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--ia-muted);
+}
+
+/* ══ CARDS PREMIUM ══ */
+.ia-card {
+  background: var(--ia-card);
+  border: 1px solid var(--ia-border);
+  border-radius: var(--ia-radius);
+  overflow: hidden;
+  box-shadow: var(--ia-shadow);
+  transition: all 0.2s;
+  margin-bottom: 1.5rem;
+}
+
+.ia-card:hover {
+  box-shadow: var(--ia-shadow-md);
+}
+
+.ia-card-header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--ia-border);
+  background: #fafbfc;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ia-card-header h5 {
+  font-size: 0.9rem;
+  font-weight: 800;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--ia-text);
+}
+
+.ia-card-header h5 i {
+  color: var(--ia-accent);
+  font-size: 1rem;
+}
+
+.ia-card-badge {
+  background: var(--ia-accent-light);
+  color: var(--ia-accent);
+  padding: 0.2rem 0.6rem;
+  border-radius: 30px;
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+.ia-card-body {
+  padding: 1.25rem;
+}
+
+/* ── TABLAS ── */
+.ia-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ia-table thead th {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--ia-muted);
+  padding: 0.6rem 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid var(--ia-border);
+}
+
+.ia-table tbody td {
+  padding: 0.75rem 0.5rem;
+  font-size: 0.8rem;
+  color: var(--ia-text);
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.ia-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.ia-table tbody tr:hover td {
+  background: #fafbfc;
+}
+
+/* Barra de progreso */
+.ia-progress {
+  background: #e0e7ff;
+  border-radius: 10px;
+  height: 8px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.ia-progress-bar {
+  background: var(--ia-accent);
+  border-radius: 10px;
+  height: 100%;
+  width: 0%;
+}
+
+/* Badge ranking */
+.ia-rank-badge {
+  background: var(--ia-accent);
+  color: white;
+  border-radius: 30px;
+  padding: 0.2rem 0.7rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  display: inline-block;
+}
+
+.ia-rank-badge.gold { background: #f59e0b; }
+.ia-rank-badge.silver { background: #94a3b8; }
+.ia-rank-badge.bronze { background: #cd7a42; }
+
+/* ── MENSAJES DE CONVERSACIÓN ── */
+.ia-msg-user {
+  background: #f3f4f6;
+  padding: 0.4rem 0.7rem;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  color: var(--ia-text);
+  max-width: 250px;
+  display: inline-block;
+}
+
+.ia-msg-bot {
+  background: var(--ia-accent-light);
+  padding: 0.4rem 0.7rem;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  color: var(--ia-accent);
+  max-width: 280px;
+  display: inline-block;
+}
+
+.ia-msg-bot i {
+  font-size: 0.65rem;
+  margin-right: 0.2rem;
+}
+
+/* Empty state */
+.ia-empty {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: var(--ia-muted);
+}
+
+.ia-empty i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.4;
+}
+
+.ia-empty p {
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+/* ── GRID DE 2 COLUMNAS ── */
+.ia-two-columns {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .ia-two-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  .ia-container {
+    padding: 1rem;
+  }
+  
+  .ia-stat-card {
+    padding: 0.9rem;
+  }
+  
+  .ia-stat-number {
+    font-size: 1.4rem;
+  }
+  
+  .ia-stat-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 1rem;
+  }
+  
+  .ia-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .ia-table thead th,
+  .ia-table tbody td {
+    padding: 0.5rem 0.3rem;
+  }
+  
+  .ia-msg-user,
+  .ia-msg-bot {
+    max-width: 180px;
+    font-size: 0.7rem;
+  }
+}
+
+/* Tooltip para filas */
+.ia-table tbody td:first-child,
+.ia-table tbody td:nth-child(2),
+.ia-table tbody td:nth-child(3) {
+  cursor: pointer;
+}
+
+.ia-footer-note {
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--ia-muted);
+  margin-top: 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--ia-border);
+}
