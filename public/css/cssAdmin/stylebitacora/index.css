@@ -1,0 +1,458 @@
+/* ============================================================
+   index.css — Bitácora del Sistema (Versión Premium)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap');
+
+:root {
+  --bit-font: 'Plus Jakarta Sans', sans-serif;
+  --bit-mono: 'JetBrains Mono', monospace;
+  --bit-accent: #3c50e0;
+  --bit-accent-light: #eef2ff;
+  --bit-text: #1e293b;
+  --bit-sub: #64748b;
+  --bit-muted: #94a3b8;
+  --bit-border: #e9edf2;
+  --bit-bg: #f7f9fc;
+  --bit-card: #ffffff;
+  --bit-success: #10b981;
+  --bit-warning: #f59e0b;
+  --bit-danger: #ef4444;
+  --bit-info: #06b6d4;
+  --bit-radius: 20px;
+  --bit-radius-sm: 14px;
+  --bit-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 1px 1px rgba(0,0,0,0.02);
+  --bit-shadow-md: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* ── LAYOUT ── */
+.bit-container {
+  width: 100%;
+  padding: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .bit-container {
+    padding: 1rem;
+  }
+}
+
+/* ── HEADER ── */
+.bit-header {
+  margin-bottom: 1.75rem;
+}
+
+.bit-header h4 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--bit-text);
+  letter-spacing: -0.3px;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.bit-header h4 i {
+  color: var(--bit-accent);
+  font-size: 1.3rem;
+}
+
+/* ══ STATS CARDS CON BARRA SUPERIOR ══ */
+.bit-stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 1.75rem;
+}
+
+@media (max-width: 768px) {
+  .bit-stats-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+.bit-stat-card {
+  background: var(--bit-card);
+  border: 1px solid var(--bit-border);
+  border-radius: var(--bit-radius-sm);
+  padding: 1.2rem 1.2rem 1rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s;
+  box-shadow: var(--bit-shadow);
+}
+
+.bit-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--bit-shadow-md);
+}
+
+.bit-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--_accent);
+}
+
+.bit-stat-card.total     { --_accent: #64748b; }
+.bit-stat-card.hoy       { --_accent: #10b981; }
+.bit-stat-card.semana    { --_accent: #f59e0b; }
+
+.bit-stat-number {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--bit-text);
+  letter-spacing: -1px;
+  line-height: 1.2;
+  margin-bottom: 0.2rem;
+}
+
+.bit-stat-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--bit-muted);
+}
+
+/* ── CARD DE FILTROS (mejorada) ── */
+.bit-filtro-card {
+  background: var(--bit-card);
+  border: 1px solid var(--bit-border);
+  border-radius: var(--bit-radius);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.bit-filtro-body {
+  padding: 1.25rem 1.5rem;
+}
+
+.bit-filtro-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.bit-filtro-group {
+  flex: 1;
+  min-width: 180px;
+}
+
+.bit-filtro-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--bit-sub);
+  margin-bottom: 0.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.bit-filtro-input {
+  width: 100%;
+  border: 1px solid var(--bit-border);
+  border-radius: 12px;
+  padding: 0.7rem 1rem;
+  font-size: 0.85rem;
+  font-family: var(--bit-font);
+  transition: all 0.2s;
+}
+
+.bit-filtro-input:focus {
+  border-color: var(--bit-accent);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(60,80,224,0.08);
+}
+
+.bit-filtro-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.bit-btn-primary {
+  background: var(--bit-accent);
+  border: none;
+  padding: 0.7rem 1.3rem;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.bit-btn-primary:hover {
+  background: #2d3fc7;
+  transform: translateY(-1px);
+}
+
+.bit-btn-secondary {
+  background: white;
+  border: 1px solid var(--bit-border);
+  padding: 0.7rem 1.3rem;
+  border-radius: 12px;
+  color: var(--bit-sub);
+  font-weight: 500;
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.bit-btn-secondary:hover {
+  border-color: var(--bit-accent);
+  color: var(--bit-accent);
+}
+
+.bit-btn-export {
+  background: white;
+  border: 1px solid var(--bit-border);
+  padding: 0.7rem 1.3rem;
+  border-radius: 12px;
+  color: var(--bit-success);
+  font-weight: 600;
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.bit-btn-export:hover {
+  border-color: var(--bit-success);
+  background: #ecfdf5;
+}
+
+/* Filtros activos */
+.bit-filtros-activos {
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px dashed var(--bit-border);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bit-filtro-activo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.6rem;
+  background: var(--bit-accent-light);
+  border-radius: 20px;
+  font-size: 0.7rem;
+  color: var(--bit-accent);
+}
+
+.bit-filtro-activo i {
+  cursor: pointer;
+  font-size: 0.65rem;
+}
+
+/* ── TABLA MEJORADA ── */
+.bit-table-card {
+  background: var(--bit-card);
+  border: 1px solid var(--bit-border);
+  border-radius: var(--bit-radius);
+  overflow: hidden;
+  box-shadow: var(--bit-shadow);
+}
+
+.bit-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.bit-table thead {
+  background: #fafbfc;
+  border-bottom: 1px solid var(--bit-border);
+}
+
+.bit-table thead th {
+  padding: 0.9rem 1rem;
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--bit-sub);
+}
+
+.bit-table tbody td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid #f0f2f5;
+  vertical-align: middle;
+}
+
+.bit-table tbody tr:last-child td {
+  vertical-align: middle;
+}
+
+.bit-table tbody tr:hover td {
+  background: #fafbfc;
+}
+
+/* ID */
+.bit-id {
+  color: var(--bit-muted);
+  font-size: 0.75rem;
+  font-family: var(--bit-mono);
+}
+
+/* Usuario */
+.bit-user {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.bit-user-initial {
+  width: 32px;
+  height: 32px;
+  background: var(--bit-accent-light);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--bit-accent);
+}
+
+.bit-user-info {
+  flex: 1;
+}
+
+.bit-user-name {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--bit-text);
+}
+
+.bit-user-email {
+  font-size: 0.7rem;
+  color: var(--bit-muted);
+}
+
+/* Rol badges */
+.bit-role-badge {
+  display: inline-block;
+  padding: 0.2rem 0.7rem;
+  border-radius: 30px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.bit-role-badge.admin    { background: #fef2f2; color: #dc2626; }
+.bit-role-badge.recep    { background: #fffbeb; color: #d97706; }
+.bit-role-badge.cliente  { background: #ecfeff; color: #0891b2; }
+
+/* Acción */
+.bit-accion {
+  background: #f1f5f9;
+  padding: 0.25rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--bit-sub);
+  display: inline-block;
+}
+
+/* Fecha */
+.bit-fecha {
+  font-size: 0.75rem;
+  white-space: nowrap;
+  color: var(--bit-sub);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* Footer */
+.bit-footer {
+  padding: 0.9rem 1.2rem;
+  border-top: 1px solid var(--bit-border);
+  background: #fafbfc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--bit-muted);
+}
+
+.bit-footer strong {
+  color: var(--bit-text);
+}
+
+/* Empty state */
+.bit-empty {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: var(--bit-muted);
+}
+
+.bit-empty i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.4;
+}
+
+.bit-empty p {
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .bit-filtro-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .bit-filtro-buttons {
+    flex-wrap: wrap;
+  }
+  
+  .bit-table {
+    font-size: 0.75rem;
+  }
+  
+  .bit-user-initial {
+    width: 28px;
+    height: 28px;
+    font-size: 0.7rem;
+  }
+  
+  .bit-user-name {
+    font-size: 0.8rem;
+  }
+  
+  .bit-fecha {
+    font-size: 0.75rem;
+    white-space: nowrap;
+    color: var(--bit-sub);
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: var(--bit-mono);
+  }
+}
