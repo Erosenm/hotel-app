@@ -1,0 +1,478 @@
+/* ============================================================
+   index.css — Calendario de Disponibilidad (Versión Limpia)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap');
+
+:root {
+  --cal-font: 'Inter', system-ui, -apple-system, sans-serif;
+  --cal-accent: #3b82f6;
+  --cal-accent-light: #eff6ff;
+  --cal-text: #1e293b;
+  --cal-sub: #5b6e8c;
+  --cal-muted: #94a3b8;
+  --cal-border: #e9edf2;
+  --cal-bg: #f8fafc;
+  --cal-card: #ffffff;
+  --cal-success: #10b981;
+  --cal-warning: #f59e0b;
+  --cal-danger: #ef4444;
+  --cal-info: #8b5cf6;
+  --cal-radius: 20px;
+  --cal-radius-sm: 14px;
+  --cal-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 1px 1px rgba(0,0,0,0.02);
+  --cal-shadow-md: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* ── LAYOUT ── */
+.cal-container {
+  width: 100%;
+  padding: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .cal-container {
+    padding: 1rem;
+  }
+}
+
+/* ── HEADER ── */
+.cal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.cal-header h4 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--cal-text);
+  letter-spacing: -0.3px;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.cal-header h4 i {
+  color: var(--cal-accent);
+  font-size: 1.3rem;
+}
+
+.cal-btn-primary {
+  background: var(--cal-accent);
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 12px;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.cal-btn-primary:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  color: white;
+}
+
+/* ── LEYENDA ── */
+.cal-legend {
+  background: var(--cal-card);
+  border: 1px solid var(--cal-border);
+  border-radius: var(--cal-radius-sm);
+  padding: 0.6rem 1.2rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.cal-legend-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--cal-sub);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cal-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  color: var(--cal-text);
+}
+
+.cal-legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+/* ── CALENDARIO (FullCalendar custom) ── */
+.cal-card {
+  background: var(--cal-card);
+  border: 1px solid var(--cal-border);
+  border-radius: var(--cal-radius);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  box-shadow: var(--cal-shadow);
+}
+
+.cal-card-body {
+  padding: 1.5rem;
+}
+
+/* Estilos personalizados para FullCalendar */
+.fc {
+  font-family: var(--cal-font) !important;
+  font-size: 0.85rem;
+}
+
+.fc-toolbar-title {
+  font-size: 1.1rem !important;
+  font-weight: 700 !important;
+  color: var(--cal-text) !important;
+}
+
+.fc-button {
+  background: white !important;
+  border: 1px solid var(--cal-border) !important;
+  color: var(--cal-sub) !important;
+  font-weight: 500 !important;
+  padding: 0.4rem 0.8rem !important;
+  border-radius: 10px !important;
+  transition: all 0.2s !important;
+  text-transform: capitalize !important;
+  box-shadow: none !important;
+}
+
+.fc-button:hover {
+  background: var(--cal-accent-light) !important;
+  border-color: var(--cal-accent) !important;
+  color: var(--cal-accent) !important;
+}
+
+.fc-button-primary {
+  background: white !important;
+  border-color: var(--cal-border) !important;
+  color: var(--cal-sub) !important;
+}
+
+.fc-button-primary:not(:disabled):active,
+.fc-button-primary:focus {
+  background: var(--cal-accent) !important;
+  border-color: var(--cal-accent) !important;
+  color: white !important;
+  box-shadow: none !important;
+}
+
+.fc-button-primary.fc-button-active {
+  background: var(--cal-accent) !important;
+  border-color: var(--cal-accent) !important;
+  color: white !important;
+}
+
+.fc-today-button {
+  background: var(--cal-accent-light) !important;
+  border-color: var(--cal-accent) !important;
+  color: var(--cal-accent) !important;
+}
+
+.fc-day-header {
+  padding: 0.8rem 0 !important;
+  font-weight: 600 !important;
+  font-size: 0.7rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  color: var(--cal-sub) !important;
+}
+
+.fc-daygrid-day-number {
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  padding: 0.5rem !important;
+  color: var(--cal-text) !important;
+}
+
+.fc-daygrid-day.fc-day-today {
+  background: var(--cal-accent-light) !important;
+}
+
+.fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
+  background: var(--cal-accent) !important;
+  color: white !important;
+  border-radius: 30px !important;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.2rem 0.2rem 0 auto;
+}
+
+.fc-event {
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 0.2rem 0.4rem !important;
+  font-size: 0.7rem !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 0.15s !important;
+  margin: 1px 2px !important;
+}
+
+.fc-event:hover {
+  transform: scale(1.01);
+  filter: brightness(0.95);
+}
+
+.fc-daygrid-event {
+  white-space: normal !important;
+  word-break: break-word !important;
+}
+
+.fc-list-table {
+  border-collapse: collapse;
+}
+
+.fc-list-day-cushion {
+  background: var(--cal-bg) !important;
+  padding: 0.6rem 1rem !important;
+  font-weight: 600 !important;
+}
+
+.fc-list-event-time {
+  font-weight: 500 !important;
+  color: var(--cal-sub) !important;
+}
+
+/* ── TABLA DE HABITACIONES ── */
+.cal-table-card {
+  background: var(--cal-card);
+  border: 1px solid var(--cal-border);
+  border-radius: var(--cal-radius);
+  overflow: hidden;
+  box-shadow: var(--cal-shadow);
+}
+
+.cal-table-header {
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid var(--cal-border);
+  background: #fafbfc;
+}
+
+.cal-table-header h6 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--cal-text);
+}
+
+.cal-table-header h6 i {
+  color: var(--cal-accent);
+}
+
+.cal-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.cal-table thead {
+  background: #fafbfc;
+  border-bottom: 1px solid var(--cal-border);
+}
+
+.cal-table thead th {
+  padding: 0.8rem 1rem;
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--cal-sub);
+}
+
+.cal-table tbody td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid #f0f2f5;
+  vertical-align: middle;
+}
+
+.cal-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.cal-table tbody tr:hover td {
+  background: #fafbfc;
+}
+
+.cal-room-number {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--cal-text);
+}
+
+.cal-room-floor {
+  font-size: 0.7rem;
+  color: var(--cal-muted);
+}
+
+.cal-room-type {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  background: var(--cal-accent-light);
+  border-radius: 30px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--cal-accent);
+}
+
+.cal-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: 30px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.cal-status-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  display: inline-block;
+}
+
+.cal-status-badge.success { background: #ecfdf5; color: #059669; }
+.cal-status-badge.danger { background: #fef2f2; color: #dc2626; }
+.cal-status-badge.warning { background: #fffbeb; color: #d97706; }
+.cal-status-badge.info { background: #ecfeff; color: #0891b2; }
+.cal-status-badge.secondary { background: #f1f5f9; color: #475569; }
+
+.cal-proxima {
+  font-size: 0.75rem;
+}
+
+.cal-proxima-cliente {
+  font-weight: 500;
+  color: var(--cal-text);
+}
+
+.cal-proxima-fecha {
+  font-size: 0.65rem;
+  color: var(--cal-muted);
+}
+
+.cal-no-reserva {
+  font-size: 0.7rem;
+  color: var(--cal-muted);
+  font-style: italic;
+}
+
+/* ── MODAL ── */
+.cal-modal .modal-content {
+  border: none;
+  border-radius: var(--cal-radius);
+  overflow: hidden;
+}
+
+.cal-modal .modal-header {
+  background: #fafbfc;
+  border-bottom: 1px solid var(--cal-border);
+  padding: 1rem 1.2rem;
+}
+
+.cal-modal .modal-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--cal-text);
+}
+
+.cal-modal .modal-body {
+  padding: 1.5rem;
+}
+
+.cal-modal-footer {
+  border-top: 1px solid var(--cal-border);
+  padding: 1rem 1.2rem;
+  background: #fafbfc;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cal-detail-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.cal-detail-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: var(--cal-muted);
+}
+
+.cal-detail-value {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--cal-text);
+}
+
+.cal-detail-total {
+  margin-top: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--cal-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cal-detail-total span:first-child {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--cal-sub);
+}
+
+.cal-detail-total span:last-child {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--cal-accent);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .fc-toolbar {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .cal-detail-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .cal-table thead th,
+  .cal-table tbody td {
+    padding: 0.6rem 0.8rem;
+  }
+}
