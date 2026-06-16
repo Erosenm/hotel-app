@@ -1,8 +1,9 @@
 @echo off
+chcp 65001 > nul
 setlocal enabledelayedexpansion
 set DB=hotel_db
 set USER=root
-set MYSQL="J:\XAMPP\mysql\bin\mysql.exe"
+set MYSQL="C:\xampp\mysql\bin\mysql.exe"
 
 echo =====================================
 echo INICIANDO MIGRACION HOTEL
@@ -17,11 +18,12 @@ IF ERRORLEVEL 1 (
 )
 
 REM Eliminar y crear BD
-%MYSQL% -h 127.0.0.1 -u %USER% -e "DROP DATABASE IF EXISTS %DB%;"
-%MYSQL% -h 127.0.0.1 -u %USER% -e "CREATE DATABASE %DB%;"
+%MYSQL% --default-character-set=utf8mb4 -h 127.0.0.1 -u %USER% -e "DROP DATABASE IF EXISTS %DB%;"
+
+%MYSQL% --default-character-set=utf8mb4 -h 127.0.0.1 -u %USER% -e "CREATE DATABASE %DB% CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 
 REM Ejecutar migracion
-%MYSQL% -h 127.0.0.1 -u %USER% %DB% < migracion.sql
+%MYSQL% --default-character-set=utf8mb4 -h 127.0.0.1 -u %USER% %DB% < migracion.sql
 
 IF ERRORLEVEL 1 (
     echo ERROR en migracion.sql
@@ -32,7 +34,7 @@ IF ERRORLEVEL 1 (
 echo Estructura creada correctamente
 
 REM Insertar metodos de pago
-%MYSQL% -h 127.0.0.1 -u %USER% %DB% -e "INSERT IGNORE INTO metodo_pago (nombre) VALUES ('Efectivo'),('Tarjeta'),('QR');"
+%MYSQL% --default-character-set=utf8mb4 -h 127.0.0.1 -u %USER% %DB% -e "INSERT IGNORE INTO metodo_pago (nombre) VALUES ('Efectivo'),('Tarjeta'),('QR');"
 
 echo Datos base insertados
 
