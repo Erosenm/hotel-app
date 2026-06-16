@@ -1,0 +1,542 @@
+/* ============================================================
+   clientehabitaciones.css — Nuestras Habitaciones (Cliente)
+   Diseño premium hotelero con enfoque en legibilidad
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap');
+
+:root {
+    --hab-font: 'Inter', system-ui, -apple-system, sans-serif;
+    --hab-gold: #c8a96e;
+    --hab-gold-dark: #b8924a;
+    --hab-gold-light: #fdf8f0;
+    --hab-dark: #1a1a2e;
+    --hab-dark-light: #2d2d44;
+    --hab-text: #1e293b;
+    --hab-sub: #64748b;
+    --hab-muted: #94a3b8;
+    --hab-border: #e9edf2;
+    --hab-bg: #f7f9fc;
+    --hab-card: #ffffff;
+    --hab-success: #27ae60;
+    --hab-warning: #f39c12;
+    --hab-danger: #e74c3c;
+    --hab-info: #3b82f6;
+    --hab-radius: 20px;
+    --hab-radius-sm: 14px;
+    --hab-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    --hab-shadow-md: 0 8px 35px rgba(0, 0, 0, 0.1);
+    --hab-shadow-lg: 0 16px 50px rgba(0, 0, 0, 0.12);
+    --hab-transition: all 0.35s cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ── BASE ── */
+body {
+    background: var(--hab-bg);
+    font-family: var(--hab-font);
+    color: var(--hab-text);
+    margin: 0;
+    padding: 0;
+}
+
+/* ── HERO ── */
+.hab-hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f3460 100%);
+    padding: 2.8rem 2rem 3.2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin-top: 80px; /* Espacio para navbar fijo */
+}
+
+.hab-hero::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -10%;
+    width: 60%;
+    height: 150%;
+    background: radial-gradient(circle, rgba(200, 169, 110, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.hab-hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--hab-gold), transparent);
+}
+
+.hab-hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.hab-hero-badge {
+    display: inline-block;
+    background: rgba(200, 169, 110, 0.15);
+    backdrop-filter: blur(4px);
+    padding: 0.25rem 1rem;
+    border-radius: 30px;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--hab-gold);
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+}
+
+.hab-hero h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+}
+
+.hab-hero p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .hab-hero {
+        padding: 1.8rem 1.2rem 2.2rem;
+        margin-top: 70px;
+    }
+    
+    .hab-hero h1 {
+        font-size: 1.8rem;
+    }
+}
+
+/* ── MAIN CONTAINER ── */
+.hab-main {
+    max-width: 1200px;
+    margin: -1.8rem auto 0;
+    padding: 0 2rem 2rem;
+    position: relative;
+    z-index: 5;
+}
+
+@media (max-width: 768px) {
+    .hab-main {
+        padding: 0 1rem 1.5rem;
+    }
+}
+
+/* ── ALERTAS ── */
+.hab-alert {
+    border-radius: var(--hab-radius-sm);
+    padding: 0.9rem 1.2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: white;
+    border-left: 4px solid;
+    box-shadow: var(--hab-shadow);
+}
+
+.hab-alert-danger {
+    border-left-color: var(--hab-danger);
+    color: #c0392b;
+}
+
+/* ── FILTROS ── */
+.hab-filtros {
+    background: white;
+    border-radius: var(--hab-radius);
+    padding: 1.5rem 1.8rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--hab-shadow);
+    border: 1px solid var(--hab-border);
+    transition: var(--hab-transition);
+}
+
+.hab-filtros:hover {
+    box-shadow: var(--hab-shadow-md);
+}
+
+.hab-filtros-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1.5fr 1.5fr 0.8fr;
+    gap: 1rem;
+    align-items: end;
+}
+
+@media (max-width: 992px) {
+    .hab-filtros-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .hab-filtros-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.hab-filtro-group label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--hab-muted);
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.hab-filtro-group .form-control,
+.hab-filtro-group .form-select {
+    width: 100%;
+    border: 1.5px solid var(--hab-border);
+    border-radius: 12px;
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+    font-family: var(--hab-font);
+    transition: var(--hab-transition);
+    background: white;
+}
+
+.hab-filtro-group .form-control:focus,
+.hab-filtro-group .form-select:focus {
+    border-color: var(--hab-gold);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(200, 169, 110, 0.15);
+}
+
+.hab-filtro-group .form-control::placeholder {
+    color: var(--hab-muted);
+    font-size: 0.8rem;
+}
+
+.hab-filtro-btn {
+    background: var(--hab-gold);
+    border: none;
+    border-radius: 12px;
+    padding: 0.6rem 1.2rem;
+    color: white;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: var(--hab-transition);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.hab-filtro-btn:hover {
+    background: var(--hab-gold-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(200, 169, 110, 0.3);
+}
+
+.hab-filtro-clear {
+    font-size: 0.7rem;
+    color: var(--hab-muted);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 0.8rem;
+    transition: var(--hab-transition);
+}
+
+.hab-filtro-clear:hover {
+    color: var(--hab-danger);
+}
+
+/* ── CONTADOR DE RESULTADOS ── */
+.hab-resultados {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.hab-resultados h6 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--hab-sub);
+    margin: 0;
+}
+
+.hab-resultados h6 strong {
+    color: var(--hab-text);
+}
+
+.hab-resultados .badge-vista {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.8rem;
+    background: var(--hab-gold-light);
+    border-radius: 30px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--hab-gold-dark);
+}
+
+/* ── GRID DE HABITACIONES ── */
+.hab-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+@media (max-width: 992px) {
+    .hab-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .hab-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── TARJETA DE HABITACIÓN ── */
+.hab-card {
+    background: white;
+    border-radius: var(--hab-radius);
+    overflow: hidden;
+    box-shadow: var(--hab-shadow);
+    border: 1px solid var(--hab-border);
+    transition: var(--hab-transition);
+}
+
+.hab-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--hab-shadow-md);
+    border-color: var(--hab-gold);
+}
+
+.hab-card-img {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    background: #f1f3f5;
+}
+
+.hab-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.hab-card:hover .hab-card-img img {
+    transform: scale(1.05);
+}
+
+.hab-card-img-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f1f3f5, #e9edf2);
+    color: var(--hab-muted);
+}
+
+.hab-card-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: var(--hab-gold);
+    color: white;
+    padding: 0.3rem 0.9rem;
+    border-radius: 30px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(200, 169, 110, 0.3);
+}
+
+.hab-card-body {
+    padding: 1.4rem 1.4rem 1.6rem;
+}
+
+.hab-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+    gap: 1rem;
+}
+
+.hab-card-tipo {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--hab-text);
+    margin: 0;
+    line-height: 1.2;
+}
+
+.hab-card-tipo small {
+    font-weight: 500;
+    font-size: 0.75rem;
+    color: var(--hab-sub);
+    display: block;
+    margin-top: 0.2rem;
+}
+
+.hab-card-precio {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-end;
+    background: var(--hab-dark);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 12px;
+    white-space: nowrap;
+}
+
+.hab-card-precio .numero {
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.hab-card-precio .label {
+    font-size: 0.6rem;
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+.hab-card-desc {
+    font-size: 0.8rem;
+    color: var(--hab-sub);
+    margin-bottom: 1rem;
+    line-height: 1.5;
+    min-height: 40px;
+}
+
+.hab-card-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+}
+
+.hab-btn {
+    padding: 0.6rem 0.8rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    transition: var(--hab-transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+}
+
+.hab-btn-outline {
+    background: transparent;
+    border: 1.5px solid var(--hab-border);
+    color: var(--hab-sub);
+}
+
+.hab-btn-outline:hover {
+    border-color: var(--hab-gold);
+    color: var(--hab-gold);
+    transform: translateY(-2px);
+}
+
+.hab-btn-primary {
+    background: var(--hab-gold);
+    border: none;
+    color: white;
+}
+
+.hab-btn-primary:hover {
+    background: var(--hab-gold-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(200, 169, 110, 0.3);
+}
+
+/* ── EMPTY STATE ── */
+.hab-empty {
+    background: white;
+    border-radius: var(--hab-radius);
+    padding: 3.5rem 1.5rem;
+    text-align: center;
+    border: 1px solid var(--hab-border);
+    box-shadow: var(--hab-shadow);
+}
+
+.hab-empty i {
+    font-size: 3rem;
+    color: var(--hab-muted);
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.hab-empty h6 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--hab-sub);
+    margin-bottom: 0.5rem;
+}
+
+.hab-empty .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.5rem;
+    border: 1.5px solid var(--hab-border);
+    border-radius: 30px;
+    color: var(--hab-sub);
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--hab-transition);
+    margin-top: 0.8rem;
+}
+
+.hab-empty .btn-outline:hover {
+    border-color: var(--hab-gold);
+    color: var(--hab-gold);
+    transform: translateY(-2px);
+}
+
+/* ── DECORACIÓN FINAL ── */
+.hab-deco {
+    text-align: center;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--hab-border);
+}
+
+.hab-deco-line {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.7rem;
+    color: var(--hab-muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.hab-deco-line::before,
+.hab-deco-line::after {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--hab-border);
+}
+
+.hab-deco-line i {
+    color: var(--hab-gold);
+}
