@@ -1,142 +1,150 @@
-<style>
-.perfil-card { border:none; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.08); }
-.avatar-circle {
-    width:90px; height:90px; border-radius:50%;
-    background:linear-gradient(135deg,#1a1a2e,#0f3460);
-    display:flex; align-items:center; justify-content:center;
-    font-size:2rem; font-weight:700; color:#fff;
-}
-.strength-bar { height:6px; border-radius:10px; background:#e0e0e0; overflow:hidden; }
-.strength-fill { height:100%; border-radius:10px; width:0%; transition:width .4s, background .4s; }
-</style>
+<link rel="stylesheet" href="<?= asset('css/cssCliente/clienteperfil.css') ?>">
 
-<div style="background:linear-gradient(135deg,#1a1a2e,#0f3460);padding:40px 20px 30px;color:#fff;">
-    <div style="max-width:700px;margin:0 auto;">
-        <a href="<?= url('cliente/dashboard') ?>" style="color:#a0b4d0;font-size:.85rem;text-decoration:none;">
-            <i class="fas fa-arrow-left me-2"></i>Mi panel
-        </a>
-        <h2 class="fw-bold mt-2 mb-0">Mi Perfil</h2>
-        <p style="color:#a0b4d0;">Administra tu información personal</p>
-    </div>
+<!-- Portada (imagen 4.png) -->
+<div class="perfil-portada">
+    <img src="<?= asset('imgs/4.png') ?>" alt="Portada del perfil">
+    <div class="perfil-portada-overlay"></div>
 </div>
 
-<div style="max-width:700px;margin:0 auto;padding:30px 20px;">
-
+<div class="perfil-main">
     <?php if (!empty($_SESSION['success'])): ?>
-        <div class="alert alert-success alert-dismissible fade show">
-            <i class="fas fa-check-circle me-2"></i><?= $_SESSION['success'] ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <div class="perfil-alert perfil-alert-success">
+            <i class="fas fa-check-circle"></i>
+            <span><?= $_SESSION['success'] ?></span>
+            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
         </div>
         <?php unset($_SESSION['success']); ?>
     <?php endif; ?>
+    
     <?php if (!empty($_SESSION['error'])): ?>
-        <div class="alert alert-danger alert-dismissible fade show">
-            <i class="fas fa-exclamation-circle me-2"></i><?= $_SESSION['error'] ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <div class="perfil-alert perfil-alert-danger">
+            <i class="fas fa-exclamation-circle"></i>
+            <span><?= $_SESSION['error'] ?></span>
+            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
         </div>
         <?php unset($_SESSION['error']); ?>
     <?php endif; ?>
 
-    <!-- Avatar -->
-    <div class="perfil-card p-4 mb-4 d-flex align-items-center gap-4">
-        <div class="avatar-circle">
-            <?= strtoupper(mb_substr($usuario['nombre'], 0, 1)) ?>
-        </div>
-        <div>
-            <h4 class="fw-bold mb-0"><?= htmlspecialchars($usuario['nombre'] . ' ' . $usuario['paterno']) ?></h4>
-            <p class="text-muted mb-0"><?= htmlspecialchars($usuario['email']) ?></p>
-            <span class="badge bg-success mt-1"><?= $usuario['estado'] ?></span>
-        </div>
-    </div>
-
-    <!-- Info no editable -->
-    <div class="perfil-card p-4 mb-4">
-        <h6 class="fw-bold text-muted mb-3" style="font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;">
-            Información de cuenta
-        </h6>
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label text-muted small">CI / Carnet</label>
-                <input type="text" class="form-control bg-light" value="<?= htmlspecialchars($usuario['ci']) ?>" disabled>
+    <!-- Tarjeta principal: Avatar + Info -->
+    <div class="perfil-card">
+        <div class="perfil-header-card">
+            <div class="perfil-avatar">
+                <?= strtoupper(mb_substr($usuario['nombre'], 0, 1)) ?>
             </div>
-            <div class="col-md-6">
-                <label class="form-label text-muted small">Correo electrónico</label>
-                <input type="text" class="form-control bg-light" value="<?= htmlspecialchars($usuario['email']) ?>" disabled>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label text-muted small">Miembro desde</label>
-                <input type="text" class="form-control bg-light"
-                       value="<?= date('d/m/Y', strtotime($usuario['fechaRegistro'])) ?>" disabled>
+            <div class="perfil-info">
+                <h3><?= htmlspecialchars($usuario['nombre'] . ' ' . $usuario['paterno']) ?></h3>
+                <p><i class="fas fa-envelope me-1"></i> <?= htmlspecialchars($usuario['email']) ?></p>
+                <span class="badge-estado">
+                    <i class="fas fa-check-circle"></i> <?= $usuario['estado'] ?? 'Activo' ?>
+                </span>
             </div>
         </div>
-    </div>
 
-    <!-- Formulario editable -->
-    <div class="perfil-card p-4">
-        <h6 class="fw-bold text-muted mb-3" style="font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;">
-            Editar información
-        </h6>
-        <form action="<?= url('cliente/perfil') ?>" method="POST">
-            <div class="row g-3">
-
-                <div class="col-md-4">
-                    <label class="form-label fw-semibold">Nombre *</label>
-                    <input type="text" name="nombre" class="form-control"
-                           value="<?= htmlspecialchars($usuario['nombre']) ?>" required>
+        <div class="perfil-body">
+            <!-- Información de cuenta (no editable) -->
+            <div class="perfil-section-title">
+                <i class="fas fa-id-card me-1"></i> Información de cuenta
+            </div>
+            <div class="perfil-readonly-grid">
+                <div class="perfil-readonly-item">
+                    <label>CI / Carnet</label>
+                    <div class="valor"><?= htmlspecialchars($usuario['ci']) ?></div>
                 </div>
-                <div class="col-md-4">
-                    <label class="form-label fw-semibold">Paterno *</label>
-                    <input type="text" name="paterno" class="form-control"
-                           value="<?= htmlspecialchars($usuario['paterno']) ?>" required>
+                <div class="perfil-readonly-item">
+                    <label>Correo electrónico</label>
+                    <div class="valor"><?= htmlspecialchars($usuario['email']) ?></div>
                 </div>
-                <div class="col-md-4">
-                    <label class="form-label fw-semibold">Materno</label>
-                    <input type="text" name="materno" class="form-control"
-                           value="<?= htmlspecialchars($usuario['materno'] ?? '') ?>">
+                <div class="perfil-readonly-item">
+                    <label>Miembro desde</label>
+                    <div class="valor"><?= date('d/m/Y', strtotime($usuario['fechaRegistro'])) ?></div>
                 </div>
-
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Teléfono</label>
-                    <input type="text" name="telefono" class="form-control"
-                           value="<?= htmlspecialchars($usuario['telefono'] ?? '') ?>"
-                           placeholder="+591 7XXXXXXX">
+                <div class="perfil-readonly-item">
+                    <label>Rol</label>
+                    <div class="valor"><?= htmlspecialchars($usuario['rol'] ?? 'Cliente') ?></div>
                 </div>
+            </div>
 
-                <div class="col-12">
-                    <hr class="my-1">
-                    <p class="text-muted small mb-2">
-                        <i class="fas fa-lock me-1"></i>Cambiar contraseña <span class="text-muted fw-normal">(opcional)</span>
-                    </p>
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Contraseña actual</label>
-                    <input type="password" name="password_actual" class="form-control mb-3"
-                           placeholder="Ingresa tu contraseña actual">
-
-                    <label class="form-label fw-semibold">Nueva contraseña</label>
-                    <input type="password" name="password" id="pwInput" class="form-control"
-                           placeholder="Mínimo 8 caracteres">
-                    <div class="strength-bar mt-2">
-                        <div class="strength-fill" id="pwBar"></div>
+            <!-- Formulario editable -->
+            <div class="perfil-section-title">
+                <i class="fas fa-edit me-1"></i> Editar información personal
+            </div>
+            <form action="<?= url('cliente/perfil') ?>" method="POST">
+                <div class="perfil-form-grid">
+                    <div class="perfil-form-group">
+                        <label>Nombre *</label>
+                        <input type="text" name="nombre" class="form-control"
+                               value="<?= htmlspecialchars($usuario['nombre']) ?>" required>
                     </div>
-                    <small id="pwText" class="fw-semibold" style="font-size:.75rem;"></small>
+                    <div class="perfil-form-group">
+                        <label>Apellido paterno *</label>
+                        <input type="text" name="paterno" class="form-control"
+                               value="<?= htmlspecialchars($usuario['paterno']) ?>" required>
+                    </div>
+                    <div class="perfil-form-group">
+                        <label>Apellido materno</label>
+                        <input type="text" name="materno" class="form-control"
+                               value="<?= htmlspecialchars($usuario['materno'] ?? '') ?>">
+                    </div>
+                    <div class="perfil-form-group" style="grid-column: span 1;">
+                        <label>Teléfono</label>
+                        <input type="text" name="telefono" class="form-control"
+                               value="<?= htmlspecialchars($usuario['telefono'] ?? '') ?>"
+                               placeholder="+591 7XXXXXXX">
+                    </div>
                 </div>
 
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Confirmar nueva contraseña</label>
-                    <input type="password" name="password_confirm" id="pwConfirm" class="form-control" placeholder="Repite la nueva contraseña">
-                    <small id="pwMatch" class="fw-semibold" style="font-size:.75rem;"></small>
+                <!-- CAMBIAR CONTRASEÑA -->
+                <div class="perfil-password-section">
+                    <div class="info-text">
+                        <i class="fas fa-lock"></i> Cambiar contraseña <span class="text-muted">(opcional)</span>
+                    </div>
+
+                    <div class="perfil-password-grid">
+                        <!-- Contraseña actual -->
+                        <div class="perfil-password-group">
+                            <label>Contraseña actual</label>
+                            <input type="password" name="password_actual" class="form-control"
+                                   placeholder="Ingresa tu contraseña actual">
+                        </div>
+
+                        <!-- Nueva contraseña -->
+                        <div class="perfil-password-group">
+                            <label>Nueva contraseña</label>
+                            <input type="password" name="password" id="pwInput" class="form-control"
+                                   placeholder="Mínimo 8 caracteres">
+                            
+                            <div class="perfil-strength">
+                                <div class="perfil-strength-bar">
+                                    <div class="perfil-strength-fill" id="pwBar"></div>
+                                </div>
+                                <div class="perfil-strength-text" id="pwText">Mínimo 8 caracteres</div>
+                            </div>
+                        </div>
+
+                        <!-- Confirmar nueva contraseña -->
+                        <div class="perfil-password-group">
+                            <label>Confirmar nueva contraseña</label>
+                            <input type="password" name="password_confirm" id="pwConfirm" class="form-control"
+                                   placeholder="Repite la nueva contraseña">
+                            <div class="perfil-match-text" id="pwMatch"></div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="col-12 pt-2">
-                    <button type="submit" class="btn btn-primary px-5 py-2">
-                        <i class="fas fa-save me-2"></i>Guardar cambios
-                    </button>
-                </div>
+                <button type="submit" class="perfil-btn-save">
+                    <i class="fas fa-save"></i> Guardar cambios
+                </button>
+            </form>
+        </div>
+    </div>
 
-            </div>
-        </form>
+    <!-- Decoración final -->
+    <div class="perfil-deco">
+        <span class="perfil-deco-line">
+            <i class="fas fa-hotel"></i>
+            Hotel Real Plaza & Convention Center
+            <i class="fas fa-hotel"></i>
+        </span>
     </div>
 </div>
 
@@ -157,14 +165,20 @@ const levels = [
 
 pwInput.addEventListener('input', () => {
     const v = pwInput.value;
-    if (!v) { pwBar.style.width='0%'; pwText.textContent=''; return; }
+    if (!v) { 
+        pwBar.style.width = '0%'; 
+        pwText.textContent = 'Mínimo 8 caracteres';
+        pwText.style.color = '#94a3b8';
+        return; 
+    }
     let s = 0;
     if (v.length >= 8)           s++;
     if (/[A-Z]/.test(v))         s++;
     if (/[a-z]/.test(v))         s++;
     if (/[0-9]/.test(v))         s++;
     if (/[^A-Za-z0-9]/.test(v))  s++;
-    const l = levels[s-1] ?? levels[0];
+    const idx = Math.min(Math.max(0, s - 1), levels.length - 1);
+    const l = levels[idx] || levels[0];
     pwBar.style.width      = l.w;
     pwBar.style.background = l.color;
     pwText.textContent     = l.label;
@@ -175,13 +189,17 @@ pwInput.addEventListener('input', () => {
 pwConfirm.addEventListener('input', checkMatch);
 
 function checkMatch() {
-    if (!pwConfirm.value) { pwMatch.textContent = ''; return; }
+    if (!pwConfirm.value) { 
+        pwMatch.textContent = ''; 
+        pwMatch.className = 'perfil-match-text';
+        return; 
+    }
     if (pwInput.value === pwConfirm.value) {
-        pwMatch.textContent = '✔ Coinciden';
-        pwMatch.style.color = '#28a745';
+        pwMatch.textContent = '✔ Las contraseñas coinciden';
+        pwMatch.className = 'perfil-match-text success';
     } else {
         pwMatch.textContent = '✘ No coinciden';
-        pwMatch.style.color = '#dc3545';
+        pwMatch.className = 'perfil-match-text error';
     }
 }
 </script>

@@ -1,10 +1,32 @@
 <link rel="stylesheet" href="<?= asset('css/cssCliente/clientereservas.css') ?>">
 
-<!-- Hero Section -->
+<!-- Hero Section con estadísticas rápidas -->
 <div class="reservas-hero">
     <div class="reservas-hero-content">
-        <h1>Mis Reservas</h1>
-        <p>Historial y estado de todas tus reservas</p>
+        <div class="reservas-hero-text">
+            <h1>Mis Reservas</h1>
+            <p>Historial y estado de todas tus reservas</p>
+        </div>
+        <?php if (!empty($reservas)): ?>
+        <div class="reservas-hero-stats">
+            <div class="reservas-hero-stat">
+                <div class="reservas-hero-stat-number"><?= count($reservas) ?></div>
+                <div class="reservas-hero-stat-label">Total</div>
+            </div>
+            <div class="reservas-hero-stat">
+                <div class="reservas-hero-stat-number" style="color: #1abc9c;">
+                    <?= count(array_filter($reservas, fn($r) => $r['estado_reserva'] === 'Confirmada')) ?>
+                </div>
+                <div class="reservas-hero-stat-label">Confirmadas</div>
+            </div>
+            <div class="reservas-hero-stat">
+                <div class="reservas-hero-stat-number" style="color: #f39c12;">
+                    <?= count(array_filter($reservas, fn($r) => $r['estado_reserva'] === 'Pendiente')) ?>
+                </div>
+                <div class="reservas-hero-stat-label">Pendientes</div>
+            </div>
+        </div>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -29,14 +51,31 @@
 
     <?php if (empty($reservas)): ?>
         <div class="reservas-empty">
-            <i class="fas fa-calendar-times"></i>
+            <i class="fas fa-calendar-plus"></i>
             <h5>Aún no tienes reservas</h5>
-            <p>Explora nuestras habitaciones y realiza tu primera reserva.</p>
+            <p>Descubre nuestras habitaciones y vive una experiencia única en el Hotel Real Plaza.</p>
             <a href="<?= url('habitaciones') ?>" class="btn-primary">
-                <i class="fas fa-bed"></i> Ver habitaciones
+                <i class="fas fa-bed"></i> Explorar habitaciones
             </a>
         </div>
     <?php else: ?>
+        <!-- Panel de bienvenida / resumen -->
+        <div class="reservas-welcome">
+            <div class="reservas-welcome-text">
+                <div class="reservas-welcome-avatar">
+                    <?= strtoupper(substr($u['nombre'] ?? 'C', 0, 1)) ?>
+                </div>
+                <div class="reservas-welcome-info">
+                    <strong><?= htmlspecialchars($u['nombre'] ?? 'Cliente') ?></strong>
+                    <span>·</span>
+                    <?= count($reservas) ?> reservas en total
+                </div>
+            </div>
+            <div class="reservas-welcome-badge">
+                <i class="fas fa-crown me-1"></i> Miembro
+            </div>
+        </div>
+
         <!-- Filtros -->
         <div class="reservas-filtros">
             <button class="reservas-tab activo" onclick="filtrar('todos', this)">
@@ -198,6 +237,16 @@
                 <i class="fas fa-plus"></i> Nueva reserva
             </a>
         </div>
+
+        <!-- Decoración hotelera al final -->
+        <div class="reservas-deco">
+            <span class="reservas-deco-line">
+                <i class="fas fa-hotel"></i>
+                Hotel Real Plaza & Convention Center
+                <i class="fas fa-hotel"></i>
+            </span>
+        </div>
+
     <?php endif; ?>
 </div>
 

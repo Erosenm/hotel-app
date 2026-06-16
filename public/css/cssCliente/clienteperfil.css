@@ -1,0 +1,460 @@
+/* ============================================================
+   clienteperfil.css — Mi Perfil (Cliente) | Estilo Red Social
+   Inspirado en perfiles de Facebook/Instagram
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap');
+
+:root {
+    --perfil-font: 'Inter', system-ui, -apple-system, sans-serif;
+    --perfil-gold: #c8a96e;
+    --perfil-gold-dark: #b8924a;
+    --perfil-gold-light: #fdf8f0;
+    --perfil-dark: #1a1a2e;
+    --perfil-text: #1e293b;
+    --perfil-sub: #64748b;
+    --perfil-muted: #94a3b8;
+    --perfil-border: #e9edf2;
+    --perfil-bg: #f0f2f5;
+    --perfil-card: #ffffff;
+    --perfil-success: #27ae60;
+    --perfil-warning: #f39c12;
+    --perfil-danger: #e74c3c;
+    --perfil-info: #3b82f6;
+    --perfil-radius: 20px;
+    --perfil-radius-sm: 14px;
+    --perfil-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    --perfil-shadow-md: 0 8px 30px rgba(0, 0, 0, 0.08);
+    --perfil-transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ── BASE ── */
+body {
+    background: var(--perfil-bg);
+    font-family: var(--perfil-font);
+    color: var(--perfil-text);
+    margin: 0;
+    padding: 0;
+}
+
+/* ── HERO / PORTADA ── */
+.perfil-portada {
+    position: relative;
+    width: 100%;
+    height: 240px;
+    margin-top: 80px; /* Espacio para navbar fijo */
+    overflow: hidden;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+}
+
+.perfil-portada img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.85;
+}
+
+.perfil-portada-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    background: linear-gradient(0deg, rgba(15, 23, 42, 0.7) 0%, transparent 100%);
+}
+
+/* ── CONTENEDOR PRINCIPAL ── */
+.perfil-main {
+    max-width: 900px;
+    margin: -70px auto 0;
+    padding: 0 2rem 2rem;
+    position: relative;
+    z-index: 5;
+}
+
+@media (max-width: 768px) {
+    .perfil-main {
+        padding: 0 1rem 1.5rem;
+        margin-top: -50px;
+    }
+    
+    .perfil-portada {
+        height: 160px;
+        margin-top: 70px;
+    }
+}
+
+/* ── TARJETA DE PERFIL (avatar + info) ── */
+.perfil-card {
+    background: var(--perfil-card);
+    border-radius: var(--perfil-radius);
+    box-shadow: var(--perfil-shadow);
+    border: 1px solid var(--perfil-border);
+    overflow: hidden;
+    transition: var(--perfil-transition);
+}
+
+.perfil-card:hover {
+    box-shadow: var(--perfil-shadow-md);
+}
+
+.perfil-header-card {
+    padding: 1.5rem 1.8rem;
+    display: flex;
+    align-items: flex-end;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    background: white;
+}
+
+@media (max-width: 640px) {
+    .perfil-header-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 1.2rem;
+    }
+}
+
+/* ── AVATAR ── */
+.perfil-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--perfil-gold), var(--perfil-gold-dark));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+    border: 4px solid white;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    margin-top: -50px;
+}
+
+@media (max-width: 640px) {
+    .perfil-avatar {
+        margin-top: -40px;
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+    }
+}
+
+.perfil-info {
+    flex: 1;
+}
+
+.perfil-info h3 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin: 0 0 0.2rem 0;
+    color: var(--perfil-text);
+}
+
+.perfil-info p {
+    color: var(--perfil-sub);
+    font-size: 0.85rem;
+    margin: 0 0 0.3rem 0;
+}
+
+.perfil-info .badge-estado {
+    display: inline-block;
+    padding: 0.2rem 0.8rem;
+    background: #e8f8f5;
+    color: #1abc9c;
+    border-radius: 30px;
+    font-size: 0.65rem;
+    font-weight: 700;
+}
+
+.perfil-info .badge-estado i {
+    margin-right: 0.3rem;
+}
+
+/* ── BODY DE LA TARJETA ── */
+.perfil-body {
+    padding: 1.5rem 1.8rem;
+    border-top: 1px solid var(--perfil-border);
+}
+
+@media (max-width: 640px) {
+    .perfil-body {
+        padding: 1.2rem;
+    }
+}
+
+/* ── SECCIONES ── */
+.perfil-section-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--perfil-muted);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--perfil-border);
+}
+
+/* ── CAMPOS NO EDITABLES ── */
+.perfil-readonly-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (max-width: 640px) {
+    .perfil-readonly-grid {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+    }
+}
+
+.perfil-readonly-item label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--perfil-muted);
+    display: block;
+    margin-bottom: 0.2rem;
+}
+
+.perfil-readonly-item .valor {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--perfil-text);
+    background: var(--perfil-bg);
+    padding: 0.5rem 0.8rem;
+    border-radius: 10px;
+    border: 1px solid var(--perfil-border);
+}
+
+/* ── FORMULARIO EDITABLE ── */
+.perfil-form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+@media (max-width: 768px) {
+    .perfil-form-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .perfil-form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.perfil-form-group {
+    margin-bottom: 0.5rem;
+}
+
+.perfil-form-group label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--perfil-sub);
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.perfil-form-group .form-control {
+    width: 100%;
+    border: 1.5px solid var(--perfil-border);
+    border-radius: 12px;
+    padding: 0.7rem 1rem;
+    font-size: 0.85rem;
+    font-family: var(--perfil-font);
+    transition: var(--perfil-transition);
+    background: white;
+}
+
+.perfil-form-group .form-control:focus {
+    border-color: var(--perfil-gold);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(200, 169, 110, 0.15);
+}
+
+.perfil-form-group .form-control:disabled {
+    background: var(--perfil-bg);
+    color: var(--perfil-sub);
+}
+
+/* ── SECCIÓN CONTRASEÑA ── */
+.perfil-password-section {
+    margin-top: 1.5rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--perfil-border);
+}
+
+.perfil-password-section .info-text {
+    font-size: 0.75rem;
+    color: var(--perfil-muted);
+    margin-bottom: 1rem;
+}
+
+.perfil-password-section .info-text i {
+    margin-right: 0.3rem;
+}
+
+.perfil-password-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.perfil-password-group {
+    margin-bottom: 0.5rem;
+}
+
+.perfil-password-group label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--perfil-sub);
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.perfil-password-group .form-control {
+    width: 100%;
+    border: 1.5px solid var(--perfil-border);
+    border-radius: 12px;
+    padding: 0.7rem 1rem;
+    font-size: 0.85rem;
+    font-family: var(--perfil-font);
+    transition: var(--perfil-transition);
+    background: white;
+}
+
+.perfil-password-group .form-control:focus {
+    border-color: var(--perfil-gold);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(200, 169, 110, 0.15);
+}
+
+.perfil-password-group .form-control::placeholder {
+    color: var(--perfil-muted);
+    font-size: 0.8rem;
+}
+
+/* Medidor de fortaleza */
+.perfil-strength {
+    margin-top: 0.3rem;
+}
+
+.perfil-strength-bar {
+    height: 5px;
+    border-radius: 10px;
+    background: #e9ecef;
+    overflow: hidden;
+}
+
+.perfil-strength-fill {
+    height: 100%;
+    border-radius: 10px;
+    width: 0%;
+    transition: width 0.4s, background 0.4s;
+}
+
+.perfil-strength-text {
+    font-size: 0.65rem;
+    font-weight: 600;
+    margin-top: 0.2rem;
+}
+
+/* Mensaje de coincidencia */
+.perfil-match-text {
+    font-size: 0.65rem;
+    font-weight: 600;
+    margin-top: 0.2rem;
+}
+
+.perfil-match-text.success {
+    color: #27ae60;
+}
+
+.perfil-match-text.error {
+    color: #e74c3c;
+}
+
+/* ── BOTÓN GUARDAR ── */
+.perfil-btn-save {
+    background: var(--perfil-gold);
+    border: none;
+    padding: 0.7rem 2.5rem;
+    border-radius: 40px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: white;
+    transition: var(--perfil-transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    cursor: pointer;
+    margin-top: 1.2rem;
+}
+
+.perfil-btn-save:hover {
+    background: var(--perfil-gold-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(200, 169, 110, 0.3);
+}
+
+/* ── ALERTAS ── */
+.perfil-alert {
+    border-radius: var(--perfil-radius-sm);
+    padding: 0.9rem 1.2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: white;
+    border-left: 4px solid;
+    box-shadow: var(--perfil-shadow);
+}
+
+.perfil-alert-success {
+    border-left-color: var(--perfil-success);
+    color: #1e8449;
+}
+
+.perfil-alert-danger {
+    border-left-color: var(--perfil-danger);
+    color: #c0392b;
+}
+
+/* ── DECORACIÓN FINAL ── */
+.perfil-deco {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--perfil-border);
+}
+
+.perfil-deco-line {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.7rem;
+    color: var(--perfil-muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.perfil-deco-line::before,
+.perfil-deco-line::after {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--perfil-border);
+}
+
+.perfil-deco-line i {
+    color: var(--perfil-gold);
+}
