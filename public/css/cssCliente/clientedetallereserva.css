@@ -1,0 +1,502 @@
+/* ============================================================
+   clientedetallereserva.css — Detalle de Reserva (Cliente)
+   Diseño premium y organizado para el detalle de reserva
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap');
+
+:root {
+    --detalle-res-font: 'Inter', system-ui, -apple-system, sans-serif;
+    --detalle-res-gold: #c8a96e;
+    --detalle-res-gold-dark: #b8924a;
+    --detalle-res-gold-light: #fdf8f0;
+    --detalle-res-dark: #1a1a2e;
+    --detalle-res-dark-light: #2d2d44;
+    --detalle-res-text: #1e293b;
+    --detalle-res-sub: #64748b;
+    --detalle-res-muted: #94a3b8;
+    --detalle-res-border: #e9edf2;
+    --detalle-res-bg: #f7f9fc;
+    --detalle-res-card: #ffffff;
+    --detalle-res-success: #27ae60;
+    --detalle-res-warning: #f39c12;
+    --detalle-res-danger: #e74c3c;
+    --detalle-res-info: #0dcaf0;
+    --detalle-res-primary: #0f3460;
+    --detalle-res-radius: 20px;
+    --detalle-res-radius-sm: 14px;
+    --detalle-res-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    --detalle-res-shadow-md: 0 8px 35px rgba(0, 0, 0, 0.08);
+    --detalle-res-transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ── BASE ── */
+body {
+    background: var(--detalle-res-bg);
+    font-family: var(--detalle-res-font);
+    color: var(--detalle-res-text);
+    margin: 0;
+    padding: 0;
+}
+
+/* ── HERO ── */
+.detalle-res-hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f3460 100%);
+    padding: 2.5rem 2rem 3rem;
+    position: relative;
+    overflow: hidden;
+    margin-top: 80px;
+}
+
+.detalle-res-hero::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -10%;
+    width: 60%;
+    height: 150%;
+    background: radial-gradient(circle, rgba(200, 169, 110, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.detalle-res-hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--detalle-res-gold), transparent);
+}
+
+.detalle-res-hero-content {
+    max-width: 860px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.detalle-res-hero-back {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: var(--detalle-res-transition);
+}
+
+.detalle-res-hero-back:hover {
+    color: var(--detalle-res-gold);
+}
+
+.detalle-res-hero h2 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: white;
+    margin: 0.5rem 0 0.2rem 0;
+}
+
+.detalle-res-hero p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .detalle-res-hero {
+        padding: 1.8rem 1.2rem 2.2rem;
+        margin-top: 70px;
+    }
+    
+    .detalle-res-hero h2 {
+        font-size: 1.4rem;
+    }
+}
+
+/* ── MAIN CONTAINER ── */
+.detalle-res-main {
+    max-width: 860px;
+    margin: -1.8rem auto 0;
+    padding: 0 2rem 2rem;
+    position: relative;
+    z-index: 5;
+}
+
+@media (max-width: 768px) {
+    .detalle-res-main {
+        padding: 0 1rem 1.5rem;
+    }
+}
+
+/* ── CARDS ── */
+.detalle-res-card {
+    background: var(--detalle-res-card);
+    border-radius: var(--detalle-res-radius);
+    border: 1px solid var(--detalle-res-border);
+    box-shadow: var(--detalle-res-shadow);
+    overflow: hidden;
+    transition: var(--detalle-res-transition);
+    margin-bottom: 1.5rem;
+}
+
+.detalle-res-card:hover {
+    box-shadow: var(--detalle-res-shadow-md);
+}
+
+.detalle-res-card-header {
+    padding: 1rem 1.5rem;
+    background: #fafbfc;
+    border-bottom: 1px solid var(--detalle-res-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.detalle-res-card-header h6 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--detalle-res-text);
+}
+
+.detalle-res-card-header h6 i {
+    color: var(--detalle-res-gold);
+}
+
+.detalle-res-card-body {
+    padding: 1.5rem;
+}
+
+@media (max-width: 640px) {
+    .detalle-res-card-body {
+        padding: 1rem;
+    }
+}
+
+/* ── INFO HABITACIÓN ── */
+.detalle-res-hab-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+}
+
+.detalle-res-hab-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+
+.detalle-res-hab-nombre {
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin: 0;
+    color: var(--detalle-res-text);
+}
+
+.detalle-res-hab-nombre small {
+    font-weight: 500;
+    font-size: 0.8rem;
+    color: var(--detalle-res-sub);
+}
+
+.detalle-res-hab-piso {
+    font-size: 0.8rem;
+    color: var(--detalle-res-muted);
+    margin: 0;
+}
+
+.detalle-res-hab-badge {
+    padding: 0.3rem 1rem;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.detalle-res-hab-badge.pendiente { background: #fef9e7; color: #f39c12; }
+.detalle-res-hab-badge.confirmada { background: #e8f8f5; color: #1abc9c; }
+.detalle-res-hab-badge.cancelada { background: #fdedec; color: #e74c3c; }
+.detalle-res-hab-badge.completada { background: #e8f0fe; color: #4f46e5; }
+.detalle-res-hab-badge.secondary { background: #f4f6f7; color: #7f8c8d; }
+
+/* ── GRID DE FECHAS ── */
+.detalle-res-fechas {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--detalle-res-border);
+}
+
+@media (max-width: 640px) {
+    .detalle-res-fechas {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.detalle-res-fecha-item {
+    text-align: center;
+}
+
+.detalle-res-fecha-item .label {
+    font-size: 0.65rem;
+    color: var(--detalle-res-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.detalle-res-fecha-item .valor {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--detalle-res-text);
+    margin-top: 0.2rem;
+}
+
+/* ── TABLA DE SERVICIOS ── */
+.detalle-res-tabla {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.detalle-res-tabla thead th {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--detalle-res-muted);
+    padding: 0.6rem 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--detalle-res-border);
+}
+
+.detalle-res-tabla tbody td {
+    padding: 0.6rem 0.5rem;
+    font-size: 0.85rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.detalle-res-tabla tfoot td {
+    padding: 0.6rem 0.5rem;
+    font-weight: 700;
+    border-top: 1px solid var(--detalle-res-border);
+    background: #fafbfc;
+}
+
+.detalle-res-btn-dark {
+    background: var(--detalle-res-dark);
+    border: none;
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: var(--detalle-res-transition);
+    cursor: pointer;
+}
+
+.detalle-res-btn-dark:hover {
+    background: var(--detalle-res-dark-light);
+    transform: translateY(-1px);
+}
+
+/* ── TIMELINE DE PAGOS ── */
+.detalle-res-timeline {
+    position: relative;
+    padding-left: 0;
+}
+
+.detalle-res-timeline-item {
+    border-left: 2px solid var(--detalle-res-border);
+    padding-left: 1.5rem;
+    position: relative;
+    margin-bottom: 1.2rem;
+}
+
+.detalle-res-timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -7px;
+    top: 4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--detalle-res-primary);
+    border: 2px solid white;
+    box-shadow: 0 0 0 2px var(--detalle-res-primary);
+}
+
+.detalle-res-timeline-item.success::before {
+    background: var(--detalle-res-success);
+    box-shadow: 0 0 0 2px var(--detalle-res-success);
+}
+
+.detalle-res-timeline-item.warning::before {
+    background: var(--detalle-res-warning);
+    box-shadow: 0 0 0 2px var(--detalle-res-warning);
+}
+
+.detalle-res-timeline-item.danger::before {
+    background: var(--detalle-res-danger);
+    box-shadow: 0 0 0 2px var(--detalle-res-danger);
+}
+
+.detalle-res-timeline-item .monto {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--detalle-res-text);
+}
+
+.detalle-res-timeline-item .meta {
+    font-size: 0.75rem;
+    color: var(--detalle-res-sub);
+}
+
+/* ── RESUMEN DE COBRO (sticky) ── */
+.detalle-res-sticky {
+    position: sticky;
+    top: 100px;
+}
+
+@media (max-width: 992px) {
+    .detalle-res-sticky {
+        position: relative;
+        top: 0;
+    }
+}
+
+/* ── MODAL SERVICIOS ── */
+.detalle-res-modal .modal-content {
+    border: none;
+    border-radius: var(--detalle-res-radius);
+    overflow: hidden;
+    box-shadow: var(--detalle-res-shadow-md);
+}
+
+.detalle-res-modal .modal-header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f3460 100%);
+    border: none;
+    padding: 1.2rem 1.8rem;
+}
+
+.detalle-res-modal .modal-title {
+    font-weight: 800;
+    color: white;
+}
+
+.detalle-res-modal .modal-title i {
+    margin-right: 0.5rem;
+}
+
+.detalle-res-modal .modal-header p {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0.2rem 0 0 0;
+}
+
+.detalle-res-modal .modal-body {
+    padding: 1.5rem;
+}
+
+.detalle-res-modal .modal-footer {
+    border-top: 1px solid var(--detalle-res-border);
+    padding: 1rem 1.5rem;
+    background: #fafbfc;
+}
+
+/* Buscador modal */
+.detalle-res-modal-search {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.detalle-res-modal-search i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--detalle-res-muted);
+}
+
+.detalle-res-modal-search input {
+    width: 100%;
+    padding: 0.6rem 1rem 0.6rem 2.5rem;
+    border: 1.5px solid var(--detalle-res-border);
+    border-radius: 12px;
+    font-size: 0.85rem;
+    transition: var(--detalle-res-transition);
+}
+
+.detalle-res-modal-search input:focus {
+    border-color: var(--detalle-res-gold);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(200, 169, 110, 0.15);
+}
+
+/* Tarjetas de servicios en modal */
+.detalle-res-servicio-card {
+    border: 2px solid var(--detalle-res-border);
+    border-radius: 12px;
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    transition: var(--detalle-res-transition);
+    margin-bottom: 0.6rem;
+    background: white;
+}
+
+.detalle-res-servicio-card:hover {
+    border-color: var(--detalle-res-info);
+    background: #f0fdff;
+    transform: translateY(-1px);
+}
+
+.detalle-res-servicio-card.selected {
+    border-color: var(--detalle-res-info);
+    background: #e0f8fd;
+}
+
+.detalle-res-servicio-card .precio-badge {
+    background: var(--detalle-res-info);
+    color: white;
+    border-radius: 20px;
+    padding: 0.2rem 0.8rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* ── DECORACIÓN ── */
+.detalle-res-deco {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--detalle-res-border);
+}
+
+.detalle-res-deco-line {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.7rem;
+    color: var(--detalle-res-muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.detalle-res-deco-line::before,
+.detalle-res-deco-line::after {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--detalle-res-border);
+}
+
+.detalle-res-deco-line i {
+    color: var(--detalle-res-gold);
+}

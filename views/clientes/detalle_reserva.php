@@ -7,58 +7,16 @@ $servicios = $servicios ?? [];
 $serviciosDisp = $serviciosDisp ?? [];
 ?>
 
-<style>
-.timeline-item { border-left: 2px solid #e9ecef; padding-left: 20px; position: relative; margin-bottom: 16px; }
-.timeline-item::before { content:''; position:absolute; left:-7px; top:4px; width:12px; height:12px; border-radius:50%; background:#0f3460; border:2px solid #fff; box-shadow:0 0 0 2px #0f3460; }
-.timeline-item.success::before { background:#10b981; box-shadow:0 0 0 2px #10b981; }
-.timeline-item.warning::before { background:#f59e0b; box-shadow:0 0 0 2px #f59e0b; }
-.timeline-item.danger::before  { background:#ef4444; box-shadow:0 0 0 2px #ef4444; }
+<link rel="stylesheet" href="<?= asset('css/cssCliente/clientedetallereserva.css') ?>">
 
-/* Modal servicios mejorado */
-.servicio-card {
-    border: 2px solid #e9ecef;
-    border-radius: 10px;
-    padding: 12px 16px;
-    cursor: pointer;
-    transition: all .2s;
-    margin-bottom: 10px;
-    background: #fff;
-}
-.servicio-card:hover {
-    border-color: #0dcaf0;
-    background: #f0fdff;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(13,202,240,.15);
-}
-.servicio-card.selected {
-    border-color: #0dcaf0;
-    background: #e0f8fd;
-}
-.servicio-card .precio-badge {
-    background: #0dcaf0;
-    color: #fff;
-    border-radius: 20px;
-    padding: 2px 10px;
-    font-size: .8rem;
-    font-weight: 600;
-}
-.modal-servicios-list {
-    max-height: 300px;
-    overflow-y: auto;
-    padding: 4px 2px;
-}
-.modal-servicios-list::-webkit-scrollbar { width: 4px; }
-.modal-servicios-list::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
-</style>
-
-<!-- Header -->
-<div style="background:linear-gradient(135deg,#1a1a2e,#0f3460);padding:40px 20px 30px;color:#fff;">
-    <div style="max-width:860px;margin:0 auto;">
-        <a href="<?= url('cliente/reservas') ?>" style="color:#a0b4d0;font-size:.85rem;text-decoration:none;">
+<!-- Hero -->
+<div class="detalle-res-hero">
+    <div class="detalle-res-hero-content">
+        <a href="<?= url('cliente/reservas') ?>" class="detalle-res-hero-back">
             <i class="fas fa-arrow-left me-2"></i>Mis reservas
         </a>
-        <h2 class="fw-bold mt-2 mb-0">Detalle de Reserva</h2>
-        <p style="color:#a0b4d0;">
+        <h2>Detalle de Reserva</h2>
+        <p>
             Habitación <?= htmlspecialchars($reserva['habitacion_numero']) ?> ·
             <?= date('d/m/Y', strtotime($reserva['fechaInicio'])) ?> →
             <?= date('d/m/Y', strtotime($reserva['fechaFin'])) ?>
@@ -66,10 +24,10 @@ $serviciosDisp = $serviciosDisp ?? [];
     </div>
 </div>
 
-<div style="max-width:860px;margin:0 auto;padding:30px 20px;">
+<div class="detalle-res-main">
 
 <?php
-$colores = ['Pendiente'=>'warning','Confirmada'=>'success','Cancelada'=>'danger','Completada'=>'primary','No show'=>'secondary'];
+$colores = ['Pendiente'=>'pendiente','Confirmada'=>'confirmada','Cancelada'=>'cancelada','Completada'=>'completada','No show'=>'secondary'];
 $badge   = $colores[$reserva['estado_reserva']] ?? 'secondary';
 ?>
 
@@ -79,66 +37,58 @@ $badge   = $colores[$reserva['estado_reserva']] ?? 'secondary';
     <div class="col-lg-7">
 
         <!-- Info habitación -->
-        <div class="card border-0 shadow-sm mb-4">
-            <div class="card-body">
+        <div class="detalle-res-card">
+            <div class="detalle-res-card-body">
                 <?php if (!empty($reserva['imagen'])): ?>
-                    <img src="<?= asset($reserva['imagen']) ?>" class="w-100 rounded mb-3"
-                         style="height:200px;object-fit:cover;">
+                    <img src="<?= asset($reserva['imagen']) ?>" class="detalle-res-hab-img" alt="Habitación">
                 <?php endif; ?>
-                <div class="d-flex justify-content-between align-items-start">
+                
+                <div class="detalle-res-hab-header">
                     <div>
-                        <h5 class="fw-bold mb-0">
+                        <h5 class="detalle-res-hab-nombre">
                             Habitación N° <?= htmlspecialchars($reserva['habitacion_numero']) ?>
-                            <span class="text-muted fw-normal fs-6">· <?= htmlspecialchars($reserva['tipo_habitacion']) ?></span>
+                            <small>· <?= htmlspecialchars($reserva['tipo_habitacion']) ?></small>
                         </h5>
-                        <p class="text-muted small mb-0">Piso <?= $reserva['piso'] ?></p>
+                        <p class="detalle-res-hab-piso">Piso <?= $reserva['piso'] ?></p>
                     </div>
-                    <span class="badge bg-<?= $badge ?> fs-6"><?= htmlspecialchars($reserva['estado_reserva']) ?></span>
+                    <span class="detalle-res-hab-badge <?= $badge ?>"><?= htmlspecialchars($reserva['estado_reserva']) ?></span>
                 </div>
 
-                <hr>
-
-                <div class="row g-3 text-center">
-                    <div class="col-4">
-                        <div class="text-muted small">Entrada</div>
-                        <div class="fw-bold"><?= date('d/m/Y', strtotime($reserva['fechaInicio'])) ?></div>
+                <div class="detalle-res-fechas">
+                    <div class="detalle-res-fecha-item">
+                        <div class="label">Entrada</div>
+                        <div class="valor"><?= date('d/m/Y', strtotime($reserva['fechaInicio'])) ?></div>
                     </div>
-                    <div class="col-4">
-                        <div class="text-muted small">Salida</div>
-                        <div class="fw-bold"><?= date('d/m/Y', strtotime($reserva['fechaFin'])) ?></div>
+                    <div class="detalle-res-fecha-item">
+                        <div class="label">Salida</div>
+                        <div class="valor"><?= date('d/m/Y', strtotime($reserva['fechaFin'])) ?></div>
                     </div>
-                    <div class="col-4">
-                        <div class="text-muted small">Noches</div>
-                        <div class="fw-bold"><?= $noches ?></div>
+                    <div class="detalle-res-fecha-item">
+                        <div class="label">Noches</div>
+                        <div class="valor"><?= $noches ?></div>
                     </div>
-                    <div class="col-6">
-                        <div class="text-muted small">Personas</div>
-                        <div class="fw-bold"><?= $reserva['cantidadPersonas'] ?></div>
-                    </div>
-                    <div class="col-6">
-                        <div class="text-muted small">Precio/noche</div>
-                        <div class="fw-bold">Bs. <?= number_format($reserva['precioBase'], 2) ?></div>
+                    <div class="detalle-res-fecha-item">
+                        <div class="label">Personas</div>
+                        <div class="valor"><?= $reserva['cantidadPersonas'] ?></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Servicios agregados -->
-        <div class="card border-0 shadow-sm mb-4">
-            <div class="card-header bg-white border-0 pt-3 d-flex justify-content-between align-items-center">
-                <h6 class="fw-semibold mb-0">
-                    <i class="fas fa-concierge-bell me-2 text-info"></i>Servicios adicionales
-                </h6>
+        <!-- Servicios adicionales -->
+        <div class="detalle-res-card">
+            <div class="detalle-res-card-header">
+                <h6><i class="fas fa-concierge-bell"></i> Servicios adicionales</h6>
                 <?php if (in_array($reserva['estado_reserva'], ['Pendiente','Confirmada'])): ?>
-                <button class="btn btn-sm btn-dark px-3" data-bs-toggle="modal" data-bs-target="#modalPedirServicio">
+                <button class="detalle-res-btn-dark" data-bs-toggle="modal" data-bs-target="#modalPedirServicio">
                     <i class="fas fa-plus me-1"></i>Solicitar servicio
                 </button>
                 <?php endif; ?>
             </div>
-            <div class="card-body p-0">
+            <div class="detalle-res-card-body">
                 <?php if (!empty($servicios)): ?>
-                <table class="table mb-0">
-                    <thead class="table-light">
+                <table class="detalle-res-tabla">
+                    <thead>
                         <tr><th>Servicio</th><th class="text-center">Cant.</th><th class="text-end">Subtotal</th></tr>
                     </thead>
                     <tbody>
@@ -150,21 +100,21 @@ $badge   = $colores[$reserva['estado_reserva']] ?? 'secondary';
                     </tr>
                     <?php endforeach; ?>
                     </tbody>
-                    <tfoot class="table-light">
+                    <tfoot>
                         <tr>
-                            <td colspan="2" class="fw-semibold">Total servicios</td>
-                            <td class="text-end fw-bold text-info">Bs. <?= number_format($totalServicios, 2) ?></td>
+                            <td colspan="2">Total servicios</td>
+                            <td class="text-end" style="color: var(--detalle-res-info);">Bs. <?= number_format($totalServicios, 2) ?></td>
                         </tr>
                     </tfoot>
                 </table>
                 <?php else: ?>
-                <div class="text-center text-muted py-4">
+                <div class="text-center text-muted py-3">
                     <i class="fas fa-concierge-bell fa-2x mb-2 d-block opacity-25"></i>
-                    No tienes servicios adicionales en esta reserva.<br>
-                    <small>Puedes solicitar masajes, desayunos, lavandería y más.</small>
+                    No tienes servicios adicionales en esta reserva.
+                    <br><small>Puedes solicitar masajes, desayunos, lavandería y más.</small>
                     <?php if (in_array($reserva['estado_reserva'], ['Pendiente','Confirmada'])): ?>
-                    <div class="mt-3">
-                        <button class="btn btn-sm btn-dark px-4" data-bs-toggle="modal" data-bs-target="#modalPedirServicio">
+                    <div class="mt-2">
+                        <button class="detalle-res-btn-dark" data-bs-toggle="modal" data-bs-target="#modalPedirServicio">
                             <i class="fas fa-plus me-1"></i>Añadir servicio
                         </button>
                     </div>
@@ -176,54 +126,42 @@ $badge   = $colores[$reserva['estado_reserva']] ?? 'secondary';
 
         <!-- Historial de pagos -->
         <?php if (!empty($pagos)): ?>
-        <div class="card border-0 shadow-sm">
-            <div class="card-header bg-white border-0 pt-3">
-                <h6 class="fw-semibold mb-0">
-                    <i class="fas fa-history me-2 text-primary"></i>Historial de pagos
-                </h6>
+        <div class="detalle-res-card">
+            <div class="detalle-res-card-header">
+                <h6><i class="fas fa-history"></i> Historial de pagos</h6>
             </div>
-            <div class="card-body">
-                <?php foreach ($pagos as $p):
-                    $cls = ['Pagado'=>'success','Pendiente'=>'warning','Cancelado'=>'danger'];
-                    $c   = $cls[$p['estado']] ?? 'secondary';
-                ?>
-                <div class="timeline-item <?= $c ?>">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <div class="fw-semibold">
-                                Bs. <?= number_format($p['monto'], 2) ?>
-                                <span class="badge bg-<?= $c ?> ms-2 small"><?= htmlspecialchars($p['estado']) ?></span>
-                            </div>
-                            <div class="text-muted small">
-                                <i class="fas fa-credit-card me-1"></i><?= htmlspecialchars($p['metodo']) ?>
-                                · <?= date('d/m/Y H:i', strtotime($p['fechaPago'])) ?>
-                            </div>
-                            <?php if ($p['recibo']): ?>
-                                <div class="text-muted small">
-                                    <i class="fas fa-receipt me-1"></i><?= htmlspecialchars($p['recibo']) ?>
+            <div class="detalle-res-card-body">
+                <div class="detalle-res-timeline">
+                    <?php foreach ($pagos as $p):
+                        $cls = ['Pagado'=>'success','Pendiente'=>'warning','Cancelado'=>'danger'];
+                        $c   = $cls[$p['estado']] ?? 'secondary';
+                    ?>
+                    <div class="detalle-res-timeline-item <?= $c ?>">
+                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-1">
+                            <div>
+                                <div class="monto">
+                                    Bs. <?= number_format($p['monto'], 2) ?>
+                                    <span class="detalle-res-hab-badge <?= $c ?>" style="font-size:0.6rem;"><?= htmlspecialchars($p['estado']) ?></span>
                                 </div>
-                            <?php endif; ?>
-                            <?php if (!empty($p['comprobante']) && $p['estado'] === 'Pendiente'): ?>
-                                <div class="badge bg-warning text-dark mt-1">
-                                    <i class="fas fa-clock me-1"></i>Comprobante en revisión
+                                <div class="meta">
+                                    <i class="fas fa-credit-card me-1"></i><?= htmlspecialchars($p['metodo']) ?>
+                                    · <?= date('d/m/Y H:i', strtotime($p['fechaPago'])) ?>
                                 </div>
-                            <?php endif; ?>
-                            <?php if ($p['estado'] === 'Pagado' && !empty($p['recibo'])): ?>
-                                <?php
-                                $rStmt = $conn->prepare("SELECT idRecibo FROM recibo WHERE numero = ? LIMIT 1");
-                                $rStmt->execute([$p['recibo']]);
-                                $idR = $rStmt->fetchColumn();
-                                if ($idR): ?>
-                                <a href="<?= url('recibo/ver?id=' . $idR) ?>" target="_blank"
-                                   class="btn btn-sm btn-outline-success mt-1">
-                                    <i class="fas fa-file-pdf me-1"></i>Ver recibo
-                                </a>
+                                <?php if ($p['recibo']): ?>
+                                    <div class="meta">
+                                        <i class="fas fa-receipt me-1"></i><?= htmlspecialchars($p['recibo']) ?>
+                                    </div>
                                 <?php endif; ?>
-                            <?php endif; ?>
+                                <?php if (!empty($p['comprobante']) && $p['estado'] === 'Pendiente'): ?>
+                                    <div class="badge bg-warning text-dark mt-1">
+                                        <i class="fas fa-clock me-1"></i>Comprobante en revisión
+                                    </div>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     </div>
+                    <?php endforeach; ?>
                 </div>
-                <?php endforeach; ?>
             </div>
         </div>
         <?php endif; ?>
@@ -232,11 +170,11 @@ $badge   = $colores[$reserva['estado_reserva']] ?? 'secondary';
 
     <!-- Columna derecha: resumen de cobro -->
     <div class="col-lg-5">
-        <div class="card border-0 shadow-sm" style="position:sticky;top:20px;">
-            <div class="card-header bg-white border-0 pt-3">
-                <h6 class="fw-semibold mb-0"><i class="fas fa-calculator me-2 text-primary"></i>Resumen de cobro</h6>
+        <div class="detalle-res-card detalle-res-sticky">
+            <div class="detalle-res-card-header">
+                <h6><i class="fas fa-calculator"></i> Resumen de cobro</h6>
             </div>
-            <div class="card-body">
+            <div class="detalle-res-card-body">
                 <div class="d-flex justify-content-between mb-2">
                     <span class="text-muted">Habitación (<?= $noches ?> noches)</span>
                     <span>Bs. <?= number_format($noches * $reserva['precioBase'], 2) ?></span>
@@ -267,7 +205,7 @@ $badge   = $colores[$reserva['estado_reserva']] ?? 'secondary';
 
                 <?php if ($pendiente > 0 && in_array($reserva['estado_reserva'], ['Pendiente','Confirmada'])): ?>
                     <a href="<?= url('cliente/pagar?id=' . $reserva['idReserva']) ?>"
-                       class="btn btn-dark w-100 mt-3">
+                       class="detalle-res-btn-dark w-100 mt-3" style="text-align:center;padding:0.8rem;">
                         <i class="fas fa-credit-card me-2"></i>Pagar ahora
                     </a>
                 <?php elseif ($pendiente == 0): ?>
@@ -288,24 +226,28 @@ $badge   = $colores[$reserva['estado_reserva']] ?? 'secondary';
     </div>
 
 </div>
+
+<!-- Decoración final -->
+<div class="detalle-res-deco">
+    <span class="detalle-res-deco-line">
+        <i class="fas fa-hotel"></i>
+        Hotel Real Plaza & Convention Center
+        <i class="fas fa-hotel"></i>
+    </span>
 </div>
 
-<!-- ============================================================
-     MODAL SOLICITAR SERVICIO — mejorado con tarjetas visuales
-     ============================================================ -->
-<div class="modal fade" id="modalPedirServicio" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content border-0 shadow">
+</div>
 
-            <!-- Header -->
-            <div class="modal-header border-0" style="background:linear-gradient(135deg,#1a1a2e,#0f3460);color:#fff;">
+<!-- MODAL SOLICITAR SERVICIO -->
+<div class="modal fade detalle-res-modal" id="modalPedirServicio" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
                 <div>
-                    <h5 class="modal-title fw-bold mb-0">
-                        <i class="fas fa-concierge-bell me-2"></i>Solicitar Servicio Adicional
+                    <h5 class="modal-title">
+                        <i class="fas fa-concierge-bell"></i>Solicitar Servicio Adicional
                     </h5>
-                    <p class="mb-0 mt-1" style="font-size:.82rem;color:#a0b4d0;">
-                        Selecciona el servicio que deseas agregar a tu reserva
-                    </p>
+                    <p>Selecciona el servicio que deseas agregar a tu reserva</p>
                 </div>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
@@ -314,8 +256,7 @@ $badge   = $colores[$reserva['estado_reserva']] ?? 'secondary';
                 <input type="hidden" name="idReserva" value="<?= $reserva['idReserva'] ?>">
                 <input type="hidden" name="idServicio" id="hiddenIdServicio" required>
 
-                <div class="modal-body p-4">
-
+                <div class="modal-body">
                     <?php if (empty($serviciosDisp)): ?>
                         <div class="text-center text-muted py-4">
                             <i class="fas fa-box-open fa-2x mb-2 d-block opacity-25"></i>
@@ -323,17 +264,14 @@ $badge   = $colores[$reserva['estado_reserva']] ?? 'secondary';
                         </div>
                     <?php else: ?>
 
-                    <!-- Buscador -->
-                    <div class="mb-3 position-relative">
-                        <i class="fas fa-search position-absolute" style="left:12px;top:50%;transform:translateY(-50%);color:#adb5bd;"></i>
-                        <input type="text" id="buscadorServicio" class="form-control ps-4"
-                               placeholder="Buscar servicio..." oninput="filtrarServicios()">
+                    <div class="detalle-res-modal-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="buscadorServicio" placeholder="Buscar servicio..." oninput="filtrarServicios()">
                     </div>
 
-                    <!-- Tarjetas de servicios -->
-                    <div class="modal-servicios-list" id="listaServicios">
+                    <div id="listaServicios">
                         <?php foreach ($serviciosDisp as $sv): ?>
-                        <div class="servicio-card"
+                        <div class="detalle-res-servicio-card"
                              data-id="<?= $sv['idServicio'] ?>"
                              data-precio="<?= $sv['precio'] ?>"
                              data-nombre="<?= strtolower(htmlspecialchars($sv['nombre'])) ?>"
@@ -358,9 +296,8 @@ $badge   = $colores[$reserva['estado_reserva']] ?? 'secondary';
                         <i class="fas fa-search me-1"></i>Sin resultados
                     </p>
 
-                    <!-- Cantidad y preview (oculto hasta selección) -->
                     <div id="detalleSeleccion" class="d-none mt-3">
-                        <hr class="my-3">
+                        <hr>
                         <div class="row g-3 align-items-center">
                             <div class="col-sm-6">
                                 <label class="form-label fw-semibold small text-muted text-uppercase">Cantidad</label>
@@ -390,9 +327,9 @@ $badge   = $colores[$reserva['estado_reserva']] ?? 'secondary';
                 </div>
 
                 <?php if (!empty($serviciosDisp)): ?>
-                <div class="modal-footer border-0 pt-0">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-dark px-4" id="btnSolicitar" disabled>
+                    <button type="submit" class="detalle-res-btn-dark px-4" id="btnSolicitar" disabled>
                         <i class="fas fa-check me-1"></i>Solicitar servicio
                     </button>
                 </div>
@@ -406,16 +343,12 @@ $badge   = $colores[$reserva['estado_reserva']] ?? 'secondary';
 let precioSeleccionado = 0;
 
 function seleccionarServicio(card) {
-    // Deselect all
-    document.querySelectorAll('.servicio-card').forEach(c => c.classList.remove('selected'));
+    document.querySelectorAll('.detalle-res-servicio-card').forEach(c => c.classList.remove('selected'));
     card.classList.add('selected');
-
-    const id     = card.dataset.id;
+    const id = card.dataset.id;
     const precio = parseFloat(card.dataset.precio);
-
     document.getElementById('hiddenIdServicio').value = id;
     precioSeleccionado = precio;
-
     document.getElementById('detalleSeleccion').classList.remove('d-none');
     document.getElementById('btnSolicitar').removeAttribute('disabled');
     document.getElementById('cantidadServicio').value = 1;
@@ -436,7 +369,7 @@ function cambiarCantidad(delta) {
 
 function filtrarServicios() {
     const q = document.getElementById('buscadorServicio').value.toLowerCase().trim();
-    const cards = document.querySelectorAll('.servicio-card');
+    const cards = document.querySelectorAll('.detalle-res-servicio-card');
     let visibles = 0;
     cards.forEach(c => {
         const match = c.dataset.nombre.includes(q);
@@ -446,9 +379,8 @@ function filtrarServicios() {
     document.getElementById('sinResultados').classList.toggle('d-none', visibles > 0);
 }
 
-// Reset modal al cerrar
 document.getElementById('modalPedirServicio').addEventListener('hidden.bs.modal', function() {
-    document.querySelectorAll('.servicio-card').forEach(c => c.classList.remove('selected'));
+    document.querySelectorAll('.detalle-res-servicio-card').forEach(c => c.classList.remove('selected'));
     document.getElementById('hiddenIdServicio').value = '';
     document.getElementById('detalleSeleccion').classList.add('d-none');
     document.getElementById('btnSolicitar').setAttribute('disabled', true);

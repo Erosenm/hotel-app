@@ -1,0 +1,421 @@
+/* ============================================================
+   clientereservar.css — Reservar Habitación (Cliente)
+   Diseño premium y legible para el proceso de reserva
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap');
+
+:root {
+    --reservar-font: 'Inter', system-ui, -apple-system, sans-serif;
+    --reservar-gold: #c8a96e;
+    --reservar-gold-dark: #b8924a;
+    --reservar-gold-light: #fdf8f0;
+    --reservar-dark: #1a1a2e;
+    --reservar-dark-light: #2d2d44;
+    --reservar-text: #1e293b;
+    --reservar-sub: #64748b;
+    --reservar-muted: #94a3b8;
+    --reservar-border: #e9edf2;
+    --reservar-bg: #f7f9fc;
+    --reservar-card: #ffffff;
+    --reservar-success: #27ae60;
+    --reservar-warning: #f39c12;
+    --reservar-danger: #e74c3c;
+    --reservar-info: #3b82f6;
+    --reservar-radius: 20px;
+    --reservar-radius-sm: 14px;
+    --reservar-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    --reservar-shadow-md: 0 8px 35px rgba(0, 0, 0, 0.08);
+    --reservar-transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ── BASE ── */
+body {
+    background: var(--reservar-bg);
+    font-family: var(--reservar-font);
+    color: var(--reservar-text);
+    margin: 0;
+    padding: 0;
+}
+
+/* ── MAIN CONTAINER ── */
+.reservar-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 100px 20px 2rem;
+}
+
+@media (max-width: 768px) {
+    .reservar-container {
+        padding: 90px 1rem 1.5rem;
+    }
+}
+
+/* ── BREADCRUMB ── */
+.reservar-breadcrumb {
+    margin-bottom: 2rem;
+}
+
+.reservar-breadcrumb ol {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    font-size: 0.8rem;
+}
+
+.reservar-breadcrumb ol li {
+    display: flex;
+    align-items: center;
+}
+
+.reservar-breadcrumb ol li::after {
+    content: '/';
+    margin: 0 0.5rem;
+    color: var(--reservar-muted);
+}
+
+.reservar-breadcrumb ol li:last-child::after {
+    display: none;
+}
+
+.reservar-breadcrumb a {
+    color: var(--reservar-sub);
+    text-decoration: none;
+    transition: var(--reservar-transition);
+}
+
+.reservar-breadcrumb a:hover {
+    color: var(--reservar-gold);
+}
+
+.reservar-breadcrumb .active {
+    color: var(--reservar-text);
+    font-weight: 600;
+}
+
+/* ── ALERTAS ── */
+.reservar-alert {
+    border-radius: var(--reservar-radius-sm);
+    padding: 0.9rem 1.2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: white;
+    border-left: 4px solid;
+    box-shadow: var(--reservar-shadow);
+}
+
+.reservar-alert-danger {
+    border-left-color: var(--reservar-danger);
+    color: #c0392b;
+}
+
+/* ── CARD PRINCIPAL ── */
+.reservar-card {
+    background: var(--reservar-card);
+    border-radius: var(--reservar-radius);
+    padding: 1.8rem;
+    box-shadow: var(--reservar-shadow);
+    border: 1px solid var(--reservar-border);
+    transition: var(--reservar-transition);
+}
+
+.reservar-card:hover {
+    box-shadow: var(--reservar-shadow-md);
+}
+
+.reservar-card-titulo {
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin-bottom: 0.2rem;
+    color: var(--reservar-text);
+}
+
+.reservar-card-titulo i {
+    color: var(--reservar-gold);
+    margin-right: 0.5rem;
+}
+
+.reservar-card-sub {
+    font-size: 0.85rem;
+    color: var(--reservar-muted);
+    margin-bottom: 1.5rem;
+}
+
+/* ── FORMULARIO ── */
+.reservar-form-group {
+    margin-bottom: 1rem;
+}
+
+.reservar-form-group label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--reservar-sub);
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.reservar-form-group label .required {
+    color: var(--reservar-danger);
+}
+
+.reservar-form-group .form-control,
+.reservar-form-group .form-select {
+    width: 100%;
+    border: 1.5px solid var(--reservar-border);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    font-family: var(--reservar-font);
+    transition: var(--reservar-transition);
+    background: white;
+}
+
+.reservar-form-group .form-control:focus,
+.reservar-form-group .form-select:focus {
+    border-color: var(--reservar-gold);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(200, 169, 110, 0.15);
+}
+
+.reservar-form-group .form-control::placeholder {
+    color: var(--reservar-muted);
+}
+
+/* ── RESUMEN DE PRECIO ── */
+.reservar-resumen {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 1.2rem 1.5rem;
+    margin-top: 1.5rem;
+    border: 1px solid var(--reservar-border);
+    display: none;
+}
+
+.reservar-resumen.visible {
+    display: block;
+}
+
+.reservar-resumen-titulo {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--reservar-text);
+    margin-bottom: 0.8rem;
+}
+
+.reservar-resumen-titulo i {
+    color: var(--reservar-gold);
+    margin-right: 0.4rem;
+}
+
+.reservar-resumen-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+    font-size: 0.85rem;
+    color: var(--reservar-sub);
+}
+
+.reservar-resumen-item .valor {
+    font-weight: 600;
+    color: var(--reservar-text);
+}
+
+.reservar-resumen-divider {
+    border: none;
+    border-top: 1px solid var(--reservar-border);
+    margin: 0.5rem 0;
+}
+
+.reservar-resumen-total {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 800;
+    font-size: 1.05rem;
+    color: var(--reservar-text);
+    padding-top: 0.5rem;
+}
+
+.reservar-resumen-total .valor {
+    color: var(--reservar-dark);
+    font-size: 1.2rem;
+}
+
+/* ── BOTÓN CONFIRMAR ── */
+.reservar-btn-primary {
+    background: var(--reservar-gold);
+    border: none;
+    border-radius: 12px;
+    padding: 0.9rem 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: white;
+    width: 100%;
+    transition: var(--reservar-transition);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+}
+
+.reservar-btn-primary:hover {
+    background: var(--reservar-gold-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(200, 169, 110, 0.3);
+}
+
+.reservar-btn-primary i {
+    font-size: 0.9rem;
+}
+
+.reservar-nota {
+    font-size: 0.75rem;
+    color: var(--reservar-muted);
+    text-align: center;
+    margin-top: 0.8rem;
+}
+
+.reservar-nota i {
+    margin-right: 0.3rem;
+}
+
+/* ── RESUMEN DE HABITACIÓN (lado derecho) ── */
+.reservar-hab-resumen {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f3460 100%);
+    color: white;
+    border-radius: var(--reservar-radius);
+    padding: 1.8rem;
+    margin-bottom: 1.2rem;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.reservar-hab-resumen .tipo {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--reservar-gold);
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+}
+
+.reservar-hab-resumen .nombre {
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 0.2rem;
+}
+
+.reservar-hab-resumen .piso {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 0.8rem;
+}
+
+.reservar-hab-resumen .precio {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.reservar-hab-resumen .precio span {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* ── POLÍTICAS ── */
+.reservar-politicas {
+    background: var(--reservar-card);
+    border-radius: var(--reservar-radius);
+    padding: 1.2rem 1.5rem;
+    border: 1px solid var(--reservar-border);
+    box-shadow: var(--reservar-shadow);
+}
+
+.reservar-politicas-titulo {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--reservar-text);
+    margin-bottom: 0.8rem;
+}
+
+.reservar-politica-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: 0.4rem 0;
+    font-size: 0.8rem;
+    color: var(--reservar-sub);
+}
+
+.reservar-politica-item i {
+    margin-top: 0.15rem;
+    flex-shrink: 0;
+}
+
+.reservar-politica-item i.success {
+    color: var(--reservar-success);
+}
+
+.reservar-politica-item i.info {
+    color: var(--reservar-info);
+}
+
+/* ── DECORACIÓN FINAL ── */
+.reservar-deco {
+    text-align: center;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--reservar-border);
+}
+
+.reservar-deco-line {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.7rem;
+    color: var(--reservar-muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.reservar-deco-line::before,
+.reservar-deco-line::after {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--reservar-border);
+}
+
+.reservar-deco-line i {
+    color: var(--reservar-gold);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 992px) {
+    .reservar-container {
+        padding: 90px 1.5rem 2rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .reservar-card {
+        padding: 1.2rem;
+    }
+    
+    .reservar-hab-resumen {
+        padding: 1.2rem;
+    }
+    
+    .reservar-hab-resumen .precio {
+        font-size: 1.4rem;
+    }
+    
+    .reservar-hab-resumen .nombre {
+        font-size: 1.1rem;
+    }
+}
