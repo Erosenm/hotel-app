@@ -20,19 +20,17 @@
             </div>
             <div class="footer-col">
                 <h4>CONTACTO</h4>
-                <p>Calle de la Elegancia 123,<br>Madrid, España</p>
-                <p>T. +34 900 123 456</p>
+                <p>Calle X 123,<br>La Paz, Bolivia</p>
+                <p>T. +591 88888888</p>
                 <p>E. info@hotelrealplaza.com</p>
             </div>
             <div class="footer-col newsletter">
                 <h4>HOJA INFORMATIVA</h4>
                 <p>Reciba ofertas exclusivas.</p>
-                <input type="email" placeholder="Su correo electrónico">
-                <button class="btn" style="background:#fff; color:var(--accent); width:100%;">Suscribirse</button>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2023 HOTEL REAL PLAZA. TODOS LOS DERECHOS RESERVADOS.</p>
+            <p>&copy; 2026 HOTEL REAL PLAZA. TODOS LOS DERECHOS RESERVADOS.</p>
             <p>POLÍTICA DE PRIVACIDAD / TÉRMINOS Y CONDICIONES</p>
         </div>
     </footer>
